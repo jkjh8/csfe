@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <img
       alt="logo"
-      src="~assets/logo-c.svg"
+      src="~assets/logo_long.svg"
       style="width: 200px; height: 200px"
     >
   </q-page>

@@ -11,7 +11,7 @@
           >
             <img
               alt="logo"
-              src="~assets/logo-c.svg"
+              src="~assets/logo_bk.svg"
               style="width: 38px; height: 38px"
             />
           </q-btn>

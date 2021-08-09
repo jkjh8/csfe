@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300px" height="300px" viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#A2A2A2" stop-opacity="0.5" offset="34.9377185%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="150" cy="150" r="150"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <g id="Oval">
+                <use fill="#50584D" xlink:href="#path-2"></use>
+                <circle stroke="#1BC357" stroke-width="7" stroke-linejoin="square" fill="url(#linearGradient-1)" cx="150" cy="150" r="146.5"></circle>
+            </g>
+            <rect id="mm3" stroke="#1CBD7C" stroke-width="2" fill="#FFFFFF" x="186" y="76" width="48" height="148" rx="8"></rect>
+            <path d="M107,76 C108.932997,76 110.682997,76.7835017 111.949747,78.0502525 C113.216498,79.3170034 114,81.0670034 114,83 L114,83 L114,217 C114,218.932997 113.216498,220.682997 111.949747,221.949747 C110.682997,223.216498 108.932997,224 107,224 L107,224 L73,224 C71.0670034,224 69.3170034,223.216498 68.0502525,221.949747 C66.7835017,220.682997 66,218.932997 66,217 L66,217 L66,83 C66,81.0670034 66.7835017,79.3170034 68.0502525,78.0502525 C69.3170034,76.7835017 71.0670034,76 73,76 L73,76 Z" id="MM1" stroke="#1CBD7C" stroke-width="2" fill="#1CBD7C"></path>
+            <path d="M167,126 C168.932997,126 170.682997,126.783502 171.949747,128.050253 C173.216498,129.317003 174,131.067003 174,133 L174,133 L174,217 C174,218.932997 173.216498,220.682997 171.949747,221.949747 C170.682997,223.216498 168.932997,224 167,224 L167,224 L133,224 C131.067003,224 129.317003,223.216498 128.050253,221.949747 C126.783502,220.682997 126,218.932997 126,217 L126,217 L126,133 C126,131.067003 126.783502,129.317003 128.050253,128.050253 C129.317003,126.783502 131.067003,126 133,126 L133,126 Z" id="MM2" stroke="#1CBD7C" stroke-width="2" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

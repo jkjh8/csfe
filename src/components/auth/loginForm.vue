@@ -75,7 +75,7 @@
           <div class="q-mt-lg">
             <q-btn
               class="full-width"
-              style="background: #04B486; color: white; border-radius: 8px; height: 40px"
+              style="background: #3EB443; color: white; border-radius: 8px; height: 40px"
               type="submit"
               label="Login"
               flat

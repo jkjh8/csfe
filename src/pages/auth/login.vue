@@ -31,13 +31,24 @@
         style="width: 400px; height: 50px; border-radius: 8px;"
         outline
         color="grey"
+        to="/register"
       >
-        <div class="text-grey-10 text-bold">회원가입</div>
+        <q-icon
+          name="fas fa-user-alt"
+          size="12px"
+          color="black"
+        />
+        <div class="text-grey-10 text-bold q-ml-sm">회원가입</div>
       </q-btn>
     </div>
 
     <div class="row justify-center q-mt-xl">
-      <a href="/" style="text-decoration: none">
+      <a
+        class="row items-center"
+        href="/"
+        style="text-decoration: none"
+      >
+        <q-icon name="home" />
         <div class="text-body2">홈으로</div>
       </a>
     </div>
