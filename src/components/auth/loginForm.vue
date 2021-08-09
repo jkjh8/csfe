@@ -19,7 +19,7 @@
       <q-card-section>
         <div>
           <div class="row justify-between">
-            <span>
+            <span class="text-bold">
               이메일
             </span>
             <span>
@@ -29,6 +29,7 @@
                 left-label
                 label="이메일 저장"
                 color="teal-14"
+                @click="saveIdToLocal"
               />
             </span>
           </div>
@@ -44,10 +45,8 @@
               :rules="rules.email"
             ></q-input>
           </div>
-          <div class="row justify-between q-mt-lg">
-            <span>
-              패스워드
-            </span>
+          <div class="row justify-between q-mt-lg text-bold">
+            비밀번호
           </div>
           <div
             class="q-my-sm"
@@ -99,29 +98,55 @@
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance, ref } from 'vue'
+import { defineComponent, getCurrentInstance, ref, reactive, onMounted } from 'vue'
 
 export default defineComponent({
   setup () {
-    const api = getCurrentInstance().appContext.config.globalProperties.$api
+    const { proxy } = getCurrentInstance()
     const error = ref('')
     const saveEmail = ref(false)
     const keepLoggedin = ref(false)
     const showPassword = ref(false)
 
-    const rules = ref({
-      email: [value => !!value || '이메일을 입력하세요.', v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'],
-      password: [v => v.length >= 8 || '최소 8자 이상 입력하세요.']
+    const rules = reactive({
+      email: [
+        value => !!value || '이메일을 입력하세요.',
+        v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'
+      ],
+      password: [
+        value => !!value || '비밀번호를 입력하세요.',
+        v => v.length >= 8 || '최소 8자 이상 입력하세요.'
+      ]
     })
 
-    const userInfo = ref({
+    const userInfo = reactive({
       user_id: '',
       password: ''
     })
 
+    onMounted(() => {
+      saveEmail.value = localStorage.getItem('saveId') === 'true'
+      if (saveEmail.value) {
+        userInfo.user_id = localStorage.getItem('userId')
+      }
+    })
+
+    function saveIdToLocal () {
+      if (saveEmail.value) {
+        localStorage.setItem('saveId', true)
+        localStorage.setItem('userId', userInfo.user_id)
+      } else {
+        localStorage.setItem('saveId', false)
+        localStorage.removeItem('userId')
+      }
+    }
+
     function onSubmit () {
-      console.log(userInfo.value)
-      console.log(api)
+      console.log(userInfo)
+      saveIdToLocal()
+      proxy.$api.post('/auth/login', userInfo).then((res) => {
+        console.log(res)
+      })
     }
 
     return {
@@ -131,6 +156,7 @@ export default defineComponent({
       showPassword,
       userInfo,
       rules,
+      saveIdToLocal,
       onSubmit
     }
   }
