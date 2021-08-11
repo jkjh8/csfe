@@ -112,7 +112,19 @@
               type="submit"
               flat
             >
-              <div class="text-subtitle1 text-bold">가입하기</div>
+              <div v-if='loading'>
+                <q-spinner
+                  color="teal"
+                  size="24px"
+                  :thickness="10"
+                ></q-spinner>
+              </div>
+              <div
+                v-else
+                class="text-subtitle1 text-bold"
+              >
+                가입하기
+              </div>
             </q-btn>
           </div>
         </div>
@@ -128,6 +140,7 @@ export default defineComponent({
   setup () {
     const { proxy } = getCurrentInstance()
     const error = ref('')
+    const loading = ref(false)
     const showPassword = ref(false)
     const showChkPassword = ref(false)
 
@@ -158,6 +171,7 @@ export default defineComponent({
     })
 
     function onSubmit () {
+      loading.value = true
       const user = {
         user_name: userInfo.user_name,
         user_id: userInfo.user_id,
@@ -165,10 +179,12 @@ export default defineComponent({
         password: userInfo.password
       }
       proxy.$api.post('/auth/register', user).then((res) => {
+        loading.value = false
         if (res.status === 200) {
           proxy.$router.push('/')
         }
       }).catch((err) => {
+        loading.value = false
         console.error(err.response.data)
         error.value = err.response.data.message
       })
@@ -176,6 +192,7 @@ export default defineComponent({
 
     return {
       error,
+      loading,
       showPassword,
       showChkPassword,
       userInfo,

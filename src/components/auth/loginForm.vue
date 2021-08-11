@@ -9,11 +9,11 @@
     >
       <q-card-section
         v-if="error"
-        class="bg-red-5 text-white q-ma-sm"
+        class="bg-red-5 text-white q-ma-sm row justify-center"
         style="border-radius: 10px"
       >
         <div>
-          에러 메세지
+          {{ error }}
         </div>
       </q-card-section>
       <q-card-section>
@@ -76,16 +76,26 @@
               class="full-width"
               style="background: #3EB443; color: white; border-radius: 8px; height: 40px"
               type="submit"
-              label="Login"
               flat
-            ></q-btn>
+            >
+              <div v-if='loading'>
+                <q-spinner
+                  color="teal"
+                  size="24px"
+                  :thickness="10"
+                ></q-spinner>
+              </div>
+              <div v-else class="text-bold">
+                Login
+              </div>
+            </q-btn>
           </div>
         </div>
       </q-card-section>
       <q-card-section class="row justify-center">
         <div>
           <q-checkbox
-            v-model="keepLoggedin"
+            v-model="userInfo.keepLoggedin"
             dense
             left-label
             label="로그인 유지"
@@ -104,8 +114,8 @@ export default defineComponent({
   setup () {
     const { proxy } = getCurrentInstance()
     const error = ref('')
+    const loading = ref(false)
     const saveEmail = ref(false)
-    const keepLoggedin = ref(false)
     const showPassword = ref(false)
 
     const rules = reactive({
@@ -121,7 +131,8 @@ export default defineComponent({
 
     const userInfo = reactive({
       user_id: '',
-      password: ''
+      password: '',
+      keepLoggedin: false
     })
 
     onMounted(() => {
@@ -142,17 +153,21 @@ export default defineComponent({
     }
 
     function onSubmit () {
-      console.log(userInfo)
       saveIdToLocal()
+      loading.value = true
       proxy.$api.post('/auth/login', userInfo).then((res) => {
-        console.log(res)
+        loading.value = false
+        if (!res.data.user) {
+          error.value = '사용자를 찾을 수 없습니다.'
+        }
+        console.log(res.data)
       })
     }
 
     return {
       error,
+      loading,
       saveEmail,
-      keepLoggedin,
       showPassword,
       userInfo,
       rules,

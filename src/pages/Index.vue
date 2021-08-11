@@ -9,9 +9,18 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, getCurrentInstance } from 'vue'
 
 export default defineComponent({
-  name: 'PageIndex'
+  name: 'PageIndex',
+  setup () {
+    const { proxy } = getCurrentInstance()
+
+    onMounted(() => {
+      proxy.$api.get('/auth/getUser').then((res) => {
+        console.log(res)
+      })
+    })
+  }
 })
 </script>
