@@ -108,11 +108,15 @@
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance, ref, reactive, onMounted } from 'vue'
+import { defineComponent, ref, reactive, onMounted } from 'vue'
+import { api } from '../../boot/axios'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup () {
-    const { proxy } = getCurrentInstance()
+    const store = useStore()
+    const router = useRouter()
     const error = ref('')
     const loading = ref(false)
     const saveEmail = ref(false)
@@ -155,12 +159,13 @@ export default defineComponent({
     function onSubmit () {
       saveIdToLocal()
       loading.value = true
-      proxy.$api.post('/auth/login', userInfo).then((res) => {
+      api.post('/auth/login', userInfo).then((res) => {
         loading.value = false
         if (!res.data.user) {
           error.value = '사용자를 찾을 수 없습니다.'
         }
-        console.log(res.data)
+        store.commit('user/updateUser', res.data.user)
+        router.push('/')
       })
     }
 

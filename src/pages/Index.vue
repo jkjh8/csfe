@@ -9,17 +9,19 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, getCurrentInstance } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+import getUser from '../apis/users'
 
 export default defineComponent({
   name: 'PageIndex',
   setup () {
-    const { proxy } = getCurrentInstance()
+    // const { proxy } = getCurrentInstance()
 
     onMounted(() => {
-      proxy.$api.get('/auth/getUser').then((res) => {
-        console.log(res)
-      })
+      // proxy.$api.get('/auth/getUser').then((res) => {
+      //   console.log(res)
+      // })
+      getUser()
     })
   }
 })

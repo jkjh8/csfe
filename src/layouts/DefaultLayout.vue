@@ -17,21 +17,11 @@
           </q-btn>
           <!-- <div>서버</div> -->
         </q-toolbar-title>
-
-        <Link />
-        <!-- <div><q-btn to="/login">Login</q-btn></div> -->
-        <UserStatus class="q-mr-md"></UserStatus>
-        <div>
-          <q-btn
-            class="bg-grey-9 text-grey-1"
-            size="sm"
-            rounded
-            flat
-            to="/login"
-          >
-            로그인
-          </q-btn>
-        </div>
+        <span v-if="user">
+          <Links v-if="user" class="q-mx-md" />
+          <Notice />
+        </span>
+        <UserStatus></UserStatus>
       </q-toolbar>
       <q-separator color="grey-3" />
     </q-header>
@@ -44,23 +34,25 @@
 </template>
 
 <script>
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
 // import clock from '../mixins/clock'
 // import user from '../mixins/users'
 // import UserStatus from '../components/users/loginState'
-// import Link from '../components/Link'
+import Links from '../components/layout/Links'
+import Notice from '../components/layout/notice.vue'
+import UserStatus from '../components/layout/userStatus.vue'
 
-export default {
-  name: 'MainLayout'
+export default defineComponent({
+  name: 'MainLayout',
   // mixins: [clock, user],
-  // components: { UserStatus, Link },
-  // created () {
-  //   this.clock()
-  // },
-  // methods: {
-  //   //
-  // },
-  // beforeDestroy () {
-  //   this.logout()
-  // }
-}
+  components: { Links, Notice, UserStatus },
+  setup () {
+    const store = useStore()
+
+    const user = computed(() => store.state.user.user)
+
+    return { user }
+  }
+})
 </script>
