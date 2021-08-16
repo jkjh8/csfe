@@ -1,8 +1,8 @@
 export default function () {
   return {
-    logs: null,
+    logs: [],
     count: 0,
-    page: 0,
-    logsPerPage: 10
+    page: 1,
+    rowsPerPage: 10
   }
 }

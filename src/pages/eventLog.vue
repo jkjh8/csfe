@@ -19,8 +19,10 @@
       </div>
     </q-card-section>
 
+    <q-separator />
+
     <q-card-section>
-      {{ eventlog }}
+      <Table />
     </q-card-section>
   </q-card>
 </template>
@@ -28,19 +30,22 @@
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
-import { api } from '../boot/axios'
+// import { api } from '../boot/axios'
 import getUser from '../apis/users'
 
+import Table from '../components/eventlog/logTable.vue'
+
 export default defineComponent({
+  components: { Table },
   setup () {
     const store = useStore()
     const eventlog = computed(() => store.state.eventlog.logs)
     onMounted(() => {
       getUser()
-      api.get('/eventlog').then((res) => {
-        console.log(res)
-        store.dispatch('eventlog/updateLogs', res.data)
-      })
+      // api.get('/eventlog').then((res) => {
+      //   console.log(res)
+      //   store.dispatch('eventlog/updateLogs', res.data)
+      // })
     })
 
     return { eventlog }

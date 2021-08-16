@@ -10,6 +10,6 @@ export function updatePage (state, payload) {
   state.page = payload
 }
 
-export function updateLogsPerPage (state, payload) {
-  state.logsPerPage = payload
+export function updateRowsPerPage (state, payload) {
+  state.rowsPerPage = payload
 }
