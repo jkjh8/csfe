@@ -13,3 +13,11 @@ export function updatePage (state, payload) {
 export function updateRowsPerPage (state, payload) {
   state.rowsPerPage = payload
 }
+
+export function updateSearch (state, payload) {
+  state.search = payload
+}
+
+export function updateLoading (state, payload) {
+  state.loading = payload
+}

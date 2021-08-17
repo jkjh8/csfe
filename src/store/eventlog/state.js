@@ -3,6 +3,8 @@ export default function () {
     logs: [],
     count: 0,
     page: 1,
-    rowsPerPage: 10
+    rowsPerPage: 10,
+    search: '',
+    loading: false
   }
 }
