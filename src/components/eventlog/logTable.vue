@@ -6,6 +6,37 @@
     hide-pagination
     ref="table"
   >
+    <template v-slot:loading>
+      <q-inner-loading showing color="primary" />
+    </template>
+    <template v-slot:body="props">
+      <q-tr
+        :props="props"
+        v-if="props.cols[2].value === 'error'"
+      >
+        <q-td
+          class="text-red"
+          v-for="col in props.cols"
+          :key="col.name"
+          :props="props"
+        >
+          {{ col.value}}
+        </q-td>
+      </q-tr>
+      <q-tr
+        :props="props"
+        v-else
+      >
+        <q-td
+          class="text-black"
+          v-for="col in props.cols"
+          :key="col.name"
+          :props="props"
+        >
+          {{ col.value}}
+        </q-td>
+      </q-tr>
+    </template>
     <template v-slot:body-cell-date="props">
       <q-td :props="props">
         <div>
@@ -25,7 +56,7 @@
         active-color="green-10"
         direction-links
 
-        :max-pages="8"
+        :max-pages="numOfPage"
         boundary-links
 
         @update:model-value="pageChange"
@@ -88,6 +119,7 @@
 <script>
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import moment from 'moment'
 import getLog from '../../apis/getLog'
 import timeFormat from '../../apis/timeFormat'
@@ -109,12 +141,20 @@ export default defineComponent({
   setup () {
     moment.locale('ko')
     const store = useStore()
+    const $q = useQuasar()
 
     // VUEX
     const logs = computed(() => store.state.eventlog.logs)
     const count = computed(() => store.state.eventlog.count)
     const loading = computed(() => store.state.eventlog.loading)
     const search = computed(() => store.state.eventlog.search)
+    const numOfPage = computed(() => {
+      if ($q.screen.gt.sm) {
+        return 10
+      } else {
+        return 3
+      }
+    })
     const maxPage = computed(() => store.getters['eventlog/getMaxPage'])
     const rowsPerPage = computed({
       get () { return store.state.eventlog.rowsPerPage },
@@ -161,6 +201,7 @@ export default defineComponent({
     return {
       columes,
       pageOptions,
+      numOfPage,
       logs,
       count,
       page,

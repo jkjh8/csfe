@@ -29,10 +29,17 @@ const routes = [
     ]
   },
   {
+    path: '/devices',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/devices/devices.vue') }
+    ]
+  },
+  {
     path: '/eventlog',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/eventLog.vue') }
+      { path: '', component: () => import('src/pages/eventlog/eventLog.vue') }
     ]
   },
 

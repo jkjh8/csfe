@@ -63,10 +63,10 @@
 <script>
 import { defineComponent, onBeforeMount, computed } from 'vue'
 import { useStore } from 'vuex'
-import getUser from '../apis/users'
-import getLog from '../apis/getLog'
+import getUser from '../../apis/users'
+import getLog from '../../apis/getLog'
 
-import Table from '../components/eventlog/logTable.vue'
+import Table from '../../components/eventlog/logTable.vue'
 
 export default defineComponent({
   components: { Table },
