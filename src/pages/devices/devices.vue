@@ -40,9 +40,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { defineComponent, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import { socket } from '../../boot/socketio'
 import getUser from '../../apis/users'
 import Table from '../../components/devices/devicesTable.vue'
 
@@ -52,24 +51,14 @@ export default defineComponent({
     const store = useStore()
 
     const count = computed(() => store.state.barix.count)
+    const connected = computed(() => store.state.socket.connect)
     const mode = computed({
       get () { return store.state.barix.mode },
       set (value) { return store.commit('barix/changeMode', value) }
     })
-    const connected = ref(false)
+
     onBeforeMount(() => {
       getUser()
-      socket.on('connect', () => {
-        connected.value = true; console.log('socket.io connected')
-      })
-      socket.on('disconnect', () => {
-        connected.value = false; console.log('socket.io disconnected')
-      })
-      socket.connect()
-    })
-
-    onBeforeUnmount(() => {
-      socket.disconnect()
     })
 
     return { count, connected, mode }

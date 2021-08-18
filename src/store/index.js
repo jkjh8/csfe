@@ -4,13 +4,15 @@ import { createStore } from 'vuex'
 import barix from './barix'
 import user from './user'
 import eventlog from './eventlog'
+import socket from './socket'
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
       user,
       eventlog,
-      barix
+      barix,
+      socket
       // example
     },
 

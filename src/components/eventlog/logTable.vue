@@ -90,7 +90,8 @@
             Go
           </q-avatar>
           <q-popup-edit
-            offset="[-20,-20]"
+            v-model="popup"
+            :offset="[-20,-20]"
           >
             <q-input
               v-model="gotoPage"
@@ -173,6 +174,7 @@ export default defineComponent({
     const table = ref(null)
     const pagination = ref(null)
     const gotoPage = ref(null)
+    const popup = ref(false)
 
     // Function
     async function pageChange (value) {
@@ -211,6 +213,7 @@ export default defineComponent({
       table,
       pagination,
       gotoPage,
+      popup,
       timeFormat,
       pageChange,
       gotoPageFn

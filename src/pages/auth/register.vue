@@ -41,11 +41,7 @@ import RegisterForm from '../../components/auth/registerForm.vue'
 export default defineComponent({
   components: { RegisterForm },
   setup () {
-    // const error = ref('')
-    // const saveEmail = ref(false)
-    // const keepLoggedin = ref(false)
-
-    // return { error, saveEmail, keepLoggedin }
+    //
   }
 })
 </script>

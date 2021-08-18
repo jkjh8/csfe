@@ -17,11 +17,13 @@
           </q-btn>
           <!-- <div>서버</div> -->
         </q-toolbar-title>
-        <span v-if="user">
-          <Links v-if="user" class="q-mx-md" />
+        <span>
+          <RouterAddress :user="user" :currentPath="currentPath" />
+        </span>
+        <span v-show="user">
           <Notice />
         </span>
-        <UserStatus></UserStatus>
+        <UserStatus v-show="currentPath !== '/login'"></UserStatus>
       </q-toolbar>
       <q-separator color="grey-3" />
     </q-header>
@@ -34,25 +36,42 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
-// import clock from '../mixins/clock'
-// import user from '../mixins/users'
-// import UserStatus from '../components/users/loginState'
-import Links from '../components/layout/Links'
+import { useRoute } from 'vue-router'
+import { socket } from '../boot/socketio'
+import RouterAddress from '../components/layout/Links'
 import Notice from '../components/layout/notice.vue'
 import UserStatus from '../components/layout/userStatus.vue'
 
 export default defineComponent({
   name: 'MainLayout',
   // mixins: [clock, user],
-  components: { Links, Notice, UserStatus },
+  components: { RouterAddress, Notice, UserStatus },
   setup () {
     const store = useStore()
+    const route = useRoute()
 
     const user = computed(() => store.state.user.user)
+    const currentPath = computed(() => route.path)
 
-    return { user }
+    onBeforeMount(() => {
+      socket.on('connect', () => {
+        console.log('socket connected')
+        store.commit('socket/connectState', true)
+      })
+      socket.on('disconnect', () => {
+        console.log('socket disconnect')
+        store.commit('socket/connectState', false)
+      })
+      socket.connect()
+    })
+
+    onBeforeUnmount(() => {
+      socket.disconnect()
+    })
+
+    return { user, currentPath }
   }
 })
 </script>

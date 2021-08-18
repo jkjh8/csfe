@@ -9,14 +9,14 @@ const routes = [
   },
   {
     path: '/login',
-    component: () => import('layouts/AuthLayout.vue'),
+    component: () => import('layouts/DefaultLayout.vue'),
     children: [
       { path: '', component: () => import('pages/auth/login.vue') }
     ]
   },
   {
     path: '/register',
-    component: () => import('layouts/AuthLayout.vue'),
+    component: () => import('layouts/DefaultLayout.vue'),
     children: [
       { path: '', component: () => import('pages/auth/register.vue') }
     ]
