@@ -9,6 +9,7 @@
     <template v-slot:loading>
       <q-inner-loading showing color="primary" />
     </template>
+
     <template v-slot:body="props">
       <q-tr
         :props="props"
@@ -33,16 +34,14 @@
           :key="col.name"
           :props="props"
         >
-          {{ col.value}}
+          <div v-if="col.name === 'date'">
+            {{ timeFormat(col.value) }}
+          </div>
+          <div v-else>
+            {{ col.value }}
+          </div>
         </q-td>
       </q-tr>
-    </template>
-    <template v-slot:body-cell-date="props">
-      <q-td :props="props">
-        <div>
-          {{ timeFormat(props.value) }}
-        </div>
-      </q-td>
     </template>
   </q-table>
   <div class="q-mt-md row items-center">

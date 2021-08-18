@@ -3,9 +3,7 @@
     flat
     round
   >
-    <q-avatar size="md" color="grey-6" text-color="white">
-      <q-icon size="16px" name="fas fa-bell"></q-icon>
-    </q-avatar>
+    <q-icon size="24px" name="notifications"></q-icon>
     <q-menu
       class="shadow-10"
       style="width:400px"

@@ -45,9 +45,10 @@
         <span class="q-ml-sm q-pa-none">
           <q-btn
             round flat
-            icon="replay_circle_filled"
             @click="getLogWithSearch"
-          ></q-btn>
+          >
+            <q-icon name="sync" size="24px" />
+          </q-btn>
         </span>
       </div>
     </q-card-section>

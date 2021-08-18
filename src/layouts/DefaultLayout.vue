@@ -11,7 +11,7 @@
           >
             <img
               alt="logo"
-              src="~assets/logo_bk.svg"
+              src="~assets/icon_c_1.svg"
               style="width: 38px; height: 38px"
             />
           </q-btn>
@@ -20,10 +20,10 @@
         <span>
           <RouterAddress :user="user" :currentPath="currentPath" />
         </span>
-        <span v-show="user">
+        <span class="q-ml-sm" v-show="user">
           <Notice />
         </span>
-        <UserStatus v-show="currentPath !== '/login'"></UserStatus>
+        <UserStatus class="q-mx-xs" v-show="currentPath !== '/login'"></UserStatus>
       </q-toolbar>
       <q-separator color="grey-3" />
     </q-header>
@@ -40,7 +40,7 @@ import { defineComponent, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { socket } from '../boot/socketio'
-import RouterAddress from '../components/layout/Links'
+import RouterAddress from '../components/layout/routeLink'
 import Notice from '../components/layout/notice.vue'
 import UserStatus from '../components/layout/userStatus.vue'
 
