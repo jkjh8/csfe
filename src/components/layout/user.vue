@@ -1,10 +1,11 @@
 <template>
   <div v-if="!user">
     <q-btn
-      class="bg-grey-9 text-grey-1"
-      size="sm"
-      rounded
-      flat
+      class="nanum"
+      padding="[1rem, 1rem]"
+      outline
+      color="grey-5"
+      text-color="grey-10"
       to="/login"
     >
       로그인
@@ -125,3 +126,15 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.nanum {
+  font-family: nanumgothic;
+}
+.q-btn {
+  border-radius: .5rem;
+}
+.q-btn--outline:before {
+  border-color: grey !important;
+}
+</style>

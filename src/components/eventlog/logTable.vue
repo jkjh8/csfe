@@ -3,6 +3,7 @@
     :columns="columes"
     :rows="logs"
     :loading="loading"
+    :pagination="{ rowsPerPage: 0 }"
     hide-pagination
     ref="table"
   >
@@ -160,7 +161,7 @@ export default defineComponent({
       get () { return store.state.eventlog.rowsPerPage },
       set (value) {
         store.commit('eventlog/updateRowsPerPage', value)
-        table.value.setPagination({ rowsPerPage: value })
+        // table.value.setPagination({ rowsPerPage: value })
         return getLog(value, page.value)
       }
     })
@@ -194,7 +195,7 @@ export default defineComponent({
       store.commit('eventlog/updateLoading', true)
       const r = await getLog(rowsPerPage.value, 1, search.value)
       store.dispatch('eventlog/updateLogs', r)
-      table.value.setPagination({ rowsPerPage: rowsPerPage })
+      // table.value.setPagination({ rowsPerPage: rowsPerPage })
       store.commit('eventlog/updateLoading', false)
     })
 

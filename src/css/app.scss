@@ -1,1 +1,18 @@
 // app global css in SCSS form
+@font-face {
+  font-family: 'nanumgothic';
+  font-style: normal;
+  src: url(./fonts/NanumGothic.woff)
+}
+
+@font-face {
+  font-family: 'nanumgothicbold';
+  font-style: Bold;
+  src: url(./fonts/NanumGothicBold.woff)
+}
+
+@font-face {
+  font-family: 'branda';
+  font-style: normal;
+  src: url(./fonts/Branda-yolq.woff)
+}

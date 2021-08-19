@@ -15,6 +15,10 @@
               style="width: 38px; height: 38px"
             />
           </q-btn>
+          <router-link class="links q-ml-sm q-mb-xs" to="/">
+            <div class="branda">MC</div>
+            <div class="caption">media server</div>
+          </router-link>
           <!-- <div>서버</div> -->
         </q-toolbar-title>
         <span>
@@ -42,7 +46,7 @@ import { useRoute } from 'vue-router'
 import { socket } from '../boot/socketio'
 import RouterAddress from '../components/layout/routeLink'
 import Notice from '../components/layout/notice.vue'
-import UserStatus from '../components/layout/userStatus.vue'
+import UserStatus from '../components/layout/user.vue'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -75,3 +79,21 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.branda {
+  font-family: branda;
+  font-size: 1rem;
+  color: teal;
+}
+.links {
+  text-decoration: none;
+}
+.caption {
+  font-size: .5rem;
+  color: grey;
+}
+.body {
+  background-image: url('../assets/img_1.jpg');
+}
+</style>

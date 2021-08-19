@@ -15,7 +15,7 @@
         </span>
         <q-item class="q-py-none">
           <q-item-section>
-            <q-item-label class="text-h6 text-bold">
+            <q-item-label class="text-h6 text-bold nanum">
               이벤트 로그
             </q-item-label>
             <q-item-label caption>
@@ -93,3 +93,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.nanum {
+  font-family: 'nanumgothicbold';
+}
+</style>
