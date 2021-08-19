@@ -3,8 +3,8 @@
     @submit="onSubmit"
   >
     <q-card
-      class="bg-blue-1 q-pa-sm"
-      style="width: 400px; border-radius: 10px;"
+      class="q-pa-sm"
+      style="width: 400px;border: .5px solid #AAAAAA; border-radius: 10px; background: #EFFFFF"
       flat
     >
       <q-card-section
