@@ -1,10 +1,7 @@
 <template>
   <div v-show="user" class="q-gutter-md row nowrap items-center">
     <router-link to="/devices">
-      방송구간
-    </router-link>
-    <router-link to="/devices">
-      지역설정
+      TTS
     </router-link>
     <router-link to="/devices">
       디바이스
@@ -12,13 +9,17 @@
     <router-link to="/eventlog">
       이벤트 로그
     </router-link>
-    <q-btn round flat icon="apps"></q-btn>
+
+    <route-in-menu />
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import RouteInMenu from './routeLinkMenu.vue'
+
 export default defineComponent({
+  components: { RouteInMenu },
   props: ['user', 'currentPath'],
   setup (props) {
     function campareLink (link) {

@@ -25,7 +25,7 @@
 
       <q-menu
         class="shadow-10"
-        style="border-radius: 10px"
+        style="border-radius: 1rem"
         :offset="[0,20]"
       >
         <q-item>

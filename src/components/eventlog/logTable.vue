@@ -173,7 +173,6 @@ export default defineComponent({
     const table = ref(null)
     const pagination = ref(null)
     const gotoPage = ref(null)
-    const popup = ref(false)
 
     // Function
     async function pageChange (value) {
@@ -212,7 +211,7 @@ export default defineComponent({
       table,
       pagination,
       gotoPage,
-      popup,
+      popup: ref(false),
       timeFormat,
       pageChange,
       gotoPageFn

@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="q-mx-md q-my-md"
-    style="border-radius: 10px;"
+    style="border-radius: 1rem;"
   >
     <q-card-section class="q-py-sm row justify-between items-center">
       <div class="row items-center">
@@ -9,7 +9,7 @@
           <q-avatar
             color="green-10"
             text-color="white"
-            size="36px"
+            size="2rem"
             icon="fas fa-list"
           ></q-avatar>
         </span>
@@ -47,7 +47,7 @@
             round flat
             @click="getLogWithSearch"
           >
-            <q-icon name="sync" size="24px" />
+            <q-icon name="sync" size="1.5rem" />
           </q-btn>
         </span>
       </div>

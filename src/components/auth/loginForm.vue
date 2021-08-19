@@ -38,11 +38,8 @@
           >
             <q-input
               v-model="userInfo.user_id"
-              outlined
-              dense
-              bg-color="white"
-              lazy-rules
-              :rules="rules.email"
+              outlined dense bg-color="white"
+              lazy-rules :rules="rules.email"
             ></q-input>
           </div>
           <div class="row justify-between q-mt-lg text-bold">
@@ -107,78 +104,63 @@
   </q-form>
 </template>
 
-<script>
-import { defineComponent, ref, reactive, onMounted } from 'vue'
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
 import { api } from '../../boot/axios'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  setup () {
-    const store = useStore()
-    const router = useRouter()
-    const error = ref('')
-    const loading = ref(false)
-    const saveEmail = ref(false)
-    const showPassword = ref(false)
+const store = useStore()
+const router = useRouter()
+const error = ref('')
+const loading = ref(false)
+const saveEmail = ref(false)
+const showPassword = ref(false)
 
-    const rules = reactive({
-      email: [
-        value => !!value || '이메일을 입력하세요.',
-        v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'
-      ],
-      password: [
-        value => !!value || '비밀번호를 입력하세요.',
-        v => v.length >= 8 || '최소 8자 이상 입력하세요.'
-      ]
-    })
+const rules = reactive({
+  email: [
+    value => !!value || '이메일을 입력하세요.',
+    v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'
+  ],
+  password: [
+    value => !!value || '비밀번호를 입력하세요.',
+    v => v.length >= 8 || '최소 8자 이상 입력하세요.'
+  ]
+})
 
-    const userInfo = reactive({
-      user_id: '',
-      password: '',
-      keepLoggedin: false
-    })
+const userInfo = reactive({
+  user_id: '',
+  password: '',
+  keepLoggedin: false
+})
 
-    onMounted(() => {
-      saveEmail.value = localStorage.getItem('saveId') === 'true'
-      if (saveEmail.value) {
-        userInfo.user_id = localStorage.getItem('userId')
-      }
-    })
-
-    function saveIdToLocal () {
-      if (saveEmail.value) {
-        localStorage.setItem('saveId', true)
-        localStorage.setItem('userId', userInfo.user_id)
-      } else {
-        localStorage.setItem('saveId', false)
-        localStorage.removeItem('userId')
-      }
-    }
-
-    function onSubmit () {
-      saveIdToLocal()
-      loading.value = true
-      api.post('/auth/login', userInfo).then((res) => {
-        loading.value = false
-        if (!res.data.user) {
-          error.value = '사용자를 찾을 수 없습니다.'
-        }
-        store.commit('user/updateUser', res.data.user)
-        router.push('/')
-      })
-    }
-
-    return {
-      error,
-      loading,
-      saveEmail,
-      showPassword,
-      userInfo,
-      rules,
-      saveIdToLocal,
-      onSubmit
-    }
+onMounted(() => {
+  saveEmail.value = localStorage.getItem('saveId') === 'true'
+  if (saveEmail.value) {
+    userInfo.user_id = localStorage.getItem('userId')
   }
 })
+
+function saveIdToLocal () {
+  if (saveEmail.value) {
+    localStorage.setItem('saveId', true)
+    localStorage.setItem('userId', userInfo.user_id)
+  } else {
+    localStorage.setItem('saveId', false)
+    localStorage.removeItem('userId')
+  }
+}
+
+function onSubmit () {
+  saveIdToLocal()
+  loading.value = true
+  api.post('/auth/login', userInfo).then((res) => {
+    loading.value = false
+    if (!res.data.user) {
+      error.value = '사용자를 찾을 수 없습니다.'
+    }
+    store.commit('user/updateUser', res.data.user)
+    router.push('/')
+  })
+}
 </script>

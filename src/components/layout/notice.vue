@@ -6,8 +6,8 @@
     <q-icon size="24px" name="notifications"></q-icon>
     <q-menu
       class="shadow-10"
-      style="width:400px"
-      :offset="[45,10]"
+      style="width:400px; border-radius: 1rem;"
+      :offset="[50,10]"
     >
       <q-list class="q-my-md q-mx-sm">
         <q-item-label

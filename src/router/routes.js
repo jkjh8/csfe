@@ -42,6 +42,13 @@ const routes = [
       { path: '', component: () => import('src/pages/eventlog/eventLog.vue') }
     ]
   },
+  {
+    path: '/locations',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/locations/index.vue') }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

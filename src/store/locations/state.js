@@ -1,6 +1,6 @@
 export default function () {
   return {
-    connect: false,
-    lastUpdate: ''
+    locations: [],
+    count: 0
   }
 }

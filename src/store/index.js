@@ -5,6 +5,7 @@ import barix from './barix'
 import user from './user'
 import eventlog from './eventlog'
 import socket from './socket'
+import locations from './locations'
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
@@ -12,7 +13,8 @@ export default store(function (/* { ssrContext } */) {
       user,
       eventlog,
       barix,
-      socket
+      socket,
+      locations
       // example
     },
 

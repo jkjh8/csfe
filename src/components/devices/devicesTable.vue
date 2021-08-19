@@ -59,7 +59,7 @@
             </q-item>
             <div class="row items-center">
               <span v-if="!props.row.alarm">
-                <q-spinner-audio color="blue" size="1.5em" />
+                <q-spinner-puff color="blue" size="1.5em" />
               </span>
               <span v-else>
                 <q-skeleton class="bg-red-10" type="circle" animation="blink" color="red" size="1.5em" />
@@ -74,11 +74,15 @@
           <q-separator inset />
 
           <q-card-section class="row justify-between q-pa-xs">
-            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
+            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-10">
               <q-item>
                 <q-item-section>
                   <q-item-label>IP Address</q-item-label>
-                  <q-item-label caption>{{ props.row.ipaddress }}</q-item-label>
+                  <q-item-label caption>
+                    <a :href="`http://${props.row.ipaddress}`" target="_blank">
+                      {{ props.row.ipaddress }}
+                    </a>
+                  </q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -112,7 +116,7 @@
                 </q-item-section>
               </q-item>
             </div>
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+            <div class="col-xs-12 col-sm-3 col-md-4 col-lg-2">
               <q-knob
                 class="q-ma-sm"
                 v-model="props.row.volume"
@@ -186,6 +190,14 @@ export default defineComponent({
       propsData.value = data
       dialog.value = true
     }
+
+    // function setBarix (info) {
+    //   api.get(`http://${info.ipaddress}/rc.cgi?c=102`).then((res) => {
+    //     console.log('res = ', res)
+    //   }).catch(err => {
+    //     console.log('err = ', err)
+    //   })
+    // }
 
     onMounted(async () => {
       socket.on('deviceList', (r) => {
