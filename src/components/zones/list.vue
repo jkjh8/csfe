@@ -1,8 +1,8 @@
 <template>
-  <q-card class="q-mr-md" style="border-radius: .5rem;" flat>
+  <q-card class="q-ml-md" style="border-radius: .5rem;" flat>
     <q-card-section class="row justify-between items-center q-py-xs">
       <div class="row items-center">
-        <q-icon name="svguse:icons.svg#map" size="1.5rem" />
+        <q-icon name="svguse:icons.svg#office-building" size="1.5rem" />
         <div class="q-mx-sm">Locations</div>
       </div>
       <div>

@@ -64,7 +64,6 @@
 <script>
 import { defineComponent, onBeforeMount, computed } from 'vue'
 import { useStore } from 'vuex'
-import getUser from '../../apis/users'
 import getLog from '../../apis/getLog'
 
 import Table from '../../components/eventlog/logTable.vue'
@@ -86,7 +85,7 @@ export default defineComponent({
       store.commit('eventlog/updateLoading', false)
     }
     onBeforeMount(() => {
-      getUser()
+      store.dispatch('user/getUser')
     })
 
     return { count, search, getLogWithSearch }

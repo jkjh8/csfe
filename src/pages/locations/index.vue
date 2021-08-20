@@ -38,7 +38,7 @@
         </template>
 
         <template v-slot:after>
-          after
+          <Zones />
         </template>
 
       </q-splitter>
@@ -49,17 +49,16 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue'
 import { useStore } from 'vuex'
-import getUser from '../../apis/users'
-import { getLocations } from '../../apis/locations'
 
 import Locations from '../../components/locations/list.vue'
+import Zones from '../../components/zones/list.vue'
 
 const store = useStore()
 const count = computed(() => store.state.locations.count)
 const splitterModel = ref(50)
 onBeforeMount(() => {
-  getUser()
-  getLocations()
+  store.dispatch('user/getUser')
+  store.dispatch('locations/updateLocations')
 })
 
 </script>

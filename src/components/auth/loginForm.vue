@@ -4,7 +4,7 @@
   >
     <q-card
       class="q-pa-sm"
-      style="width: 400px;border: .5px solid #AAAAAA; border-radius: 10px; background: #EFFFFF"
+      style="width: 400px;border: .5px solid #AAAAAA; border-radius: 10px;"
       flat
     >
       <q-card-section
@@ -49,6 +49,7 @@
             class="q-my-sm"
           >
             <q-input
+              class="inputs"
               v-model="userInfo.password"
               outlined
               dense
@@ -164,3 +165,10 @@ function onSubmit () {
   })
 }
 </script>
+
+<style>
+.q-field--error .q-field__bottom {
+  color: black !important;
+  color: black !important;
+}
+</style>

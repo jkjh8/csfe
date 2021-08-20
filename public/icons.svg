@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="chat-alt" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+  </symbol>
+
+  <symbol id="office-building" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+  </symbol>
+
+  <symbol id="map" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+  </symbol>
+
+  <symbol id="logo-circle" viewBox="0 0 300 300">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <circle id="Oval" stroke="#80CBC4" stroke-width="7" fill="#474747" cx="150" cy="150" r="146.5"></circle>
+            <g transform="translate(65.000000, 75.000000)" id="Rectangle" stroke-width="2">
+                <g>
+                    <rect stroke="#979797" fill="#FFFFFF" x="121" y="1" width="48" height="148" rx="8"></rect>
+                    <path d="M42,1 C43.9329966,1 45.6829966,1.78350169 46.9497475,3.05025253 C48.2164983,4.31700338 49,6.06700338 49,8 L49,8 L49,142 C49,143.932997 48.2164983,145.682997 46.9497475,146.949747 C45.6829966,148.216498 43.9329966,149 42,149 L42,149 L8,149 C6.06700338,149 4.31700338,148.216498 3.05025253,146.949747 C1.78350169,145.682997 1,143.932997 1,142 L1,142 L1,8 C1,6.06700338 1.78350169,4.31700338 3.05025253,3.05025253 C4.31700338,1.78350169 6.06700338,1 8,1 L8,1 Z" stroke="#80CBC4" fill="#80CBC4"></path>
+                    <path d="M102,51 C103.932997,51 105.682997,51.7835017 106.949747,53.0502525 C108.216498,54.3170034 109,56.0670034 109,58 L109,58 L109,142 C109,143.932997 108.216498,145.682997 106.949747,146.949747 C105.682997,148.216498 103.932997,149 102,149 L102,149 L68,149 C66.0670034,149 64.3170034,148.216498 63.0502525,146.949747 C61.7835017,145.682997 61,143.932997 61,142 L61,142 L61,58 C61,56.0670034 61.7835017,54.3170034 63.0502525,53.0502525 C64.3170034,51.7835017 66.0670034,51 68,51 L68,51 Z" stroke="#979797" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+  </symbol>
+</svg>

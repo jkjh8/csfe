@@ -1,27 +1,23 @@
 <template>
   <q-card style="width: 25rem; border-radius: 1rem;">
-    <!-- 이름 테그 -->
     <q-card-section class="row items-center q-gutter-sm">
-      <q-icon :name="mode === 'create' ? 'add_circle':'edit'" size="1.5rem" />
-      <div style="font-size: 1.2rem; font-weigth: bold; font-family: nanumgothicbold;">
-        {{ mode === 'create' ? '지역추가':'지역수정' }}
-      </div>
+      <q-icon name="add_circle" size="1.5rem" />
+      <div>지역추가</div>
     </q-card-section>
 
     <q-separator />
-
     <q-card-section v-if="error" class="q-py-xs">
-      <div style="padding: .2rem; margin-top: .5rem; background: red; color: white; border-radius: 1rem;">
-        <div style="padding: .5rem; text-align: center;">{{ error }}</div>
+      <div class="q-pa-sm q-ma-sm" style="background: #FF312B; color: white; border-radius: 1rem;">
+        <div class="q-pa-sm" style="text-align: center;">{{error}}</div>
       </div>
     </q-card-section>
 
     <q-form @submit="onSubmit">
-      <q-card-section>
-        <div class="q-pa-sm q-ma-sm bg-grey-1 colume" style="border-radius: 1rem;">
+      <q-card-section class="q-py-xs">
+        <div class="q-pa-sm q-ma-sm colume" style="background: #E7FFFF; border-radius: 1rem;">
           <div class="q-pa-sm">
             <div class="q-gutter-sm">
-              <div>지역 인덱스</div>
+              <div>지역 아이디</div>
               <q-input
                 v-model="values.index"
                 dense outlined bg-color="white" type="number"
@@ -74,7 +70,7 @@ const props = defineProps({ selectedItem: Object })
 const emit = defineEmits(['close'])
 
 const mode = ref('create')
-const values = ref({ index: 1, name: '', ip: '', port: 1720 })
+const values = ref({ index: 0, name: '', ip: '', port: 1720 })
 const error = ref('')
 
 onMounted(() => {
@@ -96,7 +92,8 @@ const onSubmit = async () => {
     } else {
       await proxy.$api.put('/locations', values.value)
     }
-    proxy.$store.dispatch('locations/updateLocations')
+    const r = await proxy.$api.get('/locations')
+    proxy.$store.dispatch('locations/updateLocations', r.data.data)
     $q.loading.hide()
     emit('close')
   } catch (err) {

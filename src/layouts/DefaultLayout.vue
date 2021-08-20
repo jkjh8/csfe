@@ -16,8 +16,8 @@
             />
           </q-btn>
           <router-link class="links q-ml-sm q-mb-xs" to="/">
-            <div class="branda">MC</div>
-            <div class="caption">media server</div>
+            <div class="branda">MS</div>
+            <div class="caption">Media Server</div>
           </router-link>
           <!-- <div>서버</div> -->
         </q-toolbar-title>

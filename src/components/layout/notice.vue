@@ -1,9 +1,5 @@
 <template>
-  <q-btn
-    flat
-    round
-  >
-    <q-icon size="24px" name="notifications"></q-icon>
+  <q-btn flat round icon="svguse:icons.svg#chat-alt">
     <q-menu
       class="shadow-10"
       style="width:400px; border-radius: 1rem;"
