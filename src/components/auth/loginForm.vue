@@ -3,19 +3,26 @@
     @submit="onSubmit"
   >
     <q-card
-      class="q-pa-sm"
-      style="width: 400px;border: .5px solid #AAAAAA; border-radius: 10px;"
+      class="q-pa-sm bg-blue-1"
+      style="width: 400px; border-radius: 10px;"
       flat
     >
-      <q-card-section
-        v-if="error"
-        class="bg-red-5 text-white q-ma-sm row justify-center"
-        style="border-radius: 10px"
-      >
-        <div>
-          {{ error }}
+      <!-- 에러 메세지 표시창 -->
+      <q-card-section v-if="error">
+        <div style="position: relative; height: 3rem;">
+          <div
+            class="bg-red text-white row justify-end"
+            style="position: absolute; border-radius: 1rem; width:100%; height: 3rem;"
+          >
+            <q-btn style="z-index: 10;" round flat icon="cancel" @click="error=null"></q-btn>
+          </div>
+          <div style="position: absolute;width:100%; text-align: center; color: white; line-height: 3rem;">
+            {{ error }}
+          </div>
         </div>
       </q-card-section>
+
+      <!-- 로그인 정보 시작 -->
       <q-card-section>
         <div>
           <div class="row justify-between">
@@ -72,9 +79,10 @@
           <div class="q-mt-lg">
             <q-btn
               class="full-width"
-              style="background: #3EB443; color: white; border-radius: 8px; height: 40px"
+              style="color: white; border-radius: 8px; height: 40px"
               type="submit"
-              flat
+              color="teal-14"
+              no-caps
             >
               <div v-if='loading'>
                 <q-spinner
@@ -162,6 +170,10 @@ function onSubmit () {
     }
     store.commit('user/updateUser', res.data.user)
     router.push('/')
+  }).catch(err => {
+    loading.value = false
+    console.error(err.response.data)
+    error.value = err.response.data.message
   })
 }
 </script>

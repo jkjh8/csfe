@@ -6,6 +6,7 @@
     :pagination="{ rowsPerPage: 0 }"
     hide-pagination
     ref="table"
+    flat
   >
     <template v-slot:loading>
       <q-inner-loading showing color="primary" />

@@ -1,22 +1,13 @@
 <template>
   <div
     class="colume justify-center items-center"
-    style="margin-top: 50px"
+    style="margin-top: 4rem"
   >
     <div class="row justify-center">
-      <div
-        class="row justify-center items-center"
-        style="width: 100px; height: 100px; background: #2e2e2e; border-radius: 50%;"
-      >
-        <q-icon
-          name="fas fa-user-alt"
-          size="50px"
-          color="grey-1"
-        ></q-icon>
-      </div>
+      <q-icon name="svguse:icons.svg#user-circle-fill" size="9rem" color="grey-14" ></q-icon>
     </div>
 
-    <div class="row justify-center text-h6 q-mt-lg">
+    <div class="row justify-center text-h5 text-bold q-mt-lg" style="font-family: nanumgothicbold;">
       로그인
     </div>
 

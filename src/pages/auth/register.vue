@@ -4,16 +4,10 @@
     style="margin-top: 50px"
   >
     <div class="row justify-center">
-      <div>
-        <img
-          alt="logo"
-          src="~assets/logo_long.svg"
-          style="width: 150px;"
-        >
-      </div>
+      <q-icon name="svguse:icons.svg#user-add-fill" size="7rem" color="grey-14"/>
     </div>
 
-    <div class="row justify-center text-h6 q-mt-lg text-bold">
+    <div class="row justify-center text-h6 q-mt-sm text-bold" style="font-family: nanumgothicbold;">
       회원 가입
     </div>
 

@@ -8,13 +8,17 @@
       flat
     >
       <!-- 에러 메세지 표시창 -->
-      <q-card-section
-        v-if="error"
-        class="bg-red-5 text-white q-ma-sm"
-        style="border-radius: 10px"
-      >
-        <div class="text-center">
-          {{ error }}
+      <q-card-section v-if="error">
+        <div style="position: relative; height: 3rem;">
+          <div
+            class="bg-red text-white row justify-end"
+            style="position: absolute; border-radius: 1rem; width:100%; height: 3rem;"
+          >
+            <q-btn style="z-index: 10;" round flat icon="cancel" @click="error=null"></q-btn>
+          </div>
+          <div style="position: absolute;width:100%; text-align: center; color: white; line-height: 3rem;">
+            {{ error }}
+          </div>
         </div>
       </q-card-section>
 
@@ -105,12 +109,14 @@
             </q-input>
           </div>
 
+      <!-- submit -->
           <div class="q-mt-lg">
             <q-btn
               class="full-width"
-              style="background: #3EB443; color: white; border-radius: 8px; height: 40px"
+              style="border-radius: 8px; height: 40px"
               type="submit"
-              flat
+              color="cyan-7"
+              unelevated
             >
               <div v-if='loading'>
                 <q-spinner

@@ -6,7 +6,7 @@
         <div class="q-mx-sm">Locations</div>
       </div>
       <div>
-        <q-btn flat round icon="add" @click="dialog=!dialog"></q-btn>
+        <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="dialog=!dialog"></q-btn>
       </div>
     </q-card-section>
 
@@ -36,11 +36,11 @@
           <q-item-section side>
             <div>
               <q-btn
-                flat round icon="edit"
+                flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6"
                 @click.prevent.stop="selectItemFn(local)"
               />
               <q-btn
-                flat round icon="delete"
+                flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6"
                 @click.prevent.stop="deleteLocation(local)"
               />
             </div>
