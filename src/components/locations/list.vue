@@ -6,7 +6,7 @@
         <div class="q-mx-sm">Locations</div>
       </div>
       <div>
-        <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="dialog=!dialog"></q-btn>
+        <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
       </div>
     </q-card-section>
 
@@ -21,7 +21,7 @@
           clickable
           v-ripple
           :active="local.index === selectList"
-          @click="clickItem(local.index)"
+          @click="clickItem(local)"
           active-class="active-link"
         >
           <q-item-section avatar>
@@ -29,8 +29,11 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ local.name }}</q-item-label>
-            <q-item-label caption>{{ local.ip }} : {{ local.port }}</q-item-label>
+            <q-item-label>
+              <span class="name">{{ local.name }}</span>
+              <span class="q-ml-sm" :class="local.mode === 'Q-sys'? 'qsys':'barix'">{{ local.mode }}</span>
+            </q-item-label>
+            <q-item-label caption>{{ local.ip }}:{{ local.port }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -51,8 +54,11 @@
 
     <q-card-section></q-card-section>
   </q-card>
-  <q-dialog v-model="dialog">
-    <CreateUpdate :selectedItem="selectedItem" @close="close" />
+  <q-dialog v-model="createUpdateDialog" persistent>
+    <CreateUpdate :selectedItem="selectedItem" @close="createUpdateDialogClose" />
+  </q-dialog>
+  <q-dialog v-model="deleteDialog" persistent>
+    <Delete :selectedItem="selectedItem" @close="deleteDialogClose" />
   </q-dialog>
 </template>
 
@@ -60,44 +66,67 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import CreateUpdate from './createUpdate'
+import Delete from './delete.vue'
 
 const store = useStore()
 const locations = computed(() => store.state.locations.locations)
 
-const dialog = ref(false)
+const createUpdateDialog = ref(false)
+const deleteDialog = ref(false)
 const selectList = ref(null)
 const selectedItem = ref({})
 
 function selectItemFn (item) {
   selectedItem.value = item
-  dialog.value = true
+  createUpdateDialog.value = true
 }
 
 function deleteLocation (item) {
-  console.log(item)
+  selectedItem.value = item
+  deleteDialog.value = true
 }
 
-function clickItem (idx) {
-  if (idx === selectList.value) {
+function clickItem (item) {
+  if (item._id === selectList.value) {
     selectList.value = null
+    store.commit('locations/updateSelected', null)
   } else {
-    selectList.value = idx
+    selectList.value = item._id
+    store.commit('locations/updateSelected', item)
   }
 }
 
-function close () {
+function createUpdateDialogClose () {
   selectedItem.value = {}
-  dialog.value = false
+  createUpdateDialog.value = false
+}
+
+function deleteDialogClose () {
+  selectedItem.value = {}
+  deleteDialog.value = false
 }
 
 </script>
 
 <style scoped>
 .active-link {
-  background: #ffab5d;
+  background: #22b7d1;
   color: black;
 }
 .items-class {
   border-radius: 1rem;
+}
+.name {
+  font-family: nanumgothic;
+}
+.qsys {
+  font-family: bebas;
+  color: rgb(0, 117, 185);
+  font-size: .5rem;
+}
+.barix {
+  font-family: bebas;
+  color: black;
+  font-size: .5rem;
 }
 </style>

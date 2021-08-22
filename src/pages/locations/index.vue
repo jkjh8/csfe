@@ -59,6 +59,8 @@ const splitterModel = ref(50)
 onBeforeMount(() => {
   store.dispatch('user/getUser')
   store.dispatch('locations/updateLocations')
+  store.dispatch('zones/updateZones')
+  store.dispatch('barix/updateList')
 })
 
 </script>

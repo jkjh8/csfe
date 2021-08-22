@@ -144,7 +144,7 @@
 <script>
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { api } from '../../boot/axios'
+// import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
@@ -201,10 +201,9 @@ export default defineComponent({
 
     onMounted(async () => {
       socket.on('deviceList', (r) => {
-        store.dispatch('barix/updateList', r)
+        store.dispatch('barix/updateListAsWebsoket', r)
       })
-      const r = await api.get('/sensors/get')
-      store.dispatch('barix/updateList', r.data.data)
+      store.dispatch('barix/updateList')
     })
 
     return { tableData, columes, mode, dialog, propsData, openDialog, chkUptime, timeFormat, secToDays }

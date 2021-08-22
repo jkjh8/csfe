@@ -3,7 +3,7 @@
     <q-card-section class="row justify-between items-center q-py-xs">
       <div class="row items-center">
         <q-icon name="svguse:icons.svg#office-building" size="1.5rem" />
-        <div class="q-mx-sm">Locations</div>
+        <div class="q-mx-sm">Zones</div>
       </div>
       <div>
         <q-btn flat round icon="add" @click="dialog=!dialog"></q-btn>
@@ -16,7 +16,7 @@
       <q-list>
         <q-item
           class="items-class"
-          v-for="local in locations"
+          v-for="local in zones"
           :key="local.index"
           clickable
           v-ripple
@@ -30,7 +30,8 @@
 
           <q-item-section>
             <q-item-label>{{ local.name }}</q-item-label>
-            <q-item-label caption>{{ local.ip }} : {{ local.port }}</q-item-label>
+            <q-item-label caption>
+              Parent: {{ local.location }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -51,7 +52,7 @@
 
     <q-card-section></q-card-section>
   </q-card>
-  <q-dialog v-model="dialog">
+  <q-dialog v-model="dialog" persistent>
     <CreateUpdate :selectedItem="selectedItem" @close="close" />
   </q-dialog>
 </template>
@@ -62,7 +63,7 @@ import { useStore } from 'vuex'
 import CreateUpdate from './createUpdate'
 
 const store = useStore()
-const locations = computed(() => store.state.locations.locations)
+const zones = computed(() => store.state.zones.zones)
 
 const dialog = ref(false)
 const selectList = ref(null)

@@ -5,3 +5,7 @@ export function updateLocations (state, payload) {
 export function updateCount (state, payload) {
   state.count = payload
 }
+
+export function updateSelected (state, payload) {
+  state.selected = payload
+}
