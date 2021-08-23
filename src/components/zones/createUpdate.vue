@@ -33,6 +33,7 @@
         </div>
       </q-card-section>
 
+    <!-- Start Form -->
     <q-form @submit="onSubmit">
       <q-card-section class="q-pt-sm">
         <div class="q-px-sm q-mx-sm colume" style="border-radius: 1rem;">
@@ -76,11 +77,16 @@
                 />
               </div>
               <div>
-                <div class="row justify-between items-center">
+                <div>
                   <span class="text">Barix</span>
+                </div>
+                <div class="row justify-between items-center">
+                  <span v-if="selected.length">
+                    <strong>{{ selected[0].name ?? 'No Name' }} {{ selected[0].ipaddress }}</strong> {{ selected[0].mac}}
+                  </span>
+                  <span v-else class="text-grey text-body2">Select Device</span>
                   <span><q-btn color="primary" unelevated label="Select" @click="dialog=!dialog"></q-btn></span>
                 </div>
-                <div>{{ values }}</div>
               </div>
             </div>
           </div>
@@ -96,6 +102,7 @@
     </q-form>
   </q-card>
 
+  <!-- Dialog for Barix Select -->
   <q-dialog v-model="dialog" full-width persistent>
     <q-card class="q-ma-xl">
       <q-card-section>
@@ -107,7 +114,7 @@
            { name: 'ip', align: 'center', label: 'IP Address', field: 'ipaddress', sortable: true },
            { name: 'mac', align: 'center', label: 'MAC Address', field: 'mac', sortable: true },
            { name: 'uptime', align: 'center', label: 'UpTime', field: 'uptime', sortable: true },
-           { name: 'updateAt', align: 'center', label: 'UpdateAt', field: 'updateAt', sortable: true },
+           { name: 'updatedAt', align: 'center', label: 'UpdatedAt', field: 'updatedAt', sortable: true },
            { name: 'createdAt', align: 'center', label: 'CreatedAt', field: 'createdAt', sortable: true }
           ]"
           row-key="_id"
@@ -178,6 +185,8 @@ onMounted(() => {
   if (Object.keys(props.selectedItem).length) {
     mode.value = 'edit'
     values.value = { ...props.selectedItem }
+    selected.value[0] = props.selectedItem.Barix
+    console.log(selected.value[0])
   } else {
     mode.value = 'create'
   }
