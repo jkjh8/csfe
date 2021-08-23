@@ -1,210 +1,222 @@
 <template>
   <q-table
-    v-if="mode"
-    :columns="[
-      { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
-      { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
-      { name: 'mac', align: 'center', label: '맥주소', field: 'mac', sortable: true },
-      { name: 'alarm', align: 'center', label: '경고', field: 'alarm', sortable: true },
-      { name: 'buffer', align: 'center', label: '버퍼', field: 'buffer', sortable: true },
-      { name: 'latency', align: 'center', label: '지연', field: 'latency', sortable: true },
-      { name: 'frameloss', align: 'center', label: 'Frame Loss', field: 'frameloss', sortable: true },
-      { name: 'framedup', align: 'center', label: 'Frame Dup', field: 'framedup', sortable: true },
-      { name: 'framedrop', align: 'center', label: 'Frame Drop', field: 'framedrop', sortable: true },
-      { name: 'softerrorcount', align: 'center', label: 'Soft Error', field: 'softerrorcount', sortable: true },
-      { name: 'streamnumber', align: 'center', label: '채널', field: 'streamnumber', sortable: true },
-      { name: 'bitrate', align: 'center', label: '비트', field: 'bitrate', sortable: true },
-      { name: 'reconnects', align: 'center', label: '재연결', field: 'reconnects', sortable: true },
-      { name: 'error', align: 'center', label: '에러', field: 'error', sortable: true },
-      { name: 'volume', align: 'center', label: '음량', field: 'volume' },
-      { name: 'uptime', align: 'center', label: '동작시간', field: 'uptime', sortable: true },
-      { name: 'ipaddress', align: 'center', label: '아이피주소', field: 'ipaddress', sortable: true },
-      { name: 'streamurl', align: 'center', label: '스트림주소', field: 'streamurl', sortable: true },
-      { name: 'updatedAt', align: 'center', label: '업데이트', field: 'updatedAt', sortable: true },
-      { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt', sortable: true },
-      { name: 'actions', align: 'center', label: 'Actions' }
-    ]"
+    flat
+    :columns="tableColumes"
     :rows="tableData"
+    :pagination="{ rowsPerPage: 10 }"
   >
-    <template v-slot:body-cell-uptime="props">
-      <q-td :props="props">
-        <div>
-          {{ secToDays(props.value) }}
-        </div>
-      </q-td>
-    </template>
-    <template v-slot:body-cell-updatedAt="props">
-      <q-td :props="props">
-        <div>
-          {{ timeFormat(props.value) }}
-        </div>
-      </q-td>
-    </template>
-    <template v-slot:body-cell-createdAt="props">
-      <q-td :props="props">
-        <div>
-          {{ timeFormat(props.value) }}
-        </div>
-      </q-td>
-    </template>
-    <template v-slot:body-cell-actions="props">
-      <q-td :props="props">
-        <div>
-          <q-btn round flat icon="fas fa-cog" size="sm"></q-btn>
-        </div>
-      </q-td>
-    </template>
-  </q-table>
-
-  <q-table
-    v-else
-    grid
-    :columns="columes"
-    :rows="tableData"
-  >
-    <template v-slot:item="props">
-      <div class="q-pa-xs col-xs-12 col-sm-6 col-md-3">
-        <q-card
-          :style="chkUptime(props.row.updatedAt) ? 'background: white;':'background: grey'"
-
-        >
-          <q-card-section class="row justify-between items-center q-pa-xs">
-            <q-item class="q-py-none">
-              <q-item-section avatar>
-                <q-icon v-if="props.row.checked" color="teal" name="fas fa-check-circle" />
-                <q-icon v-else color="grey" name="fas fa-exclamation-triangle" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ props.row.name ?? '이름 없음' }}</q-item-label>
-                <q-item-label caption>{{ props.row.mac }}</q-item-label>
-              </q-item-section>
-            </q-item>
-            <div class="row items-center">
-              <span v-if="!props.row.alarm">
-                <q-spinner-puff color="blue" size="1.5em" />
-              </span>
-              <span v-else>
-                <q-skeleton class="bg-red-10" type="circle" animation="blink" color="red" size="1.5em" />
-              </span>
-
-              <span class="q-ml-xs">
-                <q-btn round flat color="grey-8" size="1em" icon="fas fa-cog" @click="openDialog(props.row)" />
-              </span>
-            </div>
-          </q-card-section>
-
-          <q-separator inset />
-
-          <q-card-section class="row justify-between q-pa-xs">
-            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-10">
-              <q-item>
-                <q-item-section>
-                  <q-item-label>IP Address</q-item-label>
-                  <q-item-label caption>
-                    <a :href="`http://${props.row.ipaddress}`" target="_blank">
-                      {{ props.row.ipaddress }}
-                    </a>
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label>Zone</q-item-label>
-                  <q-item-label caption>{{ props.row.zone }}</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section style="word-break: break-all">
-                  <q-item-label>Location 1</q-item-label>
-                  <q-item-label caption>{{ props.row.location1 }}</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section style="word-break: break-all">
-                  <q-item-label>Location 2</q-item-label>
-                  <q-item-label caption>{{ props.row.location2 }}</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section style="word-break: break-all">
-                  <q-item-label>Stream Address</q-item-label>
-                  <q-item-label caption>{{ props.row.streamurl }}</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section style="word-break: break-all">
-                  <q-item-label>Update Time</q-item-label>
-                  <q-item-label caption>{{ timeFormat(props.row.updatedAt) }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-            <div class="col-xs-12 col-sm-3 col-md-4 col-lg-2">
-              <q-knob
-                class="q-ma-sm"
-                v-model="props.row.volume"
-                show-value
-                readonly
-                :thickness="0.2"
-                size="60px"
-                color="primary"
-              >
-                <q-icon name="volume_up" class="q-mr-xs" />
-                {{ props.row.volume }}
-              </q-knob>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
+    <template v-slot:body="props">
+      <q-tr :props="props">
+        <q-td key="index" :props="props">
+          <q-avatar class="shadow-3" size="2rem">
+            <q-badge v-if="props.row.alarm" floating rounded color="orange" />
+            <q-badge v-if="props.row.status" floating rounded color="red" />
+            {{ props.row.index }}
+          </q-avatar>
+        </q-td>
+        <q-td key="index" :props="props">
+          <div>{{ props.row.name }}</div>
+        </q-td>
+        <q-td key="ipaddress" :props="props">
+          <div style="font-family: nanumgothicbold">{{ props.row.ipaddress }}</div>
+          <div class="text-caption">MAC:{{ props.row.mac }}</div>
+        </q-td>
+        <q-td key="volume" :props="props">
+          <q-circular-progress
+            show-value
+            font-size=".7rem"
+            :value="props.row.volume"
+            size="2.5rem"
+            :thickness="0.22"
+            color="cyan"
+            track-color="grey-3"
+          >
+            {{ props.row.volume }}%
+          </q-circular-progress>
+        </q-td>
+        <q-td key="uptime" :props="props">
+          <div>{{ secToDays(props.row.uptime) }}</div>
+        </q-td>
+        <q-td key="streamurl" :props="props">
+          <div style="word-break: break-all;">{{ props.row.streamurl }}</div>
+        </q-td>
+        <q-td key="createdAt" :props="props">
+          <div>{{ timeFormat(props.row.createdAt) }}</div>
+        </q-td>
+        <q-td key="actions" :props="props">
+          <div>
+            <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey" @click="openInfo(props.row)" />
+            <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="openDialog" />
+            <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" />
+          </div>
+        </q-td>
+      </q-tr>
     </template>
   </q-table>
 
   <q-dialog v-model="dialog">
     <Setup :data="propsData" />
   </q-dialog>
+  <q-dialog v-model="infoDalog">
+    <q-card style="width: 40rem; border-radius: .5rem;">
+      <q-card-section>
+        <div class="row items-center">
+          <div>
+            <q-avatar color="blue-2" text-color="white">
+              <q-icon name="svguse:icons.svg#server-fill" />
+            </q-avatar>
+          </div>
+          <div class="q-ml-md">
+            <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">{{ info.name ?? '이름 없음' }}</div>
+            <div style="font-family: nanumgothic; font-size: .5rem;">MAC: {{ info.mac }}</div>
+          </div>
+        </div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-section class="q-mx-md q-gutter-sm">
+        <div class="row">
+          <div class="col-4 text-bold">Alarm</div>
+          <div class="text-uppercase q-pa-none">{{ info.alarm }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Bitrate</div>
+          <div>{{ info.bitrate }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Buffer</div>
+          <div>{{ info.buffer }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Error</div>
+          <div>{{ info.error }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Frame Drop</div>
+          <div>{{ info.framedrop }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Frame Dup</div>
+          <div>{{ info.framedup }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold q-pa-none">Frame Loss</div>
+          <div>{{ info.frameloss }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Latency</div>
+          <div>{{ info.latency }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Reconnects</div>
+          <div>{{ info.reconnects }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Soft Error</div>
+          <div>{{ info.softerrorcount }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Stream Number</div>
+          <div>{{ info.streamnumber }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Url</div>
+          <div>{{ info.streamurl }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Volume</div>
+          <div>{{ info.volume }}%</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Up Time</div>
+          <div>{{ secToDays(info.uptime) }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Created At</div>
+          <div>{{ timeFormat(info.createdAt) }}</div>
+        </div>
+        <div class="row">
+          <div class="col-4 text-bold">Updated At</div>
+          <div>{{ timeFormat(info.updatedAt) }}</div>
+        </div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-actions align="right" v-close-popup>
+        <q-btn class="q-ma-sm" padding=".5rem 2rem" flat label="Close" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
-<script>
-import { defineComponent, ref, computed, onMounted } from 'vue'
+<script setup>
+const tableColumes = [
+  { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
+  { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
+  { name: 'ipaddress', align: 'center', label: '주소', field: 'ipaddress', sortable: true },
+  { name: 'volume', align: 'center', label: '음량', field: 'volume' },
+  { name: 'uptime', align: 'center', label: '동작시간', field: 'uptime', sortable: true },
+  { name: 'streamurl', align: 'center', label: '스트림주소', field: 'streamurl', sortable: true },
+  { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt', sortable: true },
+  { name: 'actions', align: 'center', label: 'Actions' }
+]
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 // import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
-import chkUptime from '../../apis/chkUptime'
+// import chkUptime from '../../apis/chkUptime'
 import Setup from '../../components/devices/setupDialog'
-export default defineComponent({
-  components: { Setup },
-  setup () {
-    const store = useStore()
-    // vuex
-    const tableData = computed(() => store.state.barix.deviceList)
-    const mode = computed(() => store.state.barix.mode)
-    // variable
-    const dialog = ref(false)
-    const propsData = ref(null)
+const store = useStore()
+// vuex
+const tableData = computed(() => store.state.barix.deviceList)
+// const mode = computed(() => store.state.barix.mode)
+// variable
+const dialog = ref(false)
+const propsData = ref(null)
 
-    function openDialog (data) {
-      console.log(data)
-      propsData.value = data
-      dialog.value = true
-    }
+const infoDalog = ref(false)
+const info = ref(null)
 
-    // function setBarix (info) {
-    //   api.get(`http://${info.ipaddress}/rc.cgi?c=102`).then((res) => {
-    //     console.log('res = ', res)
-    //   }).catch(err => {
-    //     console.log('err = ', err)
-    //   })
-    // }
+function openInfo (data) {
+  info.value = data
+  infoDalog.value = true
+  console.log(info.value)
+}
 
-    onMounted(async () => {
-      socket.on('deviceList', (r) => {
-        store.dispatch('barix/updateListAsWebsoket', r)
-      })
-      store.dispatch('barix/updateList')
-    })
+function openDialog (data) {
+  console.log(data)
+  propsData.value = data
+  dialog.value = true
+}
 
-    return { tableData, mode, dialog, propsData, openDialog, chkUptime, timeFormat, secToDays }
-  }
+// function setBarix (info) {
+//   api.get(`http://${info.ipaddress}/rc.cgi?c=102`).then((res) => {
+//     console.log('res = ', res)
+//   }).catch(err => {
+//     console.log('err = ', err)
+//   })
+// }
+
+onMounted(async () => {
+  socket.on('deviceList', (r) => {
+    store.dispatch('barix/updateListAsWebsoket', r)
+  })
+  store.dispatch('barix/updateList')
 })
 </script>
+
+<style scoped>
+.text {
+  font-family: nanumgothicbold;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.caption {
+  font-family: nanumgothic;
+  font-size: .5rem;
+}
+</style>

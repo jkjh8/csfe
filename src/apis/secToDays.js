@@ -1,9 +1,8 @@
-import moment from 'moment'
+export default function (seconds) {
+  const d = parseInt(seconds / 86400)
+  const h = parseInt((seconds % 86400) / 3600) < 10 ? '0' + parseInt((seconds % 86400) / 3600) : parseInt((seconds % 86400) / 3600)
+  const m = parseInt(((seconds % 86400) / 3600) / 60) < 10 ? '0' + parseInt(((seconds % 86400) / 3600) / 60) : parseInt(((seconds % 86400) / 3600) / 60)
+  const s = seconds % 60 < 10 ? '0' + seconds % 60 : seconds % 60
 
-export default function (time) {
-  const f = moment.duration(time * 1000, 'millisecond')
-  const d = Math.floor(f.asDays())
-  const h = Math.floor(f.asHours()) - d * 24
-  const m = Math.floor(f.asMinutes()) - h * 60
-  return d + 'd ' + h + ':' + m
+  return d + 'd ' + h + ':' + m + ':' + s
 }
