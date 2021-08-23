@@ -1,7 +1,29 @@
 <template>
   <q-table
     v-if="mode"
-    :columns="columes"
+    :columns="[
+      { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
+      { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
+      { name: 'mac', align: 'center', label: '맥주소', field: 'mac', sortable: true },
+      { name: 'alarm', align: 'center', label: '경고', field: 'alarm', sortable: true },
+      { name: 'buffer', align: 'center', label: '버퍼', field: 'buffer', sortable: true },
+      { name: 'latency', align: 'center', label: '지연', field: 'latency', sortable: true },
+      { name: 'frameloss', align: 'center', label: 'Frame Loss', field: 'frameloss', sortable: true },
+      { name: 'framedup', align: 'center', label: 'Frame Dup', field: 'framedup', sortable: true },
+      { name: 'framedrop', align: 'center', label: 'Frame Drop', field: 'framedrop', sortable: true },
+      { name: 'softerrorcount', align: 'center', label: 'Soft Error', field: 'softerrorcount', sortable: true },
+      { name: 'streamnumber', align: 'center', label: '채널', field: 'streamnumber', sortable: true },
+      { name: 'bitrate', align: 'center', label: '비트', field: 'bitrate', sortable: true },
+      { name: 'reconnects', align: 'center', label: '재연결', field: 'reconnects', sortable: true },
+      { name: 'error', align: 'center', label: '에러', field: 'error', sortable: true },
+      { name: 'volume', align: 'center', label: '음량', field: 'volume' },
+      { name: 'uptime', align: 'center', label: '동작시간', field: 'uptime', sortable: true },
+      { name: 'ipaddress', align: 'center', label: '아이피주소', field: 'ipaddress', sortable: true },
+      { name: 'streamurl', align: 'center', label: '스트림주소', field: 'streamurl', sortable: true },
+      { name: 'updatedAt', align: 'center', label: '업데이트', field: 'updatedAt', sortable: true },
+      { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt', sortable: true },
+      { name: 'actions', align: 'center', label: 'Actions' }
+    ]"
     :rows="tableData"
   >
     <template v-slot:body-cell-uptime="props">
@@ -150,30 +172,6 @@ import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
 import chkUptime from '../../apis/chkUptime'
 import Setup from '../../components/devices/setupDialog'
-
-const columes = [
-  { name: 'index', align: 'center', label: 'Index', field: 'index' },
-  { name: 'mac', align: 'center', label: '맥주소', field: 'mac' },
-  { name: 'alarm', align: 'center', label: '경고', field: 'alarm' },
-  { name: 'buffer', align: 'center', label: '버퍼', field: 'buffer' },
-  { name: 'latency', align: 'center', label: '지연', field: 'latency' },
-  { name: 'frameloss', align: 'center', label: 'Frame Loss', field: 'frameloss' },
-  { name: 'framedup', align: 'center', label: 'Frame Dup', field: 'framedup' },
-  { name: 'framedrop', align: 'center', label: 'Frame Drop', field: 'framedrop' },
-  { name: 'softerrorcount', align: 'center', label: 'Soft Error', field: 'softerrorcount' },
-  { name: 'streamnumber', align: 'center', label: '채널', field: 'streamnumber' },
-  { name: 'bitrate', align: 'center', label: '비트', field: 'bitrate' },
-  { name: 'reconnects', align: 'center', label: '재연결', field: 'reconnects' },
-  { name: 'error', align: 'center', label: '에러', field: 'error' },
-  { name: 'volume', align: 'center', label: '음량', field: 'volume' },
-  { name: 'uptime', align: 'center', label: '동작시간', field: 'uptime' },
-  { name: 'ipaddress', align: 'center', label: '아이피주소', field: 'ipaddress' },
-  { name: 'streamurl', align: 'center', label: '스트림주소', field: 'streamurl' },
-  { name: 'updatedAt', align: 'center', label: '업데이트', field: 'updatedAt' },
-  { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt' },
-  { name: 'actions', align: 'center', label: 'Actions' }
-]
-
 export default defineComponent({
   components: { Setup },
   setup () {
@@ -206,7 +204,7 @@ export default defineComponent({
       store.dispatch('barix/updateList')
     })
 
-    return { tableData, columes, mode, dialog, propsData, openDialog, chkUptime, timeFormat, secToDays }
+    return { tableData, mode, dialog, propsData, openDialog, chkUptime, timeFormat, secToDays }
   }
 })
 </script>

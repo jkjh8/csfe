@@ -185,8 +185,9 @@ onMounted(() => {
   if (Object.keys(props.selectedItem).length) {
     mode.value = 'edit'
     values.value = { ...props.selectedItem }
-    selected.value[0] = props.selectedItem.Barix
-    console.log(selected.value[0])
+    if (values.value.Barix) {
+      selected.value[0] = props.selectedItem.Barix
+    }
   } else {
     mode.value = 'create'
   }

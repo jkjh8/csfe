@@ -43,7 +43,7 @@
 import { defineComponent, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import getUser from '../../apis/users'
-import Table from '../../components/devices/devicesTable.vue'
+import Table from '../../components/devices/table.vue'
 
 export default defineComponent({
   components: { Table },

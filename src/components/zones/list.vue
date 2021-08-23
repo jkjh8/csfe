@@ -19,14 +19,16 @@
           v-for="local in zones"
           :key="local.index"
           v-ripple
-          @click="clickItem(local.index)"
         >
           <q-item-section avatar>
             <q-avatar style="border: 1px solid #454545" size="2rem">{{local.index}}</q-avatar>
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ local.name }}</q-item-label>
+            <q-item-label>
+              <span>{{ local.name }}</span>
+              <span class="q-ml-sm" style="font-familt: nanumgothic; font-size: .5rem;">channel: {{ local.channel }}</span>
+            </q-item-label>
             <q-item-label caption>
               <span>Parent: {{ local.location }}</span>
               <span v-if="local.Barix">  Device IP: {{ local.Barix.ipaddress }}</span>
@@ -65,24 +67,16 @@ const store = useStore()
 const zones = computed(() => store.state.zones.zones)
 
 const createUpdateDialog = ref(false)
-const selectList = ref(null)
 const selectedItem = ref({})
 
 function selectItemFn (item) {
+  console.log(item)
   selectedItem.value = item
   createUpdateDialog.value = true
 }
 
 function deleteLocation (item) {
   console.log(item)
-}
-
-function clickItem (idx) {
-  if (idx === selectList.value) {
-    selectList.value = null
-  } else {
-    selectList.value = idx
-  }
 }
 
 function close () {
