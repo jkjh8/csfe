@@ -1,7 +1,6 @@
-/*
-export function someGetter (state) {
+export function locationsCount (state) {
+  return state.locations.length
 }
-*/
 
 export function getLocationNames (state) {
   const r = []

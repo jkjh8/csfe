@@ -100,59 +100,87 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
+        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="context.emit('close')" label="취소" />
         <q-btn class="q-ma-sm text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
       </q-card-actions>
     </q-form>
   </q-card>
 </template>
 
-<script setup>
-import { ref, reactive, defineProps, defineEmits, onMounted, computed, getCurrentInstance } from 'vue'
-import { useQuasar } from 'quasar'
+<script>
+import { inject, ref, reactive, onMounted, computed } from 'vue'
+// import { useQuasar } from 'quasar'
+import { useStore } from 'vuex'
 
-const { proxy } = getCurrentInstance()
-const $q = useQuasar()
-const props = defineProps({ selectedItem: Object })
-const emit = defineEmits(['close'])
+export default {
+  setup (props, context) {
+    const $api = inject('$api')
+    const { getters, dispatch } = useStore()
+    // const $q = useQuasar()
+    const locationNames = computed(() => getters['locations/getLocationNames'])
+    const mode = ref('create')
+    const error = ref('')
+    const values = ref({
+      index: 1,
+      name: '',
+      ip: '',
+      port: 1720,
+      mode: 'Q-sys',
+      parent: '',
+      channel: null
+    })
+    const rules = reactive({
+      required: [value => !!value || '필수 입력 항목 입니다.'],
+      port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
+      channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
+    })
 
-const locationNames = computed(() => proxy.$store.getters['locations/getLocationNames'])
-const mode = ref('create')
-const values = ref({ index: 1, name: '', ip: '', port: 1720, mode: 'Q-sys', parent: '', channel: null })
-const error = ref('')
-
-onMounted(() => {
-  if (Object.keys(props.selectedItem).length) {
-    mode.value = 'edit'
-    values.value = { ...props.selectedItem }
-  } else {
-    mode.value = 'create'
-  }
-})
-
-const rules = reactive({
-  required: [value => !!value || '필수 입력 항목 입니다.'],
-  port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
-  channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
-})
-
-const onSubmit = async () => {
-  $q.loading.show()
-  try {
-    if (mode.value === 'create') {
-      await proxy.$api.post('/locations', values.value)
-    } else {
-      await proxy.$api.put('/locations', values.value)
+    const onSubmit = async () => {
+      console.log('On submit')
+      // $q.loading.show()
+      console.log($api)
+      try {
+        if (mode.value === 'create') {
+          await $api.post('/locations', values.value)
+        } else {
+          await $api.put('/locations', values.value)
+        }
+        dispatch('locations/updateLocations')
+        // $q.loading.hide()
+        context.emit('close')
+      } catch (err) {
+        // $q.loading.hide()
+        error.value = err.response.data.message
+        console.error(err)
+      }
     }
-    proxy.$store.dispatch('locations/updateLocations')
-    $q.loading.hide()
-    emit('close')
-  } catch (err) {
-    $q.loading.hide()
-    error.value = err.response.data.message
-    console.error(err)
+
+    onMounted(() => {
+      console.log(props.selectedItem)
+      // if (Object.keys(props.selectedItem).length) {
+      //   mode.value = 'edit'
+      //   values.value = { ...props.selectedItem }
+      // } else {
+      //   mode.value = 'create'
+      // }
+    })
+
+    return {
+      locationNames,
+      mode,
+      error,
+      values,
+      rules,
+      onSubmit,
+      context
+    }
   }
 }
+// const { proxy } = getCurrentInstance()
+
+// const props = defineProps({ selectedItem: Object })
+// const emit = defineEmits(['close'])
+
 </script>
 
 <style>
