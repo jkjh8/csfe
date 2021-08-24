@@ -44,7 +44,7 @@
             class="q-my-sm"
           >
             <q-input
-              v-model="userInfo.user_id"
+              v-model="userInfo.userId"
               outlined dense bg-color="white"
               lazy-rules :rules="rules.email"
             ></q-input>
@@ -138,7 +138,7 @@ const rules = reactive({
 })
 
 const userInfo = reactive({
-  user_id: '',
+  userId: '',
   password: '',
   keepLoggedin: false
 })
@@ -146,14 +146,14 @@ const userInfo = reactive({
 onMounted(() => {
   saveEmail.value = localStorage.getItem('saveId') === 'true'
   if (saveEmail.value) {
-    userInfo.user_id = localStorage.getItem('userId')
+    userInfo.userId = localStorage.getItem('userId')
   }
 })
 
 function saveIdToLocal () {
   if (saveEmail.value) {
     localStorage.setItem('saveId', true)
-    localStorage.setItem('userId', userInfo.user_id)
+    localStorage.setItem('userId', userInfo.userId)
   } else {
     localStorage.setItem('saveId', false)
     localStorage.removeItem('userId')

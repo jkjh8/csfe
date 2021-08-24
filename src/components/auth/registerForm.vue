@@ -48,7 +48,7 @@
             class="q-my-sm"
           >
             <q-input
-              v-model="userInfo.user_id"
+              v-model="userInfo.userId"
               outlined
               dense
               bg-color="white"
@@ -151,7 +151,7 @@ export default defineComponent({
     const showChkPassword = ref(false)
 
     const userInfo = reactive({
-      user_id: '',
+      userId: '',
       password: '',
       chkPassword: '',
       user_name: ''
@@ -180,8 +180,8 @@ export default defineComponent({
       loading.value = true
       const user = {
         user_name: userInfo.user_name,
-        user_id: userInfo.user_id,
-        email: userInfo.user_id,
+        userId: userInfo.userId,
+        email: userInfo.userId,
         password: userInfo.password
       }
       proxy.$api.post('/auth/register', user).then((res) => {
