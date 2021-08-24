@@ -100,7 +100,7 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="context.emit('close')" label="취소" />
+        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
         <q-btn class="q-ma-sm text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
       </q-card-actions>
     </q-form>
@@ -108,15 +108,17 @@
 </template>
 
 <script>
-import { inject, ref, reactive, onMounted, computed } from 'vue'
-// import { useQuasar } from 'quasar'
+import { inject, ref, toRefs, reactive, onMounted, computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 
 export default {
-  setup (props, context) {
+  props: ['selected'],
+  setup (props, { emit }) {
+    const { selected } = toRefs(props)
     const $api = inject('$api')
     const { getters, dispatch } = useStore()
-    // const $q = useQuasar()
+    const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
     const mode = ref('create')
     const error = ref('')
@@ -136,33 +138,30 @@ export default {
     })
 
     const onSubmit = async () => {
-      console.log('On submit')
-      // $q.loading.show()
-      console.log($api)
+      $q.loading.show()
       try {
         if (mode.value === 'create') {
           await $api.post('/locations', values.value)
         } else {
           await $api.put('/locations', values.value)
         }
-        dispatch('locations/updateLocations')
-        // $q.loading.hide()
-        context.emit('close')
+        await dispatch('locations/updateLocations')
+        $q.loading.hide()
+        emit('close')
       } catch (err) {
-        // $q.loading.hide()
+        $q.loading.hide()
         error.value = err.response.data.message
         console.error(err)
       }
     }
 
     onMounted(() => {
-      console.log(props.selectedItem)
-      // if (Object.keys(props.selectedItem).length) {
-      //   mode.value = 'edit'
-      //   values.value = { ...props.selectedItem }
-      // } else {
-      //   mode.value = 'create'
-      // }
+      if (Object.keys(selected.value).length) {
+        mode.value = 'edit'
+        values.value = { ...selected.value }
+      } else {
+        mode.value = 'create'
+      }
     })
 
     return {
@@ -172,7 +171,7 @@ export default {
       values,
       rules,
       onSubmit,
-      context
+      emit
     }
   }
 }

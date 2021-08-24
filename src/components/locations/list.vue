@@ -40,11 +40,11 @@
             <div>
               <q-btn
                 flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6"
-                @click.prevent.stop="selectItemFn(local)"
+                @click.prevent.stop="editItem(local)"
               />
               <q-btn
                 flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6"
-                @click.prevent.stop="deleteLocation(local)"
+                @click.prevent.stop="deleteItem(local)"
               />
             </div>
           </q-item-section>
@@ -55,57 +55,75 @@
     <q-card-section></q-card-section>
   </q-card>
   <q-dialog v-model="createUpdateDialog" persistent>
-    <CreateUpdate :selectedItem="selectedItem" @close="createUpdateDialogClose" />
+    <CreateUpdate :selected="selected" @close="createUpdateDialogClose" />
   </q-dialog>
   <q-dialog v-model="deleteDialog" persistent>
-    <Delete :selectedItem="selectedItem" @close="deleteDialogClose" />
+    <Delete :selected="selected" @close="deleteDialogClose" />
   </q-dialog>
 </template>
 
-<script setup>
+<script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import CreateUpdate from './createUpdate'
 import Delete from './delete.vue'
 
-const store = useStore()
-const locations = computed(() => store.state.locations.locations)
+export default {
+  components: { CreateUpdate, Delete },
+  setup () {
+    const store = useStore()
+    const locations = computed(() => store.state.locations.locations)
 
-const createUpdateDialog = ref(false)
-const deleteDialog = ref(false)
-const selectList = ref(null)
-const selectedItem = ref({})
+    const createUpdateDialog = ref(false)
+    const deleteDialog = ref(false)
+    const selectList = ref(null)
+    const selected = ref({})
 
-function selectItemFn (item) {
-  selectedItem.value = item
-  createUpdateDialog.value = true
-}
+    function editItem (item) {
+      console.log(item)
+      selected.value = item
+      createUpdateDialog.value = true
+    }
 
-function deleteLocation (item) {
-  selectedItem.value = item
-  deleteDialog.value = true
-}
+    function deleteItem (item) {
+      selected.value = item
+      deleteDialog.value = true
+    }
 
-function clickItem (item) {
-  if (item._id === selectList.value) {
-    selectList.value = null
-    store.commit('locations/updateSelected', null)
-  } else {
-    selectList.value = item._id
-    store.commit('locations/updateSelected', item)
+    function clickItem (item) {
+      if (item._id === selectList.value) {
+        selectList.value = null
+        store.commit('locations/updateSelected', null)
+      } else {
+        selectList.value = item._id
+        store.commit('locations/updateSelected', item)
+      }
+    }
+
+    function createUpdateDialogClose () {
+      selected.value = {}
+      createUpdateDialog.value = false
+    }
+
+    function deleteDialogClose () {
+      selected.value = {}
+      deleteDialog.value = false
+    }
+
+    return {
+      locations,
+      createUpdateDialog,
+      deleteDialog,
+      selectList,
+      selected,
+      editItem,
+      deleteItem,
+      clickItem,
+      createUpdateDialogClose,
+      deleteDialogClose
+    }
   }
 }
-
-function createUpdateDialogClose () {
-  selectedItem.value = {}
-  createUpdateDialog.value = false
-}
-
-function deleteDialogClose () {
-  selectedItem.value = {}
-  deleteDialog.value = false
-}
-
 </script>
 
 <style scoped>
