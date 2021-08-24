@@ -7,11 +7,11 @@ export function updateLogsCount (state, payload) {
 }
 
 export function updatePage (state, payload) {
-  state.page = payload
+  state.logs.page = payload
 }
 
 export function updateRowsPerPage (state, payload) {
-  state.rowsPerPage = payload
+  state.logs.limit = payload
 }
 
 export function updateSearch (state, payload) {

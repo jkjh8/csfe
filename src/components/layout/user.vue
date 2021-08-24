@@ -47,7 +47,7 @@
       </q-item>
       <q-item>
         <q-item-section class="colume items-center">
-          <q-item-label>{{ user.user_name }}</q-item-label>
+          <q-item-label>{{ user.userName }}</q-item-label>
           <q-item-label>{{ user.email }}</q-item-label>
         </q-item-section>
       </q-item>
@@ -85,7 +85,7 @@
 
       <q-item>
         <q-item-section class="row justify-center items-center">
-          <strong class="text-overline">Media Server With MC</strong>
+          <strong class="text-overline">Media Server With KJH</strong>
         </q-item-section>
       </q-item>
     </q-menu>

@@ -2,7 +2,6 @@ import { api } from '../../boot/axios'
 export async function getUser ({ commit }) {
   try {
     let user = await api.get('/auth/getUser')
-    console.log(user)
     if (!user.data.user) {
       user = await api.get('/auth/refUser')
     }

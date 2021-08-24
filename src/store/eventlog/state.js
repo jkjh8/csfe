@@ -1,10 +1,17 @@
 export default function () {
   return {
-    logs: [],
-    count: 0,
-    page: 1,
-    rowsPerPage: 10,
-    search: '',
-    loading: false
+    logs: {
+      docs: [],
+      hasNextPage: false,
+      hasPrevPage: false,
+      limit: 10,
+      nextPage: null,
+      page: 1,
+      pagingCounter: 1,
+      prevPage: null,
+      totalDocs: 0,
+      totalPages: 1
+    },
+    search: ''
   }
 }

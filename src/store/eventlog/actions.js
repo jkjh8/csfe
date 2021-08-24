@@ -1,6 +1,14 @@
+import { api } from '../../boot/axios'
+
 export function updateLogs ({ commit }, payload) {
-  commit('updateLogs', payload.data.rows)
-  commit('updateLogsCount', payload.data.count)
-  commit('updatePage', payload.page)
-  commit('updateRowsPerPage', payload.logsPerPage)
+  commit('updateLogs', payload.docs)
+}
+
+export async function getLogs ({ state, commit }) {
+  try {
+    const r = await api.get(`/eventlog?limit=${state.logs.limit}&page=${state.logs.page}&search=${state.search}`)
+    commit('updateLogs', r.data)
+  } catch (error) {
+    console.error(error)
+  }
 }

@@ -32,7 +32,7 @@
             class="q-my-sm"
           >
             <q-input
-              v-model="userInfo.user_name"
+              v-model="userInfo.userName"
               outlined
               dense
               bg-color="white"
@@ -154,7 +154,7 @@ export default defineComponent({
       userId: '',
       password: '',
       chkPassword: '',
-      user_name: ''
+      userName: ''
     })
 
     const rules = reactive({
@@ -179,7 +179,7 @@ export default defineComponent({
     function onSubmit () {
       loading.value = true
       const user = {
-        user_name: userInfo.user_name,
+        userName: userInfo.userName,
         userId: userInfo.userId,
         email: userInfo.userId,
         password: userInfo.password

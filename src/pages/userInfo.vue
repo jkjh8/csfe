@@ -28,13 +28,13 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">사용자 ID</q-item-label>
-              <q-item-label>{{ user.user_id }}</q-item-label>
+              <q-item-label>{{ user.userId }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">사용자 이름</q-item-label>
-              <q-item-label>{{ user.user_name }}</q-item-label>
+              <q-item-label>{{ user.userName }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
@@ -46,7 +46,7 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">사용자 등급</q-item-label>
-              <q-item-label>{{ user.user_level }}</q-item-label>
+              <q-item-label>{{ user.userLevel }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
@@ -64,7 +64,7 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">로그인 횟수</q-item-label>
-              <q-item-label class="text-uppercase">{{ user.number_of_login }}</q-item-label>
+              <q-item-label class="text-uppercase">{{ user.numberOfLogin }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>

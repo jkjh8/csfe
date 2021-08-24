@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    class="q-mx-md q-my-md"
-    style="border-radius: 1rem;"
-  >
+  <q-card class="q-mx-md q-my-md" style="border-radius: 1rem;">
     <q-card-section class="q-py-sm row justify-between items-center">
       <div class="row items-center">
         <span>
@@ -19,7 +16,7 @@
               이벤트 로그
             </q-item-label>
             <q-item-label caption>
-              총 {{ count }}개의 이벤트로그
+              총 {{ logs.totalDocs }}개의 이벤트로그
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -61,35 +58,27 @@
   </q-card>
 </template>
 
-<script>
-import { defineComponent, onBeforeMount, computed } from 'vue'
-import { useStore } from 'vuex'
-import getLog from '../../apis/getLog'
+<script setup>
+import { getCurrentInstance, onBeforeMount, computed } from 'vue'
+import Table from '../../components/eventlog/table.vue'
+import { useQuasar } from 'quasar'
 
-import Table from '../../components/eventlog/logTable.vue'
+const $q = useQuasar()
+const { proxy } = getCurrentInstance()
+const logs = computed(() => proxy.$store.state.eventlog.logs)
 
-export default defineComponent({
-  components: { Table },
-  setup () {
-    const store = useStore()
-    const count = computed(() => store.state.eventlog.count)
-    const search = computed({
-      get () { return store.state.eventlog.search },
-      set (value) { return store.commit('eventlog/updateSearch', value) }
-    })
+const search = computed({
+  get () { return proxy.$store.state.eventlog.search },
+  set (value) { return proxy.$store.commit('eventlog/updateSearch', value) }
+})
 
-    async function getLogWithSearch () {
-      store.commit('eventlog/updateLoading', true)
-      const r = await getLog(store.state.eventlog.rowsPerPage, store.state.eventlog.page, search.value)
-      store.dispatch('eventlog/updateLogs', r)
-      store.commit('eventlog/updateLoading', false)
-    }
-    onBeforeMount(() => {
-      store.dispatch('user/getUser')
-    })
-
-    return { count, search, getLogWithSearch }
-  }
+async function getLogWithSearch () {
+  $q.loading.show({ spinnerColor: 'primary' })
+  await proxy.$store.dispatch('eventlog/getLogs')
+  $q.loading.hide()
+}
+onBeforeMount(() => {
+  proxy.$store.dispatch('user/getUser')
 })
 </script>
 
