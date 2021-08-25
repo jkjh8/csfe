@@ -22,24 +22,11 @@
           <div style="font-family: nanumgothicbold">{{ props.row.info.IP_address }}</div>
           <div class="text-caption">MAC:{{ props.row.mac }}</div>
         </q-td>
-        <q-td key="volume" :props="props">
-          <q-circular-progress
-            show-value
-            font-size=".7rem"
-            :value="Number(props.row.info.Volume)"
-            size="2.5rem"
-            :thickness="0.22"
-            color="cyan"
-            track-color="grey-3"
-          >
-            {{ props.row.info.Volume }}%
-          </q-circular-progress>
+        <q-td key="type" :props="props">
+          {{ props.row.type }}
         </q-td>
-        <q-td key="uptime" :props="props">
-          <div>{{ secToDays(props.row.info.UpTime) }}</div>
-        </q-td>
-        <q-td key="streamurl" :props="props">
-          <div style="word-break: break-all;">{{ props.row.info.URL }}</div>
+        <q-td key="mode" :props="props">
+          <div>{{ (props.row.mode) }}</div>
         </q-td>
         <q-td key="createdAt" :props="props">
           <div>{{ timeFormat(props.row.createdAt) }}</div>
@@ -56,96 +43,7 @@
   </q-table>
 
   <q-dialog v-model="infoDalog">
-    <q-card style="width: 40rem; border-radius: .5rem;">
-      <q-card-section>
-        <div class="row items-center">
-          <div>
-            <q-avatar color="blue-2" text-color="white">
-              <q-icon name="svguse:icons.svg#server-fill" />
-            </q-avatar>
-          </div>
-          <div class="q-ml-md">
-            <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">{{ info.name ?? '이름 없음' }}</div>
-            <div style="font-family: nanumgothic; font-size: .5rem;">MAC: {{ info.mac }}</div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-section class="q-mx-md q-gutter-sm">
-        <div class="row">
-          <div class="col-4 text-bold">Alarm</div>
-          <div class="text-uppercase q-pa-none">{{ info.alarm }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Bitrate</div>
-          <div>{{ info.info.Bitrate }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Buffer</div>
-          <div>{{ info.info.BufferLevel }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Error</div>
-          <div>{{ info.info.Error }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Frame Drop</div>
-          <div>{{ info.info.FrameDrop }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Frame Dup</div>
-          <div>{{ info.info.FrameDup }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold q-pa-none">Frame Loss</div>
-          <div>{{ info.info.FrameLoss }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Latency</div>
-          <div>{{ info.info.Latency }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Reconnects</div>
-          <div>{{ info.info.Reconnects }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Soft Error</div>
-          <div>{{ info.info.SoftErrorCount }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Stream Number</div>
-          <div>{{ info.info.StreamNumber }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Url</div>
-          <div>{{ info.info.URL }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Volume</div>
-          <div>{{ info.info.Volume }}%</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Up Time</div>
-          <div>{{ secToDays(info.info.UpTime) }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Created At</div>
-          <div>{{ timeFormat(info.createdAt) }}</div>
-        </div>
-        <div class="row">
-          <div class="col-4 text-bold">Updated At</div>
-          <div>{{ timeFormat(info.updatedAt) }}</div>
-        </div>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-actions align="right" v-close-popup>
-        <q-btn class="q-ma-sm" padding=".5rem 2rem" flat label="Close" />
-      </q-card-actions>
-    </q-card>
+    <BarixInfo :info="info" />
   </q-dialog>
 
   <q-dialog v-model="createUpdateDialog">
@@ -162,9 +60,8 @@ const tableColumes = [
   { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
   { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
   { name: 'ipaddress', align: 'center', label: '주소', field: 'ipaddress', sortable: true },
-  { name: 'volume', align: 'center', label: '음량', field: 'volume' },
-  { name: 'uptime', align: 'center', label: '동작시간', field: 'uptime', sortable: true },
-  { name: 'streamurl', align: 'center', label: '스트림주소', field: 'streamurl', sortable: true },
+  { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
+  { name: 'mode', align: 'center', label: 'Mode', field: 'mode', sortable: true },
   { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt', sortable: true },
   { name: 'actions', align: 'center', label: 'Actions' }
 ]
@@ -175,8 +72,11 @@ import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
 import CreateUpdate from './createUpdate.vue'
 import Delete from './delete.vue'
+
+import BarixInfo from './barix/info.vue'
+
 export default {
-  components: { CreateUpdate, Delete },
+  components: { CreateUpdate, Delete, BarixInfo },
   setup () {
     const store = useStore()
     // vuex
