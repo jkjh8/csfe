@@ -140,11 +140,16 @@
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance, ref, reactive } from 'vue'
+import { ref, reactive } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 
-export default defineComponent({
+export default {
   setup () {
-    const { proxy } = getCurrentInstance()
+    const { dispatch } = useStore()
+    const router = useRouter()
+    const $q = useQuasar()
     const error = ref('')
     const loading = ref(false)
     const showPassword = ref(false)
@@ -176,24 +181,36 @@ export default defineComponent({
       ]
     })
 
-    function onSubmit () {
-      loading.value = true
-      const user = {
-        userName: userInfo.userName,
-        userId: userInfo.userId,
-        email: userInfo.userId,
-        password: userInfo.password
-      }
-      proxy.$api.post('/auth/register', user).then((res) => {
-        loading.value = false
-        if (res.status === 200) {
-          proxy.$router.push('/')
-        }
-      }).catch((err) => {
-        loading.value = false
-        console.error(err.response.data)
-        error.value = err.response.data.message
+    async function onSubmit () {
+      $q.loading.show({
+        message: '회원 가입중입니다. 잠시만 기다려주세요.'
       })
+      error.value = await dispatch('user/register', userInfo)
+      $q.loading.hide()
+      if (!error.value) {
+        $q.loading.show({
+          message: '로그인중입니다. 잠시만 기다려주세요.'
+        })
+        await dispatch('user/login', userInfo)
+        $q.loading.hide()
+        router.push('/')
+      }
+      // const user = {
+      //   userName: userInfo.userName,
+      //   userId: userInfo.userId,
+      //   email: userInfo.userId,
+      //   password: userInfo.password
+      // }
+      // proxy.$api.post('/auth/register', user).then((res) => {
+      //   loading.value = false
+      //   if (res.status === 200) {
+      //     proxy.$router.push('/')
+      //   }
+      // }).catch((err) => {
+      //   loading.value = false
+      //   console.error(err.response.data)
+      //   error.value = err.response.data.message
+      // })
     }
 
     return {
@@ -206,5 +223,5 @@ export default defineComponent({
       onSubmit
     }
   }
-})
+}
 </script>

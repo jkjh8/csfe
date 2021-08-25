@@ -115,11 +115,12 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { api } from '../../boot/axios'
+import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-const store = useStore()
+const $q = useQuasar()
+const { dispatch } = useStore()
 const router = useRouter()
 const error = ref('')
 const loading = ref(false)
@@ -160,21 +161,14 @@ function saveIdToLocal () {
   }
 }
 
-function onSubmit () {
+async function onSubmit () {
   saveIdToLocal()
-  loading.value = true
-  api.post('/auth/login', userInfo).then((res) => {
-    loading.value = false
-    if (!res.data.user) {
-      error.value = '사용자를 찾을 수 없습니다.'
-    }
-    store.commit('user/updateUser', res.data.user)
-    router.push('/')
-  }).catch(err => {
-    loading.value = false
-    console.error(err.response.data)
-    error.value = err.response.data.message
+  $q.loading.show({
+    message: '로그인 중입니다. 잠시만 기다려주세요.'
   })
+  error.value = await dispatch('user/login', userInfo)
+  $q.loading.hide()
+  if (!error.value) return router.push('/')
 }
 </script>
 
