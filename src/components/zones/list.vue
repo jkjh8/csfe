@@ -1,4 +1,5 @@
 <template>
+  <!-- zones table -->
   <q-card class="q-ml-md" style="border-radius: .5rem;" flat>
     <q-card-section class="row justify-between items-center q-py-xs">
       <div class="row items-center">
@@ -31,7 +32,7 @@
             </q-item-label>
             <q-item-label caption>
               <span>Parent: {{ local.location }}</span>
-              <span v-if="local.Barix">  Device IP: {{ local.Barix.ipaddress }}</span>
+              <span v-if="local.Barix && local.Barix.length">  Device IP: {{ local.Barix[0].info.IP_address }}</span>
             </q-item-label>
           </q-item-section>
 
@@ -39,11 +40,11 @@
             <div>
               <q-btn
                 flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6"
-                @click.prevent.stop="selectItemFn(local)"
+                @click.prevent.stop="updateItem(local)"
               />
               <q-btn
                 flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6"
-                @click.prevent.stop="deleteLocation(local)"
+                @click.prevent.stop="deleteItem(local)"
               />
             </div>
           </q-item-section>
@@ -54,36 +55,61 @@
     <q-card-section></q-card-section>
   </q-card>
   <q-dialog v-model="createUpdateDialog" persistent>
-    <CreateUpdate :selectedItem="selectedItem" @close="close" />
+    <CreateUpdate :selected="selected" @close="close" />
+  </q-dialog>
+  <q-dialog v-model="deleteDialog" persistent>
+    <Delete :selected="selected" @close="deleteDialogClose" />
   </q-dialog>
 </template>
 
-<script setup>
+<script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import CreateUpdate from './createUpdate'
+import Delete from './delete'
 
-const store = useStore()
-const zones = computed(() => store.state.zones.zones)
+export default {
+  components: { CreateUpdate, Delete },
+  setup () {
+    const { state } = useStore()
+    const zones = computed(() => state.zones.zones)
 
-const createUpdateDialog = ref(false)
-const selectedItem = ref({})
+    const createUpdateDialog = ref(false)
+    const deleteDialog = ref(false)
+    const selected = ref({})
 
-function selectItemFn (item) {
-  console.log(item)
-  selectedItem.value = item
-  createUpdateDialog.value = true
+    function updateItem (item) {
+      selected.value = item
+      console.log('item', selected.value)
+      createUpdateDialog.value = true
+    }
+
+    function deleteItem (item) {
+      selected.value = item
+      deleteDialog.value = true
+    }
+
+    function deleteDialogClose () {
+      selected.value = {}
+      deleteDialog.value = false
+    }
+
+    function close () {
+      selected.value = {}
+      createUpdateDialog.value = false
+    }
+    return {
+      zones,
+      selected,
+      createUpdateDialog,
+      updateItem,
+      deleteItem,
+      close,
+      deleteDialog,
+      deleteDialogClose
+    }
+  }
 }
-
-function deleteLocation (item) {
-  console.log(item)
-}
-
-function close () {
-  selectedItem.value = {}
-  createUpdateDialog.value = false
-}
-
 </script>
 
 <style scoped>

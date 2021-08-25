@@ -1,4 +1,5 @@
 <template>
+  <!-- zone create -->
   <q-card style="width: 100%; border-radius: 1rem;">
     <!-- 이름 테그 -->
     <q-card-section>
@@ -81,8 +82,8 @@
                   <span class="text">Barix</span>
                 </div>
                 <div class="row justify-between items-center">
-                  <span v-if="selected.length">
-                    <strong>{{ selected[0].name ?? 'No Name' }} {{ selected[0].ipaddress }}</strong> {{ selected[0].mac}}
+                  <span v-if="barixSelected.length">
+                    <strong>{{ barixSelected[0].name ?? 'No Name' }} {{ barixSelected[0].ipaddress }}</strong> {{ barixSelected[0].mac}}
                   </span>
                   <span v-else class="text-grey text-body2">Select Device</span>
                   <span><q-btn color="primary" unelevated label="Select" @click="dialog=!dialog"></q-btn></span>
@@ -96,7 +97,7 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
+        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="$emit('close')" label="취소" />
         <q-btn class="q-ma-sm text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
       </q-card-actions>
     </q-form>
@@ -111,16 +112,16 @@
           :rows="barixes"
           :columns="[
            { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
-           { name: 'ip', align: 'center', label: 'IP Address', field: 'ipaddress', sortable: true },
+           { name: 'ip', align: 'center', label: 'IP Address', field: 'info', sortable: true },
            { name: 'mac', align: 'center', label: 'MAC Address', field: 'mac', sortable: true },
-           { name: 'uptime', align: 'center', label: 'UpTime', field: 'uptime', sortable: true },
+           { name: 'uptime', align: 'center', label: 'UpTime', field: 'info', sortable: true },
            { name: 'updatedAt', align: 'center', label: 'UpdatedAt', field: 'updatedAt', sortable: true },
            { name: 'createdAt', align: 'center', label: 'CreatedAt', field: 'createdAt', sortable: true }
           ]"
           row-key="_id"
           selection="single"
           :filter="filter"
-          v-model:selected="selected"
+          v-model:selected="barixSelected"
         >
           <template v-slot:top-right>
             <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -129,10 +130,17 @@
               </template>
             </q-input>
           </template>
+          <template v-slot:body-cell-ip="props">
+            <q-td :props="props">
+              <div>
+                {{ props.value.IP_address }}
+              </div>
+            </q-td>
+          </template>
           <template v-slot:body-cell-uptime="props">
             <q-td :props="props">
               <div>
-                {{ secToDays(props.value) }}
+                {{ secToDays(props.value.UpTime) }}
               </div>
             </q-td>
           </template>
@@ -161,65 +169,87 @@
   </q-dialog>
 </template>
 
-<script setup>
-import { ref, reactive, defineProps, defineEmits, onMounted, computed, getCurrentInstance } from 'vue'
+<script>
+import { ref, reactive, onMounted, computed, inject, toRefs } from 'vue'
 import secToDays from '../../apis/secToDays'
 import timeFormat from '../../apis/timeFormat'
 import { useQuasar } from 'quasar'
+import { useStore } from 'vuex'
 
-const { proxy } = getCurrentInstance()
-const $q = useQuasar()
-const props = defineProps({ selectedItem: Object })
-const emit = defineEmits(['close'])
+export default {
+  props: ['selected'],
+  emits: ['close'],
+  setup (props, { emit }) {
+    const $q = useQuasar()
+    const { state, getters, dispatch } = useStore()
+    const { selected } = toRefs(props)
+    const $api = inject('$api')
 
-const locationNames = computed(() => proxy.$store.getters['locations/getLocationNames'])
-const barixes = computed(() => proxy.$store.state.barix.deviceList)
-const mode = ref('create')
-const values = ref({ index: 1, name: '', mode: 'Barix', location: '', channel: null, mac: '' })
-const filter = ref('')
-const dialog = ref(false)
-const selected = ref([])
-const error = ref('')
+    const locationNames = computed(() => getters['locations/getLocationNames'])
+    const barixes = computed(() => state.barix.deviceList)
+    const mode = ref('create')
+    const values = ref({ index: 1, name: '', mode: 'Barix', location: '', channel: null, mac: '', Barix: [] })
+    const filter = ref('')
+    const dialog = ref(false)
+    const barixSelected = ref([])
+    const error = ref('')
 
-onMounted(() => {
-  if (Object.keys(props.selectedItem).length) {
-    mode.value = 'edit'
-    values.value = { ...props.selectedItem }
-    if (values.value.Barix) {
-      selected.value[0] = props.selectedItem.Barix
+    onMounted(() => {
+      if (Object.keys(selected.value).length) {
+        mode.value = 'edit'
+        values.value = { ...selected.value }
+        if (values.value.Barix.length) {
+          barixSelected.value[0] = selected.value.Barix[0]
+        }
+      } else {
+        mode.value = 'create'
+      }
+    })
+
+    const rules = reactive({
+      required: [value => !!value || '필수 입력 항목 입니다.'],
+      port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
+      channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
+    })
+
+    function selectBarix () {
+      console.log(barixSelected.value[0])
+      values.value.mac = barixSelected.value[0].mac
+      dialog.value = false
     }
-  } else {
-    mode.value = 'create'
-  }
-})
 
-const rules = reactive({
-  required: [value => !!value || '필수 입력 항목 입니다.'],
-  port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
-  channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
-})
-
-function selectBarix () {
-  console.log(selected.value[0])
-  values.value.mac = selected.value[0].mac
-  dialog.value = false
-}
-
-const onSubmit = async () => {
-  $q.loading.show()
-  try {
-    if (mode.value === 'create') {
-      await proxy.$api.post('/zones', values.value)
-    } else {
-      await proxy.$api.put('/zones', values.value)
+    const onSubmit = async () => {
+      $q.loading.show()
+      try {
+        if (mode.value === 'create') {
+          await $api.post('/zones', values.value)
+        } else {
+          await $api.put('/zones', values.value)
+        }
+        dispatch('zones/updateZones')
+        $q.loading.hide()
+        emit('close')
+      } catch (err) {
+        $q.loading.hide()
+        error.value = err.response.data.message
+        console.error(err)
+      }
     }
-    proxy.$store.dispatch('zones/updateZones')
-    $q.loading.hide()
-    emit('close')
-  } catch (err) {
-    $q.loading.hide()
-    error.value = err.response.data.message
-    console.error(err)
+    return {
+      error,
+      mode,
+      locationNames,
+      barixes,
+      values,
+      filter,
+      dialog,
+      barixSelected,
+      rules,
+      selectBarix,
+      secToDays,
+      timeFormat,
+      onSubmit
+    }
   }
 }
 </script>

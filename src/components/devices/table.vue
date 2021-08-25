@@ -10,35 +10,36 @@
         <q-td key="index" :props="props">
           <q-avatar class="shadow-3" size="2rem">
             <q-badge v-if="props.row.alarm" floating rounded color="orange" />
-            <q-badge v-if="props.row.status" floating rounded color="red" />
+            <q-badge v-if="!props.row.checked" floating rounded color="yellow" />
+            <q-badge v-if="!props.row.status" floating rounded color="red" />
             {{ props.row.index }}
           </q-avatar>
         </q-td>
         <q-td key="index" :props="props">
-          <div>{{ props.row.name }}</div>
+          <div>{{ props.row.name ?? 'No Name' }}</div>
         </q-td>
         <q-td key="ipaddress" :props="props">
-          <div style="font-family: nanumgothicbold">{{ props.row.ipaddress }}</div>
+          <div style="font-family: nanumgothicbold">{{ props.row.info.IP_address }}</div>
           <div class="text-caption">MAC:{{ props.row.mac }}</div>
         </q-td>
         <q-td key="volume" :props="props">
           <q-circular-progress
             show-value
             font-size=".7rem"
-            :value="props.row.volume"
+            :value="Number(props.row.info.Volume)"
             size="2.5rem"
             :thickness="0.22"
             color="cyan"
             track-color="grey-3"
           >
-            {{ props.row.volume }}%
+            {{ props.row.info.Volume }}%
           </q-circular-progress>
         </q-td>
         <q-td key="uptime" :props="props">
-          <div>{{ secToDays(props.row.uptime) }}</div>
+          <div>{{ secToDays(props.row.info.UpTime) }}</div>
         </q-td>
         <q-td key="streamurl" :props="props">
-          <div style="word-break: break-all;">{{ props.row.streamurl }}</div>
+          <div style="word-break: break-all;">{{ props.row.info.URL }}</div>
         </q-td>
         <q-td key="createdAt" :props="props">
           <div>{{ timeFormat(props.row.createdAt) }}</div>
@@ -46,17 +47,14 @@
         <q-td key="actions" :props="props">
           <div>
             <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey" @click="openInfo(props.row)" />
-            <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="openDialog" />
-            <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" />
+            <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="createUpdateItem(props.row)" />
+            <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" @click="deleteItem(props.row)" />
           </div>
         </q-td>
       </q-tr>
     </template>
   </q-table>
 
-  <q-dialog v-model="dialog">
-    <Setup :data="propsData" />
-  </q-dialog>
   <q-dialog v-model="infoDalog">
     <q-card style="width: 40rem; border-radius: .5rem;">
       <q-card-section>
@@ -82,55 +80,55 @@
         </div>
         <div class="row">
           <div class="col-4 text-bold">Bitrate</div>
-          <div>{{ info.bitrate }}</div>
+          <div>{{ info.info.Bitrate }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Buffer</div>
-          <div>{{ info.buffer }}</div>
+          <div>{{ info.info.BufferLevel }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Error</div>
-          <div>{{ info.error }}</div>
+          <div>{{ info.info.Error }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Frame Drop</div>
-          <div>{{ info.framedrop }}</div>
+          <div>{{ info.info.FrameDrop }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Frame Dup</div>
-          <div>{{ info.framedup }}</div>
+          <div>{{ info.info.FrameDup }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold q-pa-none">Frame Loss</div>
-          <div>{{ info.frameloss }}</div>
+          <div>{{ info.info.FrameLoss }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Latency</div>
-          <div>{{ info.latency }}</div>
+          <div>{{ info.info.Latency }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Reconnects</div>
-          <div>{{ info.reconnects }}</div>
+          <div>{{ info.info.Reconnects }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Soft Error</div>
-          <div>{{ info.softerrorcount }}</div>
+          <div>{{ info.info.SoftErrorCount }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Stream Number</div>
-          <div>{{ info.streamnumber }}</div>
+          <div>{{ info.info.StreamNumber }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Url</div>
-          <div>{{ info.streamurl }}</div>
+          <div>{{ info.info.URL }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Volume</div>
-          <div>{{ info.volume }}%</div>
+          <div>{{ info.info.Volume }}%</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Up Time</div>
-          <div>{{ secToDays(info.uptime) }}</div>
+          <div>{{ secToDays(info.info.UpTime) }}</div>
         </div>
         <div class="row">
           <div class="col-4 text-bold">Created At</div>
@@ -149,9 +147,17 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="createUpdateDialog">
+    <CreateUpdate :selected="selected" @close="createUpdateDialog = false"/>
+  </q-dialog>
+
+  <q-dialog v-model="deleteDialog" persistent>
+    <Delete :selected="selected" @close="deleteDialogClose" />
+  </q-dialog>
 </template>
 
-<script setup>
+<script>
 const tableColumes = [
   { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
   { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
@@ -164,49 +170,71 @@ const tableColumes = [
 ]
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-// import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
-// import chkUptime from '../../apis/chkUptime'
-import Setup from '../../components/devices/setupDialog'
-const store = useStore()
-// vuex
-const tableData = computed(() => store.state.barix.deviceList)
-// const mode = computed(() => store.state.barix.mode)
-// variable
-const dialog = ref(false)
-const propsData = ref(null)
+import CreateUpdate from './createUpdate.vue'
+import Delete from './delete.vue'
+export default {
+  components: { CreateUpdate, Delete },
+  setup () {
+    const store = useStore()
+    // vuex
+    const tableData = computed(() => store.state.barix.deviceList)
+    // variable
+    const createUpdateDialog = ref(false)
+    const selected = ref(null)
 
-const infoDalog = ref(false)
-const info = ref(null)
+    const infoDalog = ref(false)
+    const info = ref(null)
 
-function openInfo (data) {
-  info.value = data
-  infoDalog.value = true
-  console.log(info.value)
+    const deleteDialog = ref(false)
+
+    function openInfo (data) {
+      info.value = data
+      infoDalog.value = true
+      console.log(info.value)
+    }
+
+    function createUpdateItem (item) {
+      selected.value = item
+      createUpdateDialog.value = true
+    }
+
+    function deleteDialogClose () {
+      selected.value = {}
+      deleteDialog.value = false
+    }
+
+    function deleteItem (item) {
+      selected.value = item
+      deleteDialog.value = true
+    }
+
+    onMounted(async () => {
+      socket.on('deviceList', (r) => {
+        store.dispatch('barix/updateListAsWebsoket', r)
+      })
+      store.dispatch('barix/updateDevices')
+    })
+    return {
+      tableColumes,
+      timeFormat,
+      secToDays,
+      tableData,
+      createUpdateDialog,
+      infoDalog,
+      info,
+      openInfo,
+      createUpdateItem,
+      selected,
+      deleteDialog,
+      deleteDialogClose,
+      deleteItem
+    }
+  }
 }
 
-function openDialog (data) {
-  console.log(data)
-  propsData.value = data
-  dialog.value = true
-}
-
-// function setBarix (info) {
-//   api.get(`http://${info.ipaddress}/rc.cgi?c=102`).then((res) => {
-//     console.log('res = ', res)
-//   }).catch(err => {
-//     console.log('err = ', err)
-//   })
-// }
-
-onMounted(async () => {
-  socket.on('deviceList', (r) => {
-    store.dispatch('barix/updateListAsWebsoket', r)
-  })
-  store.dispatch('barix/updateList')
-})
 </script>
 
 <style scoped>

@@ -9,9 +9,9 @@
         </div>
         <div class="col-10">
           <div style="font-size: 1.2rem; font-weight: bold; font-family: nanumgothicbold;">
-            {{ mode === 'create' ? 'Location 추가':'Location 수정' }}
+            {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
           </div>
-          <div class="discription">지역단위 혹은 본부 DSP 추가 및 설정</div>
+          <div class="discription">디바이스 설정</div>
         </div>
       </div>
     </q-card-section>
@@ -37,61 +37,43 @@
       <q-card-section class="q-pt-sm">
         <div class="q-px-sm q-mx-sm colume" style="border-radius: 1rem;">
           <div class="q-pa-sm">
-            <div>
-              <div class="text">지역 인덱스</div>
+            <div class="row justify-between items-center">
+              <div class="text">디바이스 확인</div>
+              <q-checkbox
+                disable
+                v-model="values.checked"
+              />
+            </div>
+            <div class="q-mt-md">
+              <div class="text">디바이스 인덱스</div>
               <q-input
                 v-model="values.index"
                 dense outlined bg-color="white" type="number"
               />
             </div>
             <div class="q-mt-md">
-              <div class="text">지역 이름</div>
+              <div class="text">디바이스 이름</div>
               <q-input
                 v-model="values.name"
                 dense outlined bg-color="white"
-                lazy-rules :rules="rules.required"
               />
             </div>
             <div>
               <div class="text">IP Address</div>
               <q-input
-                v-model="values.ip"
+                :disable="mode === 'create' ? false:true"
+                v-model="values.info.IP_address"
                 dense outlined bg-color="white"
-                lazy-rules :rules="rules.required"
               />
             </div>
             <div>
-              <div class="text">Port</div>
+              <div class="text">Mac Address</div>
               <q-input
-                v-model="values.port"
-                dense outlined bg-color="white" type="number"
-                lazy-rules
-                :rules="rules.port"
+                :disable="mode === 'create' ? false:true"
+                v-model="values.mac"
+                dense outlined bg-color="white"
+                laze-rules :rules="rules.mac"
               />
-            </div>
-            <div>
-              <div class="text">Mode</div>
-              <q-select dense outlined v-model="values.mode" :options="['Q-sys', 'Barix']" />
-            </div>
-
-            <!-- mode 종속 -->
-            <div v-if="values.mode === 'Barix'"
-              class="q-mt-sm q-py-sm q-px-md"
-              style="border: 1px solid #e4e4e4; border-radius: 1rem;"
-            >
-              <div>
-                <div class="text">Parent</div>
-                <q-select dense outlined v-model="values.parent" :options="locationNames" />
-              </div>
-              <div>
-                <div class="text">채널</div>
-                <q-input
-                  v-model="values.channel"
-                  dense outlined bg-color="white" type="number"
-                  lazy-rules
-                  :rules="rules.channel"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -126,14 +108,17 @@ export default {
     const values = ref({
       index: 1,
       name: '',
-      ip: '',
-      port: 1720,
-      mode: 'Q-sys',
-      parent: '',
-      channel: null
+      mac: '',
+      checked: false,
+      info: {
+        IP_address: '',
+        UpTime: 0,
+        Volume: 0
+      }
     })
     const rules = reactive({
       required: [value => !!value || '필수 입력 항목 입니다.'],
+      mac: [value => !!value || '필수 입력 항목 입니다.', v => v.length === 12 || 'MAC Address를 확인해주세요.'],
       port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
       channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
     })
@@ -142,11 +127,11 @@ export default {
       $q.loading.show()
       try {
         if (mode.value === 'create') {
-          await $api.post('/locations', values.value)
+          await $api.post('/devices', values.value)
         } else {
-          await $api.put('/locations', values.value)
+          await $api.put('/devices', values.value)
         }
-        await dispatch('locations/updateLocations')
+        await dispatch('barix/updateDevices')
         $q.loading.hide()
         emit('close')
       } catch (err) {
@@ -157,9 +142,11 @@ export default {
     }
 
     onMounted(() => {
-      if (Object.keys(selected.value).length) {
+      if (selected.value && Object.keys(selected.value).length) {
         mode.value = 'edit'
-        values.value = { ...selected.value }
+        for (const property in selected.value) {
+          values.value[property] = selected.value[property]
+        }
       } else {
         mode.value = 'create'
       }

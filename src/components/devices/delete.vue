@@ -10,10 +10,10 @@
         </span>
         <span class="col-10">
           <div style="font-size: 1.5rem; font-weight: bold; font-family: nanumgothicbold;">
-            Location 삭제
+            디바이스 삭제
           </div>
           <div class="q-mt-md discription">
-            이름: <strong>{{ props.selected.name }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong> 해당 지역을 삭제 하시겠습니까? 삭제 후에는 복구가 불가능 하며 설정된 방송 구간에 방송이 송출되지 않을 수 있으니 다시 한번 확인 해주세요.
+            이름: <strong>{{ props.selected.name ?? 'No Name' }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong>, MAC: <strong>{{ props.selected.mac }}</strong> 해당 디바이스를 삭제 하시겠습니까? 삭제 후에도 장비가 설치되어 있으면 리스트에서 지워지지 않을 수 있습니다.
           </div>
         </span>
       </div>
@@ -47,8 +47,8 @@ export default {
       $q.loading.show()
       console.log(selected.value)
       try {
-        await $api.get(`/locations/delete?_id=${selected.value._id} `)
-        await dispatch('locations/updateLocations')
+        await $api.get(`/devices/delete?_id=${selected.value._id} `)
+        await dispatch('barix/updateDevices')
         $q.loading.hide()
         emit('close')
       } catch (err) {
@@ -81,5 +81,8 @@ export default {
 .discription > strong {
   font-family: nanumgothicbold;
   font-size: 1rem;
+}
+strong {
+  color: black;
 }
 </style>

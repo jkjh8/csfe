@@ -47,20 +47,23 @@ import { socket } from '../boot/socketio'
 import RouterAddress from '../components/layout/routeLink'
 import Notice from '../components/layout/notice.vue'
 import UserMenu from '../components/layout/user.vue'
-const store = useStore()
+const { state, commit, dispatch } = useStore()
 const route = useRoute()
 
-const user = computed(() => store.state.user.user)
+const user = computed(() => state.user.user)
 const currentPath = computed(() => route.path)
 
 onBeforeMount(() => {
   socket.on('connect', () => {
     console.log('socket connected')
-    store.commit('socket/connectState', true)
+    commit('socket/connectState', true)
   })
   socket.on('disconnect', () => {
     console.log('socket disconnect')
-    store.commit('socket/connectState', false)
+    commit('socket/connectState', false)
+  })
+  socket.on('devices', (devices) => {
+    dispatch('barix/updateListAsWebsoket', devices)
   })
   socket.connect()
 })

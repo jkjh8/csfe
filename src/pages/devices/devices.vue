@@ -25,8 +25,13 @@
             </q-item-section>
           </q-item>
         </span>
-        <span>
-          <q-checkbox v-model="mode" left-label label="모드" />
+        <span class="q-mr-md">
+          <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="md" color="teal-6" @click="dialog=!dialog">
+            <q-tooltip
+              class="bg-white text-black"
+              :delay="500"
+            >디바이스 추가</q-tooltip>
+          </q-btn>
         </span>
       </div>
     </q-card-section>
@@ -37,31 +42,37 @@
       <Table />
     </q-card-section>
   </q-card>
+  <q-dialog v-model="dialog">
+    <CreateUpdate @close="dialog=false" />
+  </q-dialog>
 </template>
 
 <script>
-import { defineComponent, computed, onBeforeMount } from 'vue'
+import { defineComponent, ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import getUser from '../../apis/users'
 import Table from '../../components/devices/table.vue'
+import CreateUpdate from '../../components/devices/createUpdate.vue'
 
 export default defineComponent({
-  components: { Table },
+  components: { Table, CreateUpdate },
   setup () {
-    const store = useStore()
+    const { state } = useStore()
 
-    const count = computed(() => store.state.barix.count)
-    const connected = computed(() => store.state.socket.connect)
-    const mode = computed({
-      get () { return store.state.barix.mode },
-      set (value) { return store.commit('barix/changeMode', value) }
-    })
+    const count = computed(() => state.barix.count)
+    const connected = computed(() => state.socket.connect)
+
+    const dialog = ref(false)
+
+    function addDevice () {
+      dialog.value = true
+    }
 
     onBeforeMount(() => {
       getUser()
     })
 
-    return { count, connected, mode }
+    return { count, connected, dialog, addDevice }
   }
 })
 </script>
