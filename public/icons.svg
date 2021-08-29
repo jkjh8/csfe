@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" style="height: 0; width: 0; position: absolute; visibility: hidden">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#787878;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#565656;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="80%" y1="0%" x2="100%" y2="80%">
+        <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#07BABD;stop-opacity:1" />
+        <stop offset="90%" style="stop-color:#118284;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#00AB59;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
   <symbol id="chat-alt" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
   </symbol>
@@ -105,19 +118,18 @@
   </symbol>
 
   <symbol id="logo-circle" viewBox="0 0 320 320">
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-            <circle id="Oval" stroke="#80CBC4" stroke-width="20" fill="#474747" cx="160" cy="160" r="140"></circle>
-            <g transform="translate(75, 85)" id="Rectangle" stroke-width="5">
-                <g>
-                    <rect stroke="#979797" fill="#FFFFFF" x="121" y="1" width="48" height="150" rx="8"></rect>
-                    <path d="M42,1 C43,1 45,1 46,3 C48,4 49,6 49,8 L49,8 L49,142 C49,143 48,145 46,146 C45,148 43,149 42,149 L42,149 L8,149 C6,149 4,148 3,146 C1,145 1,143 1,142 L1,142 L1,8 C1,6 1,4 3,3 C4,1 6,1 8,1 L8,1 Z" stroke="#0ea5e9" fill="#22d3ee">
-                    </path>
-                    
-                    <path d="M102,51 C103,51 105,51 106,53 C108,54 109,56 109,58 L109,58 L109,142 C109,143 108,145 106,146 C105,148 103,149 102,149 L102,149 L68,149 C66,149 64,148 63,146 C61,145 61,143 61,142 L61,142 L61,58 C61,56 61,54 63,53 C64,51 66,51 68,51 L68,51 Z" stroke="#979797" fill="#FFFFFF"></path>
-                </g>
-            </g>
-        </g>
+    <g>
+      <circle id="Oval" stroke="url(#grad2)" stroke-width="20" fill="#474747" cx="160" cy="160" r="140"></circle>
+      <g transform="translate(75, 85)" id="Rectangle" stroke-width="5">
+          <g>
+              <rect stroke="#979797" fill="#FFFFFF" x="121" y="1" width="48" height="150" rx="8"></rect>
+              <path d="M42,1 C43,1 45,1 46,3 C48,4 49,6 49,8 L49,8 L49,142 C49,143 48,145 46,146 C45,148 43,149 42,149 L42,149 L8,149 C6,149 4,148 3,146 C1,145 1,143 1,142 L1,142 L1,8 C1,6 1,4 3,3 C4,1 6,1 8,1 L8,1 Z" stroke="#0ea5e9" fill="#22d3ee">
+              </path>
+              
+              <path d="M102,51 C103,51 105,51 106,53 C108,54 109,56 109,58 L109,58 L109,142 C109,143 108,145 106,146 C105,148 103,149 102,149 L102,149 L68,149 C66,149 64,148 63,146 C61,145 61,143 61,142 L61,142 L61,58 C61,56 61,54 63,53 C64,51 66,51 68,51 L68,51 Z" stroke="#979797" fill="#FFFFFF"></path>
+          </g>
+      </g>
     </g>
   </symbol>
 </svg>
+<svg><use xlink:href="#logo-circle" /></svg>

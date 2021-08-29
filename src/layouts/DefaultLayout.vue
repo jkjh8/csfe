@@ -3,7 +3,8 @@
     <q-header>
       <q-toolbar class="text-grey-10" style="background: #fbfbfb; height: 4rem;">
         <q-toolbar-title class="row items-center q-ml-md">
-          <q-icon name="svguse:icons.svg#logo-circle" size="3rem" @click="$router.push('/')" />
+          <q-icon name="img:logo-c.svg" size="3rem" @click="$router.push('/')">
+          </q-icon>
           <!-- <router-link class="q-ml-sm q-mb-xs" style="text-decoration: none;" to="/">
             <div style="font-family: branda; font-size:1rem; color: teal;">MS</div>
             <div style="font-size: .5rem; color: grey;">Media Server</div>
@@ -75,6 +76,6 @@ onBeforeUnmount(() => {
 
 <style>
 .body--light {
-  background: #fbfbfb;
+  background: #FBFBFB;
 }
 </style>
