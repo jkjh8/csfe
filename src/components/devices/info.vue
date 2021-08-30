@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 40rem; border-radius: .5rem;">
+  <q-card v-if="noData" style="width: 40rem; border-radius: .5rem;">
     <q-card-section>
       <div class="row items-center">
         <div>
@@ -89,16 +89,50 @@
       <q-btn class="q-ma-sm" padding=".5rem 2rem" flat label="Close" />
     </q-card-actions>
   </q-card>
+  <q-card v-else style="width: 40rem; border-radius: .5rem;">
+    <q-card-section>
+      <div class="row items-center">
+        <div>
+          <q-avatar color="blue-2" text-color="white">
+            <q-icon name="svguse:icons.svg#server-fill" />
+          </q-avatar>
+        </div>
+        <div class="q-ml-md">
+          <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">{{ info.name ?? '이름 없음' }}</div>
+        </div>
+      </div>
+    </q-card-section>
+     <q-separator />
+    <q-card-section class="row justify-center">
+      <h2>NO DATA</h2>
+    </q-card-section>
+    <q-separator />
+
+    <q-card-actions align="right" v-close-popup>
+      <q-btn class="q-ma-sm" padding=".5rem 2rem" flat label="Close" />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script>
-import timeFormat from '../../../apis/timeFormat'
-import secToDays from '../../../apis/secToDays'
-
+import timeFormat from '../../apis/timeFormat'
+import secToDays from '../../apis/secToDays'
+import { ref, onBeforeMount } from 'vue'
 export default {
   props: ['info'],
   setup (props) {
+    const data = ref({})
+    const noData = ref(false)
+    onBeforeMount(() => {
+      if (Object.keys(props.info).length) {
+        data.value = { ...props.info }
+      } else {
+        noData.value = true
+      }
+    })
     return {
+      data,
+      noData,
       timeFormat,
       secToDays
     }
