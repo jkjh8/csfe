@@ -1,5 +1,5 @@
 <template>
-  <q-card v-if="noData" style="width: 40rem; border-radius: .5rem;">
+  <q-card v-if="deviceData.info" style="width: 40rem; border-radius: .5rem;">
     <q-card-section>
       <div class="row items-center">
         <div>
@@ -8,8 +8,12 @@
           </q-avatar>
         </div>
         <div class="q-ml-md">
-          <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">{{ info.name ?? '이름 없음' }}</div>
-          <div style="font-family: nanumgothic; font-size: .5rem;">MAC: {{ info.mac }}</div>
+          <div style="font-family: nanumgothicbold; font-size: 1.2rem;">
+            {{ deviceData.name ==='' ? 'No Name': deviceData.name }}
+          </div>
+          <div style="font-family: nanumgothic; font-size: .5rem;">
+            MAC: {{ deviceData.mac === '' ? 'no mac address':deviceData.mac }}
+          </div>
         </div>
       </div>
     </q-card-section>
@@ -17,70 +21,8 @@
     <q-separator />
 
     <q-card-section class="q-mx-md q-gutter-sm">
-      <div class="row">
-        <div class="col-4 text-bold">Alarm</div>
-        <div class="text-uppercase q-pa-none">{{ info.alarm }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Bitrate</div>
-        <div>{{ info.info.Bitrate }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Buffer</div>
-        <div>{{ info.info.BufferLevel }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Error</div>
-        <div>{{ info.info.Error }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Frame Drop</div>
-        <div>{{ info.info.FrameDrop }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Frame Dup</div>
-        <div>{{ info.info.FrameDup }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold q-pa-none">Frame Loss</div>
-        <div>{{ info.info.FrameLoss }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Latency</div>
-        <div>{{ info.info.Latency }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Reconnects</div>
-        <div>{{ info.info.Reconnects }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Soft Error</div>
-        <div>{{ info.info.SoftErrorCount }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Stream Number</div>
-        <div>{{ info.info.StreamNumber }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Url</div>
-        <div>{{ info.info.URL }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Volume</div>
-        <div>{{ info.info.Volume }}%</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Up Time</div>
-        <div>{{ secToDays(info.info.UpTime) }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Created At</div>
-        <div>{{ timeFormat(info.createdAt) }}</div>
-      </div>
-      <div class="row">
-        <div class="col-4 text-bold">Updated At</div>
-        <div>{{ timeFormat(info.updatedAt) }}</div>
-      </div>
+      <BarixInfo v-if="deviceData.type === 'Barix' && deviceData.info" :deviceData="deviceData"></BarixInfo>
+      <QsysInfo v-if="deviceData.type === 'QSys' && deviceData.info" :deviceData="deviceData"></QsysInfo>
     </q-card-section>
 
     <q-separator />
@@ -98,13 +40,18 @@
           </q-avatar>
         </div>
         <div class="q-ml-md">
-          <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">{{ info.name ?? '이름 없음' }}</div>
+          <div style="font-family: nanumgothicbold; font-weight: bold; font-size: 1.2rem;">
+            {{  deviceData.name ==='' ? 'No Name': deviceData.name }}
+          </div>
+          <div style="font-family: nanumgothic; font-size: .5rem;">
+            MAC: {{ deviceData.mac === '' ? 'No MAC address':deviceData.mac }}
+          </div>
         </div>
       </div>
     </q-card-section>
      <q-separator />
     <q-card-section class="row justify-center">
-      <h2>NO DATA</h2>
+      <h2>No Device Data</h2>
     </q-card-section>
     <q-separator />
 
@@ -118,21 +65,20 @@
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
 import { ref, onBeforeMount } from 'vue'
+import BarixInfo from './barix/barixForm'
+import QsysInfo from './qsys/qsysForm.vue'
 export default {
   props: ['info'],
+  components: { BarixInfo, QsysInfo },
   setup (props) {
-    const data = ref({})
-    const noData = ref(false)
+    const deviceData = ref({})
     onBeforeMount(() => {
       if (Object.keys(props.info).length) {
-        data.value = { ...props.info }
-      } else {
-        noData.value = true
+        deviceData.value = { ...props.info }
       }
     })
     return {
-      data,
-      noData,
+      deviceData,
       timeFormat,
       secToDays
     }

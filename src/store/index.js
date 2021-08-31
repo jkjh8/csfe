@@ -1,7 +1,7 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
 
-import barix from './barix'
+import devices from './devices'
 import user from './user'
 import eventlog from './eventlog'
 import socket from './socket'
@@ -13,7 +13,7 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       user,
       eventlog,
-      barix,
+      devices,
       socket,
       locations,
       zones

@@ -64,7 +64,7 @@ onBeforeMount(() => {
     commit('socket/connectState', false)
   })
   socket.on('devices', (devices) => {
-    dispatch('barix/updateListAsWebsoket', devices)
+    dispatch('devices/updateListAsWebsoket', devices)
   })
   socket.connect()
 })

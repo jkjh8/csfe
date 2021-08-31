@@ -43,7 +43,7 @@
   </q-table>
 
   <q-dialog v-model="infoDalog">
-    <BarixInfo :info="info" />
+    <Info :info="info" />
   </q-dialog>
 
   <q-dialog v-model="createUpdateDialog">
@@ -73,14 +73,14 @@ import secToDays from '../../apis/secToDays'
 import CreateUpdate from './createUpdate.vue'
 import Delete from './delete.vue'
 
-import BarixInfo from './info.vue'
+import Info from './info.vue'
 
 export default {
-  components: { CreateUpdate, Delete, BarixInfo },
+  components: { CreateUpdate, Delete, Info },
   setup () {
     const store = useStore()
     // vuex
-    const tableData = computed(() => store.state.barix.deviceList)
+    const tableData = computed(() => store.state.devices.deviceList)
     // variable
     const createUpdateDialog = ref(false)
     const selected = ref(null)
@@ -113,9 +113,9 @@ export default {
 
     onMounted(async () => {
       socket.on('deviceList', (r) => {
-        store.dispatch('barix/updateListAsWebsoket', r)
+        store.dispatch('devices/updateListAsWebsoket', r)
       })
-      store.dispatch('barix/updateDevices')
+      store.dispatch('devices/updateDevices')
     })
     return {
       tableColumes,

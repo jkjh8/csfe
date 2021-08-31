@@ -13,7 +13,7 @@
             디바이스 삭제
           </div>
           <div class="q-mt-md discription">
-            이름: <strong>{{ props.selected.name ?? 'No Name' }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong>, MAC: <strong>{{ props.selected.mac }}</strong> 해당 디바이스를 삭제 하시겠습니까? 삭제 후에도 장비가 설치되어 있으면 리스트에서 지워지지 않을 수 있습니다.
+            이름: <strong>{{ props.selected.name === '' ? 'No Name': props.selected.name }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong>, IP: <strong>{{ props.selected.ipaddress }}</strong> 해당 디바이스를 삭제 하시겠습니까? 삭제 후에도 장비가 설치되어 있으면 리스트에서 지워지지 않을 수 있습니다.
           </div>
         </span>
       </div>
@@ -48,7 +48,7 @@ export default {
       console.log(selected.value)
       try {
         await $api.get(`/devices/delete?_id=${selected.value._id} `)
-        await dispatch('barix/updateDevices')
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
         emit('close')
       } catch (err) {

@@ -1,15 +1,15 @@
 <template>
   <q-card
-    class="q-mx-md q-my-md"
-    style="border-radius: 10px"
+    class="q-mx-md q-my-md shadow-5"
+    style="border-radius: 1rem"
   >
-    <q-card-section>
+    <q-card-section class="q-py-sm">
       <div class="row justify-between items-center">
         <span class="row items-center">
           <q-avatar
             color="teal-14"
             text-color="white"
-            size="36px"
+            size="2rem"
             icon="fas fa-play-circle"
           />
           <q-item class="q-py-none">
@@ -57,9 +57,9 @@ import CreateUpdate from '../../components/devices/createUpdate.vue'
 export default defineComponent({
   components: { Table, CreateUpdate },
   setup () {
-    const { state } = useStore()
+    const { state, getters } = useStore()
 
-    const count = computed(() => state.barix.count)
+    const count = computed(() => getters['devices/getDeviceCount'])
     const connected = computed(() => state.socket.connect)
 
     const dialog = ref(false)

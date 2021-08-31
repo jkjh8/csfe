@@ -1,26 +1,24 @@
 <template>
-  <q-card style="width: 100%; border-radius: 1rem;">
+  <q-card style="width: 28rem; border-radius: 1rem;">
     <!-- 이름 테그 -->
-    <q-card-section>
-      <div class="row items-center">
-        <div class="col-1" style="width: 4rem;">
-          <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
-            :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
+    <q-card-section class="row q-py-sm">
+      <span class="col-1" style="width: 4rem;">
+        <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
+          :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
+      </span>
+      <span class="col-10">
+        <div style="font-size: 1.2rem; font-weight: bold; font-family: nanumgothicbold;">
+          {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
         </div>
-        <div class="col-10">
-          <div style="font-size: 1.2rem; font-weight: bold; font-family: nanumgothicbold;">
-            {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
-          </div>
-          <div class="discription">디바이스 설정</div>
-        </div>
-      </div>
+        <div class="discription">디바이스 설정</div>
+      </span>
     </q-card-section>
 
-    <q-separator class="q-mb-sm" />
+    <q-separator class="q-mb-md" />
 
     <!-- 에러 메세지 표시창 -->
-      <q-card-section class="q-pb-none q-mx-lg" v-if="error">
-        <div style="position: relative; height: 3rem;">
+      <q-card-section class="q-pb-none q-mx-lg row justify-center" v-if="error">
+        <div style="position: relative; height: 3rem; width: 25rem;">
           <div
             class="text-white row justify-end"
             style="position: absolute; border-radius: .5rem; width:100%; height: 3rem; background: #FF0000;"
@@ -34,63 +32,66 @@
       </q-card-section>
 
     <q-form @submit="onSubmit">
-      <q-card-section class="q-pt-sm">
-        <div class="q-px-sm q-mx-sm colume" style="border-radius: 1rem;">
-          <div class="q-pa-sm">
-            <div class="row justify-between items-center">
-              <div class="text">디바이스 확인</div>
-              <q-checkbox
-                disable
-                v-model="values.checked"
-              />
-            </div>
-            <div class="q-mt-md">
-              <div class="text">디바이스 인덱스</div>
-              <q-input
-                v-model="values.index"
-                dense outlined bg-color="white" type="number"
-              />
-            </div>
-            <div class="q-mt-md">
-              <div class="text">디바이스 이름</div>
-              <q-input
-                v-model="values.name"
-                dense outlined bg-color="white"
-              />
-            </div>
-            <div>
-              <div class="text">IP Address</div>
-              <q-input
-                :disable="mode === 'create' ? false:true"
-                v-model="values.info.IP_address"
-                dense outlined bg-color="white"
-              />
-            </div>
-            <div>
-              <div class="text">Mac Address</div>
-              <q-input
-                :disable="mode === 'create' ? false:true"
-                v-model="values.mac"
-                dense outlined bg-color="white"
-                laze-rules :rules="rules.mac"
-              />
-            </div>
-          </div>
+      <q-card-section class="q-pt-sm row justify-center q-mb-md">
+        <div class="colume update" style="width: 25rem;">
+          <div class="text">디바이스 인덱스</div>
+          <q-input
+            v-model="values.index"
+            dense outlined bg-color="white" type="number"
+          />
+          <div class="text margin-top">디바이스 이름</div>
+          <q-input
+            v-model="values.name"
+            dense outlined bg-color="white"
+            placeholder="Device Name"
+          />
+          <div class="text margin-top">IP Address</div>
+          <q-input
+            v-model="values.ipaddress"
+            dense outlined bg-color="white"
+            lazy-rules
+            :rules="[
+              $rules.required('필수 입력 항목 입니다.'),
+              $rules.ipAddress('IP 주소 형식이 아닙니다.')
+            ]"
+            placeholder="Ip Address"
+          />
+          <div class="text">Mac Address</div>
+          <q-input
+            :disable="mode === 'create' ? false:true"
+            v-model="values.mac"
+            dense outlined bg-color="white"
+            placeholder="Mac Address"
+          />
+          <div class="text margin-top">Device Type</div>
+          <q-select
+            v-model="values.type"
+            dense outlined bg-color="white"
+            :options="['Barix', 'QSys']"
+            label="Select device type"
+          />
+          <div class="text margin-top">Mode</div>
+          <q-select
+            v-model="values.mode"
+            dense outlined bg-color="white"
+            :options="['Input', 'Output']"
+            label="Select device active mode"
+          />
         </div>
       </q-card-section>
 
       <q-separator />
 
-      <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
-        <q-btn class="q-ma-sm text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
+      <q-card-actions class="q-py-sm" align="right">
+        <q-btn class="text q-mx-sm" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
+        <q-btn class="text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
       </q-card-actions>
     </q-form>
   </q-card>
 </template>
 
 <script>
-import { inject, ref, toRefs, reactive, onMounted, computed } from 'vue'
+import { inject, ref, toRefs, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 
@@ -103,24 +104,18 @@ export default {
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
+    const indexArr = computed(() => getters['devices/getIndexArr'])
     const mode = ref('create')
     const error = ref('')
     const values = ref({
-      index: 1,
+      index: null,
       name: '',
       mac: '',
+      type: 'QSys',
+      mode: 'Input',
       checked: false,
-      info: {
-        IP_address: '',
-        UpTime: 0,
-        Volume: 0
-      }
-    })
-    const rules = reactive({
-      required: [value => !!value || '필수 입력 항목 입니다.'],
-      mac: [value => !!value || '필수 입력 항목 입니다.', v => v.length === 12 || 'MAC Address를 확인해주세요.'],
-      port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
-      channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
+      ipaddress: '',
+      info: {}
     })
 
     const onSubmit = async () => {
@@ -131,7 +126,7 @@ export default {
         } else {
           await $api.put('/devices', values.value)
         }
-        await dispatch('barix/updateDevices')
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
         emit('close')
       } catch (err) {
@@ -150,6 +145,14 @@ export default {
       } else {
         mode.value = 'create'
       }
+      if (!values.value.index) {
+        for (let i = 1; i <= indexArr.value.length + 1; i++) {
+          if (!indexArr.value.includes(i)) {
+            values.value.index = i
+            break
+          }
+        }
+      }
     })
 
     return {
@@ -157,17 +160,11 @@ export default {
       mode,
       error,
       values,
-      rules,
       onSubmit,
       emit
     }
   }
 }
-// const { proxy } = getCurrentInstance()
-
-// const props = defineProps({ selectedItem: Object })
-// const emit = defineEmits(['close'])
-
 </script>
 
 <style>
@@ -178,9 +175,10 @@ export default {
 }
 .confirm {
   background: #22d3ee;
+  margin-right: 2rem;
 }
 .q-field--outlined .q-field__control:before {
-  border: 1px solid #e6e6e6;
+  border: 1px solid #e1e1e1;
 }
 .q-field--outlined:hover .q-field__control:before {
   border: 1px solid #216dff;
@@ -189,5 +187,11 @@ export default {
   font-family: nanumgothic;
   color: grey;
   font-size: .8rem;
+}
+.info {
+  padding: .5rem .5rem;
+}
+.margin-top {
+  margin-top: 1rem;
 }
 </style>

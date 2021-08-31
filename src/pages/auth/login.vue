@@ -1,7 +1,7 @@
 <template>
   <div
-    class="colume justify-center items-center"
-    style="margin-top: 4rem"
+    class="coulmn justify-center items-center q-mx-auto absolute-center"
+    style="width: 32rem;"
   >
     <div class="row justify-center">
       <q-icon name="svguse:icons.svg#user-circle-fill" size="9rem" color="grey-14" ></q-icon>

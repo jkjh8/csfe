@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-mx-md q-my-md" style="border-radius: 1rem;">
+  <q-card class="q-mx-md q-my-md shadow-5" style="border-radius: 1rem;">
     <q-card-section class="q-py-sm row justify-between items-center">
       <div class="row items-center">
         <span>
