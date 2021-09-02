@@ -47,7 +47,7 @@ export default {
       $q.loading.show()
       console.log(selected.value)
       try {
-        await $api.get(`/devices/delete?_id=${selected.value._id} `)
+        await $api.get(`/devices/delete?ipaddress=${selected.value.ipaddress} `)
         await dispatch('devices/updateDevices')
         $q.loading.hide()
         emit('close')

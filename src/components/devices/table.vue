@@ -46,7 +46,7 @@
     <Info :info="info" />
   </q-dialog>
 
-  <q-dialog v-model="createUpdateDialog">
+  <q-dialog v-model="createUpdateDialog" persistent>
     <CreateUpdate :selected="selected" @close="createUpdateDialog = false"/>
   </q-dialog>
 

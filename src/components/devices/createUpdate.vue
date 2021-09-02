@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 28rem; border-radius: 1rem;">
+  <q-card style="border-radius: 1rem;">
     <!-- 이름 테그 -->
     <q-card-section class="row q-py-sm">
       <span class="col-1" style="width: 4rem;">
@@ -32,7 +32,7 @@
       </q-card-section>
 
     <q-form @submit="onSubmit">
-      <q-card-section class="q-pt-sm row justify-center q-mb-md">
+      <q-card-section class="q-pt-sm row justify-center q-mb-md scroll" style="max-height: 50vh">
         <div class="colume update" style="width: 25rem;">
           <div class="text">디바이스 인덱스</div>
           <q-input
@@ -70,13 +70,37 @@
             :options="['Barix', 'QSys']"
             label="Select device type"
           />
-          <div class="text margin-top">Mode</div>
-          <q-select
-            v-model="values.mode"
-            dense outlined bg-color="white"
-            :options="['Input', 'Output']"
-            label="Select device active mode"
-          />
+          <div v-if="values.type === 'Barix'">
+            <div class="text margin-top">Mode</div>
+            <q-select
+              v-model="values.mode"
+              dense outlined bg-color="white"
+              :options="['Input', 'Output']"
+              label="Select device active mode"
+            />
+          </div>
+          <div v-if="values.type === 'QSys'">
+            <div class="text margin-top">Number of channels</div>
+            <q-input
+              v-model="values.channels"
+              dense outlined bg-color="white" type="number"
+            />
+            <div class="text margin-top">Number of stations</div>
+            <q-input
+              v-model="values.stations"
+              dense outlined bg-color="white" type="number"
+            />
+            <div class="text margin-top">Number of transmitter</div>
+            <q-input
+              v-model="values.tx"
+              dense outlined bg-color="white" type="number"
+            />
+            <div class="text margin-top">Number of reciver</div>
+            <q-input
+              v-model="values.rx"
+              dense outlined bg-color="white" type="number"
+            />
+          </div>
         </div>
       </q-card-section>
 
@@ -113,6 +137,10 @@ export default {
       mac: '',
       type: 'QSys',
       mode: 'Input',
+      channels: 16,
+      stations: 4,
+      tx: 4,
+      rx: 4,
       checked: false,
       ipaddress: '',
       info: {}

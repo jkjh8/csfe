@@ -42,7 +42,7 @@
       <Table />
     </q-card-section>
   </q-card>
-  <q-dialog v-model="dialog">
+  <q-dialog v-model="dialog" persistent>
     <CreateUpdate @close="dialog=false" />
   </q-dialog>
 </template>
