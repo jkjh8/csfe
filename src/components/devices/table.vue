@@ -20,7 +20,7 @@
         </q-td>
         <q-td key="ipaddress" :props="props">
           <div style="font-family: nanumgothicbold">{{ props.row.ipaddress }}</div>
-          <div class="text-caption">MAC:{{ props.row.mac }}</div>
+          <div v-if="props.row.type === 'Barix'" class="text-caption">MAC:{{ props.row.mac }}</div>
         </q-td>
         <q-td key="type" :props="props">
           {{ props.row.type }}

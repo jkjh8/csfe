@@ -142,8 +142,7 @@ export default {
       tx: 4,
       rx: 4,
       checked: false,
-      ipaddress: '',
-      info: {}
+      ipaddress: ''
     })
 
     const onSubmit = async () => {
