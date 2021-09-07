@@ -1,15 +1,15 @@
 <template>
   <div class="item">
     <span>Device</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.Platform }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.Platform }}</span>
   </div>
   <div class="item">
     <span>Status</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.Status.String }}</span>
+    <span class="q-pa-none">{{ deviceData.Status }}</span>
   </div>
   <div class="item">
     <span>State</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.State }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.State }}</span>
   </div>
   <div class="item">
     <span>IP Address</span>
@@ -17,19 +17,19 @@
   </div>
   <div class="item">
     <span>Design Code</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.DesignCode }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.DesignCode }}</span>
   </div>
   <div class="item">
     <span>Design Name</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.DesignName }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.DesignName }}</span>
   </div>
   <div class="item">
     <span>Emulator</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.IsEmulator }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.IsEmulator }}</span>
   </div>
   <div class="item">
     <span>Redundant</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.info.IsRedundant }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.IsRedundant }}</span>
   </div>
 
   <q-separator class="q-my-sm" color="grey-3" />

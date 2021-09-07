@@ -93,7 +93,6 @@ export default {
     function openInfo (data) {
       info.value = data
       infoDalog.value = true
-      console.log(info.value)
     }
 
     function createUpdateItem (item) {
