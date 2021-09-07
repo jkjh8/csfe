@@ -1,36 +1,282 @@
 // app global css in SCSS form
 @font-face {
-  font-family: 'nanumgothic';
-  font-style: normal;
+  font-family: '다음체';
+  font-style: nomal;
+  src: url(./fonts/Daum_Regular.woff);
+}
+
+@font-face {
+  font-family: '나눔스퀘어AC';
+  font-weight: 300;
+  src: url(./fonts/NanumSquare_acL.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어AC';
+  font-weight: 400;
+  src: url(./fonts/NanumSquare_acR.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어AC';
+  font-weight: 500;
+  src: url(./fonts/NanumSquare_acB.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어AC';
+  font-weight: 700;
+  src: url(./fonts/NanumSquare_acEB.woff)
+}
+
+@font-face {
+  font-family: '다음체';
+  font-style: Bold;
+  src: url(./fonts/Daum_SemiBold.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어';
+  font-weight: 300;
+  src: url(./fonts/NanumSquareL.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어';
+  font-weight: 400;
+  src: url(./fonts/NanumSquareR.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어';
+  font-weight: 500;
+  src: url(./fonts/NanumSquareB.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어';
+  font-weight: 700;
+  src: url(./fonts/NanumSquareEB.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어라운드';
+  font-weight: 300;
+  src: url(./fonts/NanumSquareRoundL.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어라운드';
+  font-weight: 400;
+  src: url(./fonts/NanumSquareRoundR.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어라운드';
+  font-weight: 500;
+  src: url(./fonts/NanumSquareRoundB.woff)
+}
+
+@font-face {
+  font-family: '나눔스퀘어라운드';
+  font-weight: 700;
+  src: url(./fonts/NanumSquareRoundEB.woff)
+}
+
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 100;
+  src: url(./fonts/NanumBarunGothicUltraLight.woff)
+}
+
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 300;
+  src: url(./fonts/NanumBarunGothicLight.woff)
+}
+
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 400;
+  src: url(./fonts/NanumBarunGothic.woff)
+}
+
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 500;
+  src: url(./fonts/NanumBarunGothicBold.woff)
+}
+
+@font-face {
+  font-family: '나눔바른펜';
+  font-style: nomal;
+  src: url(./fonts/NanumBarunpenR.woff)
+}
+
+@font-face {
+  font-family: '나눔바른펜';
+  font-style: bold;
+  src: url(./fonts/NanumBarunpenB.woff)
+}
+
+@font-face {
+  font-family: '나눔브러쉬';
+  font-style: nomal;
+  src: url(./fonts/NanumBrush.woff)
+}
+
+@font-face {
+  font-family: '나눔고딕';
+  font-weight: 100;
+  src: url(./fonts/NanumBarunGothicUltraLight.woff)
+}
+
+@font-face {
+  font-family: '나눔고딕';
+  font-weight: 300;
+  src: url(./fonts/NanumGothicLight.woff)
+}
+
+@font-face {
+  font-family: '나눔고딕';
+  font-weight: 400;
   src: url(./fonts/NanumGothic.woff)
 }
 
 @font-face {
-  font-family: 'nanumgothicbold';
-  font-style: Bold;
+  font-family: '나눔고딕';
+  font-weight: 500;
   src: url(./fonts/NanumGothicBold.woff)
 }
 
 @font-face {
-  font-family: 'branda';
-  font-style: normal;
-  src: url(./fonts/Branda-yolq.woff)
+  font-family: '나눔고딕';
+  font-weight: 700;
+  src: url(./fonts/NanumGothicExtraBold.woff)
 }
 
 @font-face {
-  font-family: 'bebas';
-  font-style: normal;
-  src: url(./fonts/BebasNeue-Regular.woff)
+  font-family: '나눔명조';
+  font-weight: 300;
+  src: url(./fonts/NanumMyeongjoEcoR.woff)
 }
 
 @font-face {
-  font-family: 'anton';
-  font-style: normal;
-  src: url(./fonts/Anton-Regular.woff2)
+  font-family: '나눔명조';
+  font-weight: 400;
+  src: url(./fonts/NanumMyeongjo.woff)
 }
 
 @font-face {
-  font-family: 'josefinsans';
-  font-style: normal;
-  src: url(./fonts/JosefinSans-VariableFont_wght.woff2)
+  font-family: '나눔명조';
+  font-weight: 500;
+  src: url(./fonts/NanumMyeongjoBold.woff)
+}
+
+@font-face {
+  font-family: '나눔명조';
+  font-weight: 700;
+  src: url(./fonts/NanumMyeongjoExtraBold.woff)
+}
+
+@font-face {
+  font-family: '나눔펜';
+  font-style: nomal;
+  src: url(./fonts/NanumPen.woff)
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-weight: 100;
+  src: url(./fonts/Oswald-ExtraLight.woff)
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-weight: 300;
+  src: url(./fonts/Oswald-Light.woff)
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-weight: 400;
+  src: url(./fonts/Oswald-Regular.woff)
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-weight: 500;
+  src: url(./fonts/Oswald-SemiBold.woff)
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-weight: 700;
+  src: url(./fonts/Oswald-Bold.woff)
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-weight: 100;
+  src: url(./fonts/Mukta-ExtraLight.woff)
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-weight: 300;
+  src: url(./fonts/Mukta-Light.woff)
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-weight: 400;
+  src: url(./fonts/Mukta-Regular.woff)
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-weight: 500;
+  src: url(./fonts/Mukta-Bold.woff)
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-weight: 700;
+  src: url(./fonts/Mukta-ExtraBold.woff)
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 100;
+  src: url(./fonts/Poppins-ExtraLight.woff)
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 300;
+  src: url(./fonts/Poppins-Light.woff)
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 400;
+  src: url(./fonts/Poppins-Regular.woff)
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 500;
+  src: url(./fonts/Poppins-Bold.woff)
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 700;
+  src: url(./fonts/Poppins-ExtraBold.woff)
+}
+
+@font-face {
+  font-family: 'Shodows';
+  font-style: nomal;
+  src: url(./fonts/ShadowsIntoLight-Regular.woff)
 }
