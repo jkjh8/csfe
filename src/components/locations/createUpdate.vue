@@ -49,49 +49,59 @@
               <q-input
                 v-model="values.name"
                 dense outlined bg-color="white"
-                lazy-rules :rules="rules.required"
               />
             </div>
             <div>
-              <div class="text">IP Address</div>
-              <q-input
-                v-model="values.ip"
-                dense outlined bg-color="white"
-                lazy-rules :rules="rules.required"
-              />
+              <div class="text">Type</div>
+               <q-select
+                dense outlined
+                v-model="values.type"
+                :options="['Q-Sys', 'Barix']"
+              >
+              </q-select>
             </div>
-            <div>
-              <div class="text">Port</div>
-              <q-input
-                v-model="values.port"
-                dense outlined bg-color="white" type="number"
-                lazy-rules
-                :rules="rules.port"
-              />
-            </div>
-            <div>
-              <div class="text">Mode</div>
-              <q-select dense outlined v-model="values.mode" :options="['Q-sys', 'Barix']" />
+            <div v-if="values.type === 'Q-Sys'">
+              <div class="text">Device</div>
+              <q-select
+                dense outlined
+                v-model="values.ipaddress"
+                :options="qsysList"
+                :option-label="opt => Object(opt) === opt && 'name' in opt ? `${opt.name} ${opt.ipaddress}` : '이름없음'"
+                option-value="ipaddress"
+                emit-value
+                map-options
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label>{{ scope.opt.name }}</q-item-label>
+                      <q-item-label caption>{{ scope.opt.ipaddress }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
 
-            <!-- mode 종속 -->
-            <div v-if="values.mode === 'Barix'"
-              class="q-mt-sm q-py-sm q-px-md"
-              style="border: 1px solid #e4e4e4; border-radius: 1rem;"
-            >
-              <div>
-                <div class="text">Parent</div>
-                <q-select dense outlined v-model="values.parent" :options="locationNames" />
-              </div>
-              <div>
-                <div class="text">채널</div>
-                <q-input
-                  v-model="values.channel"
-                  dense outlined bg-color="white" type="number"
-                  lazy-rules
-                  :rules="rules.channel"
-                />
-              </div>
+            <div v-if="values.type === 'Barix'">
+              <div class="text">Device</div>
+              <q-select
+                dense outlined
+                v-model="values.ipaddress"
+                :options="barixList"
+                :option-label="opt => Object(opt) === opt && 'name' in opt ? `${opt.name} ${opt.ipaddress}` : '이름없음'"
+                option-value="ipaddress"
+                emit-value
+                map-options
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label>{{ scope.opt.name }}</q-item-label>
+                      <q-item-label caption>{{ scope.opt.ipaddress }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
           </div>
         </div>
@@ -108,7 +118,7 @@
 </template>
 
 <script>
-import { inject, ref, toRefs, reactive, onMounted, computed } from 'vue'
+import { inject, ref, toRefs, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 
@@ -121,21 +131,17 @@ export default {
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
+    const qsysList = computed(() => getters['devices/QsysList'])
+    const barixList = computed(() => getters['devices/BarixList'])
+
     const mode = ref('create')
     const error = ref('')
     const values = ref({
       index: 1,
-      name: '',
-      ip: '',
-      port: 1720,
-      mode: 'Q-sys',
-      parent: '',
-      channel: null
-    })
-    const rules = reactive({
-      required: [value => !!value || '필수 입력 항목 입니다.'],
-      port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
-      channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
+      name: 'No Name',
+      ipaddress: '',
+      type: 'Q-Sys',
+      device: null
     })
 
     const onSubmit = async () => {
@@ -166,11 +172,12 @@ export default {
     })
 
     return {
+      qsysList,
+      barixList,
       locationNames,
       mode,
       error,
       values,
-      rules,
       onSubmit,
       emit
     }

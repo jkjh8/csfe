@@ -54,19 +54,14 @@
                 lazy-rules :rules="rules.required"
               />
             </div>
-            <div>
-              <div class="text">Mode</div>
-              <q-select dense outlined v-model="values.mode" :options="['Barix']" />
-            </div>
-
-            <!-- mode 종속 -->
-            <div v-if="values.mode === 'Barix'"
-              class="q-mt-sm q-py-sm q-px-md"
-              style="border: 1px solid #e4e4e4; border-radius: 1rem;"
-            >
               <div>
                 <div class="text">Parent</div>
-                <q-select dense outlined v-model="values.location" :options="locationNames" />
+                <q-select
+                  dense outlined
+                  v-model="values.parent"
+                  :options="locations"
+                  option-label="name"
+                />
               </div>
               <div>
                 <div class="text">채널</div>
@@ -79,11 +74,11 @@
               </div>
               <div>
                 <div>
-                  <span class="text">Barix</span>
+                  <span class="text">Select Device</span>
                 </div>
                 <div class="row justify-between items-center">
-                  <span v-if="barixSelected.length">
-                    <strong>{{ barixSelected[0].name ?? 'No Name' }} {{ barixSelected[0].ipaddress }}</strong> {{ barixSelected[0].mac}}
+                  <span v-if="selectDevices.length">
+                    <strong>{{ selectDevices[0].name ?? 'No Name' }} {{ selectDevices[0].ipaddress }}</strong> {{ selectDevices[0].mac}}
                   </span>
                   <span v-else class="text-grey text-body2">Select Device</span>
                   <span><q-btn color="primary" unelevated label="Select" @click="dialog=!dialog"></q-btn></span>
@@ -91,7 +86,6 @@
               </div>
             </div>
           </div>
-        </div>
       </q-card-section>
 
       <q-separator />
@@ -109,19 +103,18 @@
       <q-card-section>
         <q-table
           title="Select Barix"
-          :rows="barixes"
+          :rows="devices"
           :columns="[
-           { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
-           { name: 'ip', align: 'center', label: 'IP Address', field: 'info', sortable: true },
-           { name: 'mac', align: 'center', label: 'MAC Address', field: 'mac', sortable: true },
-           { name: 'uptime', align: 'center', label: 'UpTime', field: 'info', sortable: true },
-           { name: 'updatedAt', align: 'center', label: 'UpdatedAt', field: 'updatedAt', sortable: true },
-           { name: 'createdAt', align: 'center', label: 'CreatedAt', field: 'createdAt', sortable: true }
+            { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
+            { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
+            { name: 'ip', align: 'center', label: 'IP Address', field: 'ipaddress', sortable: true },
+            { name: 'updatedAt', align: 'center', label: 'UpdatedAt', field: 'updatedAt', sortable: true },
+            { name: 'createdAt', align: 'center', label: 'CreatedAt', field: 'createdAt', sortable: true }
           ]"
           row-key="_id"
           selection="single"
           :filter="filter"
-          v-model:selected="barixSelected"
+          v-model:selected="selectDevices"
         >
           <template v-slot:top-right>
             <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -133,14 +126,7 @@
           <template v-slot:body-cell-ip="props">
             <q-td :props="props">
               <div>
-                {{ props.value.IP_address }}
-              </div>
-            </q-td>
-          </template>
-          <template v-slot:body-cell-uptime="props">
-            <q-td :props="props">
-              <div>
-                {{ secToDays(props.value.UpTime) }}
+                {{ props.value }}
               </div>
             </q-td>
           </template>
@@ -185,36 +171,43 @@ export default {
     const { selected } = toRefs(props)
     const $api = inject('$api')
 
-    const locationNames = computed(() => getters['locations/getLocationNames'])
-    const barixes = computed(() => state.barix.deviceList)
+    const locations = computed(() => state.locations.locations)
+    const indexArr = computed(() => getters['zones/getIndexArr'])
+    const devices = computed(() => state.devices.deviceList)
     const mode = ref('create')
-    const values = ref({ index: 1, name: '', mode: 'Barix', location: '', channel: null, mac: '', Barix: [] })
+    const values = ref({ index: null, name: 'No Name', parent: null, device: null, channel: null })
     const filter = ref('')
     const dialog = ref(false)
-    const barixSelected = ref([])
+    const selectDevices = ref([])
     const error = ref('')
 
     onMounted(() => {
       if (Object.keys(selected.value).length) {
         mode.value = 'edit'
         values.value = { ...selected.value }
-        if (values.value.Barix.length) {
-          barixSelected.value[0] = selected.value.Barix[0]
+        if (Object.keys(values.value.device).length) {
+          selectDevices.value.push(selected.value.device)
         }
       } else {
         mode.value = 'create'
+      }
+      if (!values.value.index) {
+        for (let i = 1; i <= indexArr.value.length + 1; i++) {
+          if (!indexArr.value.includes(i)) {
+            values.value.index = i
+            break
+          }
+        }
       }
     })
 
     const rules = reactive({
       required: [value => !!value || '필수 입력 항목 입니다.'],
-      port: [v => v > 0 || '0~65535 사이의 숫자를 선택하세요', v => v < 65536 || '0~65535 사이의 숫자를 선택하세요'],
       channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
     })
 
     function selectBarix () {
-      console.log(barixSelected.value[0])
-      values.value.mac = barixSelected.value[0].mac
+      values.value.device = selectDevices.value[0]
       dialog.value = false
     }
 
@@ -238,12 +231,12 @@ export default {
     return {
       error,
       mode,
-      locationNames,
-      barixes,
+      locations,
+      devices,
       values,
       filter,
       dialog,
-      barixSelected,
+      selectDevices,
       rules,
       selectBarix,
       secToDays,

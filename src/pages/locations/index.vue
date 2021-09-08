@@ -60,7 +60,7 @@ onBeforeMount(() => {
   store.dispatch('user/getUser')
   store.dispatch('locations/updateLocations')
   store.dispatch('zones/updateZones')
-  store.dispatch('barix/updateList')
+  store.dispatch('devices/updateDevices')
 })
 
 </script>

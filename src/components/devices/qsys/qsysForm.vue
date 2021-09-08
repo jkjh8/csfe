@@ -5,7 +5,7 @@
   </div>
   <div class="item">
     <span>Status</span>
-    <span class="q-pa-none">{{ deviceData.Status }}</span>
+    <span class="text-uppercase q-pa-none">{{ deviceData.Status.String }}</span>
   </div>
   <div class="item">
     <span>State</span>

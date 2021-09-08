@@ -31,8 +31,8 @@
               <span class="q-ml-sm" style="font-familt: nanumgothic; font-size: .5rem;">channel: {{ local.channel }}</span>
             </q-item-label>
             <q-item-label caption>
-              <span>Parent: {{ local.location }}</span>
-              <span v-if="local.Barix && local.Barix.length">  Device IP: {{ local.Barix[0].info.IP_address }}</span>
+              <span v-if="local.parent && Object.keys(local.parent).length">Parent: {{ local.parent.name }}</span>
+              <span v-if="local.device && Object.keys(local.device).length">  Device IP: {{ local.device.ipaddress }}</span>
             </q-item-label>
           </q-item-section>
 

@@ -31,9 +31,9 @@
           <q-item-section>
             <q-item-label>
               <span class="name">{{ local.name }}</span>
-              <span class="q-ml-sm" :class="local.mode === 'Q-sys'? 'qsys':'barix'">{{ local.mode }}</span>
+              <span class="q-ml-sm" :class="local.type === 'Q-Sys'? 'qsys':'barix'">{{ local.type }}</span>
             </q-item-label>
-            <q-item-label caption>{{ local.ip }}:{{ local.port }}</q-item-label>
+            <q-item-label caption>{{ local.ipaddress }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>

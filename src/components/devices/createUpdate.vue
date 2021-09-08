@@ -48,6 +48,7 @@
           <div class="text margin-top">IP Address</div>
           <q-input
             v-model="values.ipaddress"
+            :disable="mode === 'create' ? false:true"
             dense outlined bg-color="white"
             lazy-rules
             :rules="[
