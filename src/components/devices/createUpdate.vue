@@ -80,7 +80,7 @@
               label="Select device active mode"
             />
           </div>
-          <div v-if="values.type === 'QSys'">
+          <!-- <div v-if="values.type === 'QSys'">
             <div class="text margin-top">Number of channels</div>
             <q-input
               v-model="values.channels"
@@ -101,7 +101,7 @@
               v-model="values.rx"
               dense outlined bg-color="white" type="number"
             />
-          </div>
+          </div> -->
         </div>
       </q-card-section>
 
@@ -138,10 +138,6 @@ export default {
       mac: '',
       type: 'QSys',
       mode: 'Input',
-      channels: 16,
-      stations: 4,
-      tx: 4,
-      rx: 4,
       checked: false,
       ipaddress: ''
     })
