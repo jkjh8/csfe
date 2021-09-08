@@ -1,16 +1,18 @@
 <template>
-  <q-page class="row justify-start">
-    <div class="line_top"></div>
-    <div class="today">
-      <div>
-        <q-icon name="svguse:icons.svg#calendar" color="green-10" size="3rem" />
-        <span> 오늘은</span>
+  <q-page>
+    <div style="margin-left: 6%">
+      <div class="line_top"></div>
+      <div class="today">
+        <div>
+          <q-icon name="svguse:icons.svg#calendar" color="green-10" size="3rem" />
+          <span> 오늘은</span>
+        </div>
+        <div>
+          {{ today }}입니다
+        </div>
       </div>
-      <div>
-        {{ today }}입니다
-      </div>
+      <div class="line_bottom"></div>
     </div>
-    <div class="line_bottom"></div>
   </q-page>
 </template>
 
@@ -39,17 +41,15 @@ export default {
 <style scoped>
 .today {
   position: relative;
-  top: 50px;
-  left: 50px;
   font-family: 나눔스퀘어;
   font-weight: 700;
   font-size: 2rem;
   z-index: 5;
 }
 .line_top {
-  position: absolute;
-  top: 40px;
-  left: 45px;
+  position: relative;
+  top: 10px;
+  left: -10px;
   height: 20px;
   width: 50px;
   background: yellow;
@@ -58,9 +58,9 @@ export default {
   transform: rotate(-30deg);
 }
 .line_bottom {
-  position: absolute;
-  top: 120px;
-  left: 350px;
+  position: relative;
+  top: -20px;
+  left: 300px;
   height: 20px;
   width: 50px;
   background: yellow;

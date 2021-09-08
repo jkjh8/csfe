@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="text-black q-my-md" style="background: #FBFBFB; height:3rem">
+    <q-header class="text-black q-my-md" style="background: #FBFBFB; height:3rem;">
       <div class="row items-center header">
         <router-link
           class="col-3 logo"
@@ -75,8 +75,8 @@
       </q-toolbar> -->
     </q-header>
 
-    <q-page-container style="margin-top: 3rem;">
-      <router-view />
+    <q-page-container>
+      <router-view class="q-pt-xl" />
     </q-page-container>
 
   </q-layout>
