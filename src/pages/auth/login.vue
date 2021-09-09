@@ -3,14 +3,6 @@
     class="coulmn justify-center items-center q-mx-auto absolute-center"
     style="width: 32rem;"
   >
-    <div class="row justify-center">
-      <q-icon name="svguse:icons.svg#user-circle-fill" size="9rem" color="grey-14" ></q-icon>
-    </div>
-
-    <div class="row justify-center text-h5 text-bold q-mt-lg" style="font-family: nanumgothicbold;">
-      로그인
-    </div>
-
     <div class="row justify-center q-mt-md">
       <LoginForm />
     </div>
@@ -19,7 +11,7 @@
       class="row justify-center q-mt-xl"
     >
       <q-btn
-        style="width: 400px; height: 50px; border-radius: 8px;"
+        style="width: 400px; height: 50px; border-radius: 1rem;"
         outline
         color="grey"
         to="/register"

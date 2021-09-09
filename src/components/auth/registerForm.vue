@@ -1,12 +1,14 @@
 <template>
-  <q-form
-    @submit="onSubmit"
-  >
+  <q-form @submit="onSubmit">
     <q-card
-      class="bg-blue-1 q-pa-sm"
-      style="width: 400px; border-radius: 10px;"
-      flat
+      class="q-pa-md shadow-15"
+      style="width: 25rem; border-radius: 2rem;"
     >
+      <q-card-section class="q-pa-sm q-gutter-sm row items-center">
+        <q-icon name="svguse:icons.svg#user-add-fill" color="cyan-8" size="2.5rem"></q-icon>
+        <span style="font-family: 나눔고딕; font-weight: 700; font-size: 1.5rem;">회원가입</span>
+      </q-card-section>
+      <q-separator />
       <!-- 에러 메세지 표시창 -->
       <q-card-section v-if="error">
         <div style="position: relative; height: 3rem;">
@@ -113,9 +115,10 @@
           <div class="q-mt-lg">
             <q-btn
               class="full-width"
-              style="border-radius: 8px; height: 40px"
+              style="height: 40px"
               type="submit"
               color="cyan-7"
+              rounded
               unelevated
             >
               <div v-if='loading'>
@@ -195,22 +198,6 @@ export default {
         $q.loading.hide()
         router.push('/')
       }
-      // const user = {
-      //   userName: userInfo.userName,
-      //   userId: userInfo.userId,
-      //   email: userInfo.userId,
-      //   password: userInfo.password
-      // }
-      // proxy.$api.post('/auth/register', user).then((res) => {
-      //   loading.value = false
-      //   if (res.status === 200) {
-      //     proxy.$router.push('/')
-      //   }
-      // }).catch((err) => {
-      //   loading.value = false
-      //   console.error(err.response.data)
-      //   error.value = err.response.data.message
-      // })
     }
 
     return {

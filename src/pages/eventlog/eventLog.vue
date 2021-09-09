@@ -1,25 +1,14 @@
 <template>
-  <q-card class="q-mx-md q-my-md shadow-5" style="border-radius: 1rem;">
-    <q-card-section class="q-py-sm row justify-between items-center">
-      <div class="row items-center">
-        <span>
-          <q-avatar
-            color="green-10"
-            text-color="white"
-            size="2rem"
-            icon="fas fa-list"
-          ></q-avatar>
+  <div style="padding: 5% 5% 0 5%;">
+    <div class="row justify-between items-center q-ml-md">
+      <div class="row items-center q-gutter-sm">
+        <q-icon name="svguse:icons.svg#collection" size="sm" color="cyan" />
+        <span class="name">
+          이벤트 로그
         </span>
-        <q-item class="q-py-none">
-          <q-item-section>
-            <q-item-label class="text-h6 text-bold nanum">
-              이벤트 로그
-            </q-item-label>
-            <q-item-label caption>
-              총 {{ logs.totalDocs }}개의 이벤트로그
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+        <span class="caption">
+          총 {{ logs.totalDocs }}개의 이벤트로그가 있습니다.
+        </span>
       </div>
       <div class="q-mr-sm row items-center">
         <q-input
@@ -48,14 +37,11 @@
           </q-btn>
         </span>
       </div>
-    </q-card-section>
-
-    <q-separator />
-
+    </div>
     <q-card-section>
       <Table />
     </q-card-section>
-  </q-card>
+  </div>
 </template>
 
 <script setup>
@@ -83,7 +69,14 @@ onBeforeMount(() => {
 </script>
 
 <style scoped>
-.nanum {
-  font-family: 'nanumgothicbold';
+.name {
+  font-family: 나눔고딕;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.caption {
+  font-family: 나눔고딕;
+  font-weight: 400;
+  font-size: .5rem;
 }
 </style>

@@ -4,7 +4,8 @@
     :rows="logs.docs"
     :pagination="{ rowsPerPage: 0 }"
     hide-pagination
-    flat
+    style="border-radius: 1rem;"
+    class="shadow-10"
   >
     <template v-slot:body="props">
       <q-tr
@@ -50,10 +51,11 @@
         ref="pagination"
         v-model="page"
         :max="logs.totalPages"
-        unelevated
+        input
+        direction-links
         color="grey-8"
-        active-color="green-10"
-        rounded dense direction-links
+        text-color="grey-10"
+        active-color="primary"
         :max-pages="$q.screen.gt.md ? 7 : 3"
 
         @update:model-value="pageChange"
@@ -73,48 +75,13 @@
           dense
           borderless
         >
-
         </q-select>
-        <q-btn
-          round flat
-          size="sm"
-        >
-          <q-avatar
-            size="sm"
-            color="grey-5"
-            text-color="white"
-          >
-            Go
-          </q-avatar>
-          <q-popup-edit
-            v-model="popup"
-            :offset="[-20,-20]"
-          >
-            <q-input
-              v-model="gotoPage"
-              style="width: 200px;"
-              rounded outlined dense
-              type="number"
-              placeholder="페이지 바로가기"
-              @keyup.enter="gotoPageFn"
-            >
-              <template v-slot:append>
-                <q-btn
-                  round flat
-                  icon="send"
-                  size="xs"
-                  @click="gotoPageFn"
-                />
-              </template>
-            </q-input>
-          </q-popup-edit>
-        </q-btn>
       </div>
     </span>
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref, computed, onMounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
@@ -128,47 +95,46 @@ const columes = [
   { name: 'zones', align: 'center', label: 'zones', field: 'zones', sortable: true },
   { name: 'message', align: 'center', label: 'Message', field: 'message', sortable: true }
 ]
-
-const { proxy } = getCurrentInstance()
-const store = useStore()
-const $q = useQuasar()
-
-// VUEX
-const logs = computed(() => store.state.eventlog.logs)
-
-const rowsPerPage = computed({
-  get () { return store.state.eventlog.logs.limit },
-  set (value) {
-    store.commit('eventlog/updateRowsPerPage', value)
-    return proxy.$store.dispatch('eventlog/getLogs')
+export default {
+  setup () {
+    const { proxy } = getCurrentInstance()
+    const { state, commit, dispatch } = useStore()
+    const $q = useQuasar()
+    // VUEX
+    const logs = computed(() => state.eventlog.logs)
+    const rowsPerPage = computed({
+      get () { return state.eventlog.logs.limit },
+      set (value) {
+        commit('eventlog/updateRowsPerPage', value)
+        return dispatch('eventlog/getLogs')
+      }
+    })
+    const page = computed({
+      get () { return state.eventlog.logs.page },
+      set (value) { return commit('eventlog/updatePage', value) }
+    })
+    // Var
+    const pagination = ref(null)
+    // Function
+    async function pageChange (value) {
+      $q.loading.show({ spinnerColor: 'cyan' })
+      await proxy.$store.dispatch('eventlog/getLogs')
+      $q.loading.hide()
+    }
+    // Life Time
+    onMounted(async () => {
+      pageChange()
+    })
+    return {
+      columes,
+      timeFormat,
+      logs,
+      rowsPerPage,
+      page,
+      pagination,
+      pageChange
+    }
   }
-})
-const page = computed({
-  get () { return store.state.eventlog.logs.page },
-  set (value) { return store.commit('eventlog/updatePage', value) }
-})
-
-// Var
-const pagination = ref(null)
-const gotoPage = ref(null)
-const popup = ref(false)
-
-// Function
-async function pageChange (value) {
-  $q.loading.show({ spinnerColor: 'cyan' })
-  await proxy.$store.dispatch('eventlog/getLogs')
-  $q.loading.hide()
 }
-
-function gotoPageFn () {
-  // store.commit('eventlog/updatePage', gotoPage.value)
-  // pageChange(gotoPage.value)
-  pagination.value.set(gotoPage.value)
-}
-
-// Life Time
-onMounted(async () => {
-  pageChange()
-})
 
 </script>

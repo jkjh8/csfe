@@ -1,19 +1,8 @@
 <template>
-  <q-page>
-    <div style="margin-left: 6%">
-      <div class="line_top"></div>
-      <div class="today">
-        <div>
-          <q-icon name="svguse:icons.svg#calendar" color="green-10" size="3rem" />
-          <span> 오늘은</span>
-        </div>
-        <div>
-          {{ today }}입니다
-        </div>
-      </div>
-      <div class="line_bottom"></div>
-    </div>
-  </q-page>
+  <div class="fit row wrap justify-center items-center" style="padding: 5% 0">
+    <Today />
+    <NeedLogin v-if="!user" />
+  </div>
 </template>
 
 <script>
@@ -21,8 +10,13 @@ import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 
+import Today from '../components/today.vue'
+import NeedLogin from '../components/needLogin.vue'
+
 export default {
-  setup () {
+  components: { Today, NeedLogin },
+  props: ['user'],
+  setup (props) {
     const { dispatch } = useStore()
     const today = ref('')
     moment.locale('ko')
@@ -37,35 +31,16 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-.today {
+
+.login {
   position: relative;
-  font-family: 나눔스퀘어;
+  width: 400px;
+  height: 20vh;
   font-weight: 700;
-  font-size: 2rem;
-  z-index: 5;
-}
-.line_top {
-  position: relative;
-  top: 10px;
-  left: -10px;
-  height: 20px;
-  width: 50px;
-  background: yellow;
-  padding: 10 10 10;
-  border-radius: 1rem;
-  transform: rotate(-30deg);
-}
-.line_bottom {
-  position: relative;
-  top: -20px;
-  left: 300px;
-  height: 20px;
-  width: 50px;
-  background: yellow;
-  padding: 10 10 10;
-  border-radius: 1rem;
-  transform: rotate(-30deg);
+  border-radius: 2rem;
+  font-family: 나눔고딕;
+  font-size: 1rem;
+  word-break: break-all;
 }
 </style>

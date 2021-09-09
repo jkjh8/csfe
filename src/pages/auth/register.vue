@@ -1,16 +1,8 @@
 <template>
   <div
-    class="colume justify-center items-center"
-    style="margin-top: 50px"
+    class="coulmn justify-center items-center q-mx-auto absolute-center"
+    style="width: 32rem;"
   >
-    <div class="row justify-center">
-      <q-icon name="svguse:icons.svg#user-add-fill" size="7rem" color="grey-14"/>
-    </div>
-
-    <div class="row justify-center text-h6 q-mt-sm text-bold" style="font-family: nanumgothicbold;">
-      회원 가입
-    </div>
-
     <div class="row justify-center q-mt-md">
       <RegisterForm />
     </div>

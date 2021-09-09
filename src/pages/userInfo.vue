@@ -1,10 +1,11 @@
 <template>
   <div
     class="row justify-center items-center"
-    style="margin-top: 50px;"
+    style="margin-top: 10%;"
   >
     <q-card
-      style="width: 28rem; border-radius: 10px;"
+      class="shadow-15"
+      style="width: 28rem; border-radius: 2rem;"
     >
       <q-card-section>
         <div class="row items-center">
