@@ -1,6 +1,7 @@
 <template>
   <q-table
-    flat
+    class="shadow-15"
+    style="border-radius: 2rem;"
     :columns="tableColumes"
     :rows="tableData"
     :pagination="{ rowsPerPage: 10 }"
@@ -16,11 +17,10 @@
           </q-avatar>
         </q-td>
         <q-td key="index" :props="props">
-          <div>{{ props.row.name ?? 'No Name' }}</div>
+          <div class="listname">{{ props.row.name ?? 'No Name' }}</div>
         </q-td>
         <q-td key="ipaddress" :props="props">
-          <div style="font-family: nanumgothicbold">{{ props.row.ipaddress }}</div>
-          <div v-if="props.row.type === 'Barix'" class="text-caption">MAC:{{ props.row.mac }}</div>
+          <a :href="`http://${props.row.ipaddress}`" target="_blank">{{ props.row.ipaddress }}</a>
         </q-td>
         <q-td key="type" :props="props">
           {{ props.row.type }}
@@ -34,6 +34,7 @@
         <q-td key="actions" :props="props">
           <div>
             <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey" @click="openInfo(props.row)" />
+            <q-btn flat round icon="svguse:icons.svg#check" size="sm" color="blue-grey-6" @click="checkItem(props.row)" />
             <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="createUpdateItem(props.row)" />
             <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" @click="deleteItem(props.row)" />
           </div>
@@ -67,6 +68,7 @@ const tableColumes = [
 ]
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
@@ -78,14 +80,13 @@ import Info from './info.vue'
 export default {
   components: { CreateUpdate, Delete, Info },
   setup () {
-    const store = useStore()
+    const { state, dispatch } = useStore()
     // vuex
-    const tableData = computed(() => store.state.devices.deviceList)
+    const tableData = computed(() => state.devices.deviceList)
     // variable
     const createUpdateDialog = ref(false)
-    const selected = ref(null)
-
     const infoDalog = ref(false)
+    const selected = ref(null)
     const info = ref(null)
 
     const deleteDialog = ref(false)
@@ -110,11 +111,16 @@ export default {
       deleteDialog.value = true
     }
 
-    onMounted(async () => {
+    async function checkItem (item) {
+      await api.get(`/devices/checked?_id=${item._id}`)
+      dispatch('devices/updateDevices')
+    }
+
+    onMounted(() => {
       socket.on('deviceList', (r) => {
-        store.dispatch('devices/updateListAsWebsoket', r)
+        dispatch('devices/updateListAsWebsoket', r)
       })
-      store.dispatch('devices/updateDevices')
+      dispatch('devices/updateDevices')
     })
     return {
       tableColumes,
@@ -127,6 +133,7 @@ export default {
       openInfo,
       createUpdateItem,
       selected,
+      checkItem,
       deleteDialog,
       deleteDialogClose,
       deleteItem

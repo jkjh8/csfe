@@ -1,5 +1,5 @@
 <template>
-  <button class="menu">
+  <button class="menu" :disabled="!user">
     방송
     <q-menu
       class="row justify-center items-center text-white bg-black"
@@ -15,7 +15,7 @@
       </div>
     </q-menu>
   </button>
-  <button class="menu">
+  <button class="menu" :disabled="!user">
     방송구간
     <q-menu
       class="row justify-center items-center text-white bg-black"
@@ -30,10 +30,16 @@
       </div>
     </q-menu>
   </button>
-  <router-link class="menu" to="/eventlog">
+  <router-link class="menu" :class="{ disabled: !user }" to="/eventlog">
     이벤트 로그
   </router-link>
 </template>
+
+<script>
+export default {
+  props: ['user']
+}
+</script>
 
 <style scoped>
 .menu {
@@ -49,6 +55,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: #111;
+  cursor: pointer;
 }
 .link a {
   color: #d0d0d0;
@@ -60,5 +67,10 @@
 .link a:hover {
   font-size: 1rem;
   color: #FFFFFF
+}
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 </style>

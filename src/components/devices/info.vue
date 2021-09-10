@@ -12,7 +12,7 @@
             {{ info.name ==='' ? 'No Name': info.name }}
           </div>
           <div style="font-family: nanumgothic; font-size: .5rem;">
-            MAC: {{ info.mac === '' ? 'no mac address':info.mac }}
+            IP Address: {{ info.ipaddress === '' ? 'No ip address':info.ipaddress }}
           </div>
         </div>
       </div>

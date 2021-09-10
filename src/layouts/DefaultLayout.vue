@@ -6,7 +6,7 @@
           Media Server
         </router-link>
         <div class="col-7 q-gutter-md">
-          <LinkNormal />
+          <LinkNormal :user="user" />
         </div>
         <div class="col-2">
           <UserStatus :user="user" />
@@ -82,5 +82,19 @@ export default {
   font-weight: 700;
   font-size: 1.5rem;
   color: #111
+}
+.name {
+  font-family: 나눔고딕;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.caption {
+  font-family: 나눔고딕;
+  font-weight: 400;
+  font-size: .5rem;
+}
+.listname {
+  font-family: 나눔고딕;
+  font-weight: 700;
 }
 </style>

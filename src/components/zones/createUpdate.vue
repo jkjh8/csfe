@@ -1,6 +1,6 @@
 <template>
   <!-- zone create -->
-  <q-card style="width: 100%; border-radius: 1rem;">
+  <q-card style="max-width: 40rem; width: 28rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
     <q-card-section>
       <div class="row items-center">
@@ -61,6 +61,7 @@
                   v-model="values.parent"
                   :options="locations"
                   option-label="name"
+                  @change="changeParent"
                 />
               </div>
               <div>
@@ -74,14 +75,15 @@
               </div>
               <div>
                 <div>
-                  <span class="text">Select Device</span>
+                  <span class="text">Selected Device</span>
                 </div>
                 <div class="row justify-between items-center">
                   <span v-if="selectDevices.length">
-                    <strong>{{ selectDevices[0].name ?? 'No Name' }} {{ selectDevices[0].ipaddress }}</strong> {{ selectDevices[0].mac}}
+                    <strong>{{ selectDevices[0].name ?? 'No Name' }}</strong> {{ selectDevices[0].ipaddress }}
+                    <q-btn round flat icon="svguse:icons.svg#cancel" size="sm" @click="selectNone"></q-btn>
                   </span>
-                  <span v-else class="text-grey text-body2">Select Device</span>
-                  <span><q-btn color="primary" unelevated label="Select" @click="dialog=!dialog"></q-btn></span>
+                  <span v-else class="text-grey text-body2">Please Select Device</span>
+                  <span><q-btn style="border-radius: 10px;" color="primary" unelevated label="선택" @click="dialog=!dialog"></q-btn></span>
                 </div>
               </div>
             </div>
@@ -98,11 +100,12 @@
   </q-card>
 
   <!-- Dialog for Barix Select -->
-  <q-dialog v-model="dialog" full-width persistent>
-    <q-card class="q-ma-xl">
-      <q-card-section>
+  <q-dialog v-model="dialog" persistent>
+    <q-card style="width: 46rem; border-radius: 2rem;">
+      <q-card-section class="q-pa-none">
         <q-table
-          title="Select Barix"
+          flat
+          title="Select Device"
           :rows="devices"
           :columns="[
             { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
@@ -149,7 +152,7 @@
 
       <q-card-actions align="right">
         <q-btn class="q-ma-sm text" padding=".3rem 2rem" flat @click="dialog=!dialog" label="취소" />
-        <q-btn class="q-ma-sm text confirm" padding=".3rem 2rem" unelevated @click="selectBarix" label="확인" />
+        <q-btn class="q-ma-sm text confirm" padding=".3rem 2rem" unelevated @click="selectDevice" label="확인" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -175,7 +178,7 @@ export default {
     const indexArr = computed(() => getters['zones/getIndexArr'])
     const devices = computed(() => state.devices.deviceList)
     const mode = ref('create')
-    const values = ref({ index: null, name: 'No Name', parent: null, device: null, channel: null })
+    const values = ref({ index: null, name: 'No Name', parent: null, device: null, channel: null, check: true })
     const filter = ref('')
     const dialog = ref(false)
     const selectDevices = ref([])
@@ -185,7 +188,7 @@ export default {
       if (Object.keys(selected.value).length) {
         mode.value = 'edit'
         values.value = { ...selected.value }
-        if (Object.keys(values.value.device).length) {
+        if (values.value.device && Object.keys(values.value.device).length) {
           selectDevices.value.push(selected.value.device)
         }
       } else {
@@ -206,9 +209,20 @@ export default {
       channel: [v => v > 0 || '0~99 사이의 숫자를 선택하세요', v => v < 100 || '0~99 사이의 숫자를 선택하세요']
     })
 
-    function selectBarix () {
+    function selectDevice () {
       values.value.device = selectDevices.value[0]
       dialog.value = false
+    }
+
+    function selectNone () {
+      selectDevices.value = []
+      values.value.device = null
+      dialog.value = false
+    }
+
+    function changeParent () {
+      console.log('check!!!')
+      // values.value.check = values.value.parent.status
     }
 
     const onSubmit = async () => {
@@ -236,9 +250,11 @@ export default {
       values,
       filter,
       dialog,
+      changeParent,
       selectDevices,
+      selectNone,
       rules,
-      selectBarix,
+      selectDevice,
       secToDays,
       timeFormat,
       onSubmit
@@ -247,7 +263,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .text {
   font-weight: bold;
   font-family: nanumgothicbold;
@@ -266,5 +282,8 @@ export default {
   font-family: nanumgothic;
   color: grey;
   font-size: .8rem;
+}
+.q-dialog__inner--minimized > div {
+  max-width: 800px;
 }
 </style>

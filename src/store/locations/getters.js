@@ -1,4 +1,4 @@
-export function locationsCount (state) {
+export function getCount (state) {
   return state.locations.length
 }
 

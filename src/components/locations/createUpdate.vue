@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 100%; border-radius: 1rem;">
+  <q-card style="width: 26rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
     <q-card-section>
       <div class="row items-center">
