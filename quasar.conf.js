@@ -11,6 +11,7 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const { configure } = require('quasar/wrappers')
 
 module.exports = configure(function (ctx) {
+  const path = require('path')
   return {
     // https://v2.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -69,6 +70,14 @@ module.exports = configure(function (ctx) {
       chainWebpack (chain) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+      },
+      extendWebpack (cfg) {
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          '@': path.resolve(__dirname, './src'),
+          '@api': path.resolve(__dirname, './src/apis'),
+          '@components': path.resolve(__dirname, './src/components')
+        }
       }
     },
 

@@ -68,10 +68,8 @@ export default {
 
 </script>
 
-<style>
-.body--light {
-  background: #FBFBFB;
-}
+<style scoped>
+
 .header {
   text-align: center;
   padding-top: 14px;
@@ -82,19 +80,5 @@ export default {
   font-weight: 700;
   font-size: 1.5rem;
   color: #111
-}
-.name {
-  font-family: 나눔고딕;
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-.caption {
-  font-family: 나눔고딕;
-  font-weight: 400;
-  font-size: .5rem;
-}
-.listname {
-  font-family: 나눔고딕;
-  font-weight: 700;
 }
 </style>

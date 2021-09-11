@@ -290,3 +290,38 @@
   font-style: nomal;
   src: url(./fonts/ShadowsIntoLight-Regular.woff)
 }
+
+.body--light {
+  background: #FBFBFB;
+}
+.qsys {
+  font-family: bebas;
+  color: rgb(0, 117, 185);
+  font-size: .5rem;
+  text-transform: uppercase;
+}
+.barix {
+  font-family: bebas;
+  color: black;
+  font-size: .5rem;
+  text-transform: uppercase;
+}
+.location_card {
+  width: 24rem;
+  border-radius: 2rem;
+  margin-bottom: 3rem;
+}
+.name {
+  font-family: 나눔고딕;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.caption {
+  font-family: 나눔고딕;
+  font-weight: 400;
+  font-size: .5rem;
+}
+.listname {
+  font-family: 나눔고딕;
+  font-weight: 700;
+}

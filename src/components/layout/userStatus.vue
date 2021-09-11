@@ -4,7 +4,11 @@
       <q-icon name="svguse:icons.svg#chat-alt" size="sm" color="grey-8" />
     </q-btn>
     <q-btn round flat>
-      <q-icon name="svguse:icons.svg#user-circle-fill" size="md" color="grey-8" />
+      <q-avatar text-color="white" size="md">
+        <img src="/patterns/5.png" />
+        <div class="absolute-center">{{nickname}}</div>
+      </q-avatar>
+      <!-- <q-icon name="svguse:icons.svg#user-circle-fill" size="md" color="grey-8" /> -->
       <q-menu class="shadow-15" style="border-radius: 1.5rem;" :offset="[40,10]">
         <q-item>
           <q-item-section
@@ -15,18 +19,23 @@
               class="row justify-center items-center q-mt-md"
               size="80px"
               color="grey-10"
+              text-color="white"
             >
-              <q-icon
+              <img src="/patterns/12.png" />
+              <!-- <q-icon
                 name="fas fa-user-alt"
                 color="white"
                 size="40px"
               >
-              </q-icon>
+              </q-icon> -->
+              <div class="absolute-center">
+                {{ nickname }}
+              </div>
               <q-badge
+                v-if="user.admin"
                 class="q-pa-sm"
-                style="border-radius: 50%"
                 color="orange"
-                :label="nickname"
+                label="관리자"
                 align="bottom"
                 floating
                 transparent

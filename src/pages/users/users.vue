@@ -7,7 +7,7 @@
         <span class="name">사용자 관리</span>
         <span class="caption self-end q-gutter-sm" style="margin-bottom: 2px;">
           <span>
-            총 <stong>{{ usersCount }}</stong>명의 사용자가 있습니다
+            총 <strong>{{ usersCount }}</strong>명의 사용자가 있습니다
           </span>
           <span>
             그중 <strong>{{ adminCount }}</strong>명의 관리자가 있습니다
@@ -32,6 +32,13 @@
           </q-th>
         </q-tr>
       </template>
+      <template v-slot:body-cell-admin="props">
+        <q-td :props="props">
+          <div v-if="props.value === true">
+            <q-icon name="svguse:icons.svg#check-circle" size="sm" color="green-8"/>
+          </div>
+        </q-td>
+      </template>
       <template v-slot:body-cell-createdAt="props">
         <q-td :props="props">
           <div style="white-space: pre; text-align: center;">
@@ -55,13 +62,19 @@
       </template>
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey-8"></q-btn>
-          <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="cyan-8"></q-btn>
+          <q-btn
+            flat round size="sm" color="cyan-8"
+            icon="svguse:icons.svg#pencil-fill"
+            @click="editUser(props.row)"
+          />
           <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red"></q-btn>
         </q-td>
       </template>
     </q-table>
   </div>
+  <q-dialog v-model="editDialog">
+    <EditUser :currentUser="currentUser" />
+  </q-dialog>
 </template>
 
 <script>
@@ -80,13 +93,19 @@ const columns = [
 ]
 
 import { ref, onBeforeMount, computed } from 'vue'
-import { api } from '../../boot/axios'
+import { api } from '@/boot/axios'
 import moment from 'moment'
 
+import EditUser from './edit'
+
 export default {
+  props: ['user'],
+  components: { EditUser },
   setup () {
     moment.locale('ko')
     const users = ref([])
+    const currentUser = ref(null)
+    const editDialog = ref(false)
 
     const usersCount = computed(() => {
       return users.value.length
@@ -101,6 +120,10 @@ export default {
       })
       return admin.length
     })
+    function editUser (user) {
+      currentUser.value = user
+      editDialog.value = true
+    }
 
     function timeFormat2line (time) {
       return `${moment(time).format('YYYY/MM/DD')} \n ${moment(time).format('hh:mm:ss a')}`
@@ -114,7 +137,10 @@ export default {
       users,
       usersCount,
       adminCount,
+      currentUser,
       columns,
+      editDialog,
+      editUser,
       timeFormat2line
     }
   }
