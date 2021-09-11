@@ -8,7 +8,7 @@
             :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
         </div>
         <div class="col-10">
-          <div style="font-size: 1.2rem; font-weight: bold; font-family: nanumgothicbold;">
+          <div style="font-size: 1.2rem; font-weight: 700; font-family: 나눔고딕;">
             {{ mode === 'create' ? 'Location 추가':'Location 수정' }}
           </div>
           <div class="discription">지역단위 혹은 본부 DSP 추가 및 설정</div>
@@ -192,8 +192,8 @@ export default {
 
 <style>
 .text {
-  font-weight: bold;
-  font-family: nanumgothicbold;
+  font-weight: 700;
+  font-family: 나눔고딕;
   font-size: 1rem;
 }
 .confirm {
@@ -206,7 +206,7 @@ export default {
   border: 1px solid #216dff;
 }
 .discription {
-  font-family: nanumgothic;
+  font-family: 나눔고딕;
   color: grey;
   font-size: .8rem;
 }

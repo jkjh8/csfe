@@ -9,9 +9,9 @@
       <div
         class="q-gutter-md row items-center link"
       >
-        <router-link to=''>방송상태</router-link>
-        <router-link to=''>실시간방송</router-link>
-        <router-link to=''>예약방송</router-link>
+        <router-link to='/status'>방송상태</router-link>
+        <router-link to='/broadcast/live'>실시간방송</router-link>
+        <router-link to='/broadcast/reservation'>예약방송</router-link>
       </div>
     </q-menu>
   </button>
@@ -33,6 +33,21 @@
   <router-link class="menu" :class="{ disabled: !user }" to="/eventlog">
     이벤트 로그
   </router-link>
+
+  <button class="menu" :disabled="!user">
+    Admin
+    <q-menu
+      class="row justify-center items-center text-white bg-black"
+      style="width: 18rem; height: 3rem; border-radius: 2rem;"
+      :offset="[110,5]"
+    >
+      <div
+        class="q-gutter-md row items-center link"
+      >
+        <router-link to='/admin/users'>사용자관리</router-link>
+      </div>
+    </q-menu>
+  </button>
 </template>
 
 <script>
@@ -65,7 +80,7 @@ export default {
   text-decoration: none;
 }
 .link a:hover {
-  font-size: 1rem;
+  font-size: .8rem;
   color: #FFFFFF
 }
 .disabled {

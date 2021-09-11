@@ -2,7 +2,7 @@
   <!-- zones table -->
   <q-card class="shadow-15" style="width: 26rem; border-radius: 2rem;">
     <q-card-section class="row justify-between items-center q-py-xs">
-      <div class="q-mx-sm q-gutter-sm row items-center">
+      <div class="q-mx-sm q-gutter-sm row justify-start items-center">
         <q-icon name="svguse:icons.svg#office-building" size="1.5rem" />
         <div>Zones</div>
       </div>
@@ -35,7 +35,7 @@
             <q-item-section>
               <q-item-label>
                 <span class="listname">{{ local.name }}</span>
-                <span class="q-ml-sm" style="font-familt: nanumgothic; font-size: .5rem;">channel: {{ local.channel }}</span>
+                <span class="q-ml-sm" style="font-familt: 나눔고딕; font-size: .5rem;">channel: {{ local.channel }}</span>
               </q-item-label>
               <q-item-label caption>
                 <span v-if="local.parent && Object.keys(local.parent).length">Parent: {{ local.parent.name }}</span>

@@ -9,7 +9,7 @@
           </q-avatar>
         </span>
         <span class="col-10">
-          <div style="font-size: 1.5rem; font-weight: bold; font-family: nanumgothicbold;">
+          <div style="font-size: 1.5rem; font-weight: bold; font-family: 나눔고딕;">
             Location 삭제
           </div>
           <div class="q-mt-md discription">
@@ -75,11 +75,12 @@ export default {
   border: 1px solid #216dff;
 }
 .discription {
-  font-family: nanumgothic;
+  font-family: 나눔고딕;
   color: grey;
 }
 .discription > strong {
-  font-family: nanumgothicbold;
+  font-family: 나눔고딕;
+  font-weight: 700;
   font-size: 1rem;
 }
 </style>

@@ -33,7 +33,7 @@
         </q-td>
         <q-td key="actions" :props="props">
           <div>
-            <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey" @click="openInfo(props.row)" />
+            <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey-8" @click="openInfo(props.row)" />
             <q-btn flat round icon="svguse:icons.svg#check" size="sm" color="blue-grey-6" @click="checkItem(props.row)" />
             <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="createUpdateItem(props.row)" />
             <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" @click="deleteItem(props.row)" />
@@ -145,12 +145,12 @@ export default {
 
 <style scoped>
 .text {
-  font-family: nanumgothicbold;
+  font-family: 나눔고딕;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 .caption {
-  font-family: nanumgothic;
+  font-family: 나눔고딕;
   font-size: .5rem;
 }
 </style>

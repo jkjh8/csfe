@@ -123,7 +123,7 @@ export default {
 
 <style scoped>
 div {
-  font-family: nanumgothic;
+  font-family: 나눔고딕;
   display: flex;
   flex-direction: column;
 }

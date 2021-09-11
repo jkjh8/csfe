@@ -99,7 +99,7 @@
 import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
-import getUser from '../apis/users'
+import getUser from '../../apis/users'
 
 export default defineComponent({
   setup () {

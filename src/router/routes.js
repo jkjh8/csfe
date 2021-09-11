@@ -25,7 +25,14 @@ const routes = [
     path: '/userInfo',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/userInfo.vue') }
+      { path: '', component: () => import('src/pages/users/userInfo.vue') }
+    ]
+  },
+  {
+    path: '/admin/users',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/users/users.vue') }
     ]
   },
   {
@@ -47,6 +54,27 @@ const routes = [
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/locations/index.vue') }
+    ]
+  },
+  {
+    path: '/status',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/broadcast/status.vue') }
+    ]
+  },
+  {
+    path: '/broadcast/live',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/broadcast/live.vue') }
+    ]
+  },
+  {
+    path: '/broadcast/reservation',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/broadcast/reservation.vue') }
     ]
   },
 

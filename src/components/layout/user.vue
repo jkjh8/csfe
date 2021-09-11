@@ -115,9 +115,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.nanum {
-  font-family: nanumgothic;
-}
 .q-btn {
   border-radius: .5rem;
 }

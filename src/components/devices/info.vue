@@ -8,10 +8,10 @@
           </q-avatar>
         </div>
         <div class="q-ml-md">
-          <div style="font-family: nanumgothicbold; font-size: 1.2rem;">
+          <div style="font-family: 나눔고딕; font-size: 1.2rem;">
             {{ info.name ==='' ? 'No Name': info.name }}
           </div>
-          <div style="font-family: nanumgothic; font-size: .5rem;">
+          <div style="font-family: 나눔고딕; font-size: .5rem;">
             IP Address: {{ info.ipaddress === '' ? 'No ip address':info.ipaddress }}
           </div>
         </div>
