@@ -1,14 +1,19 @@
 <template>
   <q-card class="shadow-15 location_card">
-    <q-card-section>
-      <div class="q-mx-sm q-gutter-sm row justify-start items-center" style="height: 2rem;">
-        <q-icon name="svguse:icons.svg#view-list" size="1.5rem" />
-        <div>Tree view</div>
-      </div>
+    <q-card-section class="q-pa-none" style="overflow: hidden;">
+      <q-img src="/background/cover_2.jpg" style="height: 6rem;">
+        <div class="fit row justify-between items-center">
+          <div class="row q-gutter-sm">
+            <q-icon name="svguse:icons.svg#view-list" size="1.5rem" />
+            <div>Zones</div>
+          </div>
+        </div>
+      </q-img>
     </q-card-section>
     <q-separator />
     <q-card-section class="q-pa-none" style="height: 480px;">
       <q-tree
+        class="q-px-md"
         :nodes="tree"
         node-key="index"
       >
@@ -53,3 +58,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/deep/ .q-img__image {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+}
+</style>
