@@ -2,7 +2,7 @@
   <!-- zones table -->
   <q-card class="shadow-15 location_card">
     <q-card-section class="q-pa-none" style="overflow: hidden;">
-      <q-img src="/background/2.jpg" style="height: 6rem;">
+      <q-img src="/background/cover_4.jpg" style="height: 6rem;">
         <div class="fit row justify-between items-center">
           <div class="row q-gutter-sm">
             <q-icon name="svguse:icons.svg#office-building" size="1.5rem" />
@@ -125,10 +125,6 @@ export default {
 .active-link {
   background: #ffab5d;
   color: black;
-}
-.listname {
-  font-family: 나눔고딕;
-  font-weight: 700;
 }
 /deep/ .q-img__image {
   -webkit-filter: blur(4px);

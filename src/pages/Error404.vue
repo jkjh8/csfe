@@ -2,7 +2,7 @@
   <div class="fullscreen bg-grey-1 row justify-center items-center">
     <div
       class="shadow-15 row"
-      style="border: 1px solid #edededed;
+      style="border: none;
              border-radius: 2rem;
              width: 80%;
              height: 60%;
@@ -28,16 +28,26 @@
             </div>
           </div>
         </div>
-      <div class="col-6 image"></div>
+      <div class="col-6">
+        <q-img :src="url" fit="cover" style="height: 100%" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, onBeforeMount } from 'vue'
 
 export default defineComponent({
-  name: 'Error404'
+  name: 'Error404',
+  setup () {
+    const url = ref('')
+    onBeforeMount(() => {
+      url.value = `/background/${Math.floor(Math.random() * 10)}.jpg`
+      console.log(url.value)
+    })
+    return { url }
+  }
 })
 </script>
 

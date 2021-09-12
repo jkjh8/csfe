@@ -1,13 +1,17 @@
 <template>
   <q-card class="shadow-15 location_card">
-    <q-card-section class="row justify-between items-center q-py-xs">
-      <div class="q-mx-sm q-gutter-sm row items-center">
-        <q-icon name="svguse:icons.svg#map" size="1.5rem" />
-        <div>Locations</div>
-      </div>
-      <div>
-        <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
-      </div>
+    <q-card-section class="q-pa-none" style="overflow: hidden;">
+      <q-img src="/background/cover_1.jpg" style="height: 6rem;">
+        <div class="fit row justify-between items-center">
+          <div class="q-mx-sm q-gutter-sm row items-center">
+            <q-icon name="svguse:icons.svg#map" size="1.5rem" />
+            <div>Locations</div>
+          </div>
+          <div>
+            <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
+          </div>
+        </div>
+      </q-img>
     </q-card-section>
 
     <q-separator />
@@ -136,5 +140,9 @@ export default {
 .active-link {
   background: #eaeaea;
   color: black;
+}
+/deep/ .q-img__image {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
 }
 </style>
