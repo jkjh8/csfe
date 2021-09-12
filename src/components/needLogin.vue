@@ -4,9 +4,9 @@
     style="width: 20rem; border-radius: 2rem; overflow: hidden;"
   >
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_7.jpg" style="height: 8rem;">
+      <q-img src="/background/cover_1.png" style="height: 6rem;">
         <div class="row no-wrap" style="width: 100%; height: 100%">
-          <q-icon name="svguse:icons.svg#exclamation" size="3rem" color="red-3"></q-icon>
+          <q-icon name="svguse:icons.svg#exclamation" size="3rem" color="red"></q-icon>
           <div class="q-mx-md name">
             사용을 위해서 먼저 로그인이 필요합니다
           </div>

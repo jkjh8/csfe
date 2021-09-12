@@ -1,17 +1,21 @@
 <template>
-  <q-card style="border-radius: 1rem;">
+  <q-card style="border-radius: 2rem; width: 28rem;">
     <!-- 이름 테그 -->
-    <q-card-section class="row q-py-sm">
-      <span class="col-1" style="width: 4rem;">
-        <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
-          :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
-      </span>
-      <span class="col-10">
-        <div style="font-size: 1.2rem; font-weight: bold;">
-          {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
+    <q-card-section class="q-pa-none" style="overflow: hidden;">
+      <q-img src="/background/cover_1.png" style="height: 6rem;">
+        <div class="fit row justify-between items-center">
+          <span class="col-1" style="width: 2rem;">
+            <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus':'svguse:icons.svg#pencil-fill'"
+              :color="mode === 'create' ? 'cyan-6':'teal-6'" size="2rem"/>
+          </span>
+          <span class="col-10">
+            <div style="font-size: 1.2rem; font-weight: bold;">
+              {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
+            </div>
+            <div class="caption">디바이스 설정</div>
+          </span>
         </div>
-        <div class="discription">디바이스 설정</div>
-      </span>
+      </q-img>
     </q-card-section>
 
     <q-separator class="q-mb-md" />
@@ -32,8 +36,8 @@
       </q-card-section>
 
     <q-form @submit="onSubmit">
-      <q-card-section class="q-pt-sm row justify-center q-mb-md scroll" style="max-height: 50vh">
-        <div class="colume update" style="width: 25rem;">
+      <q-card-section class="q-pt-sm q-mb-md row justify-center scroll" style="max-height: 50vh">
+        <div class="colume update" style="width: 20rem;">
           <div class="text">디바이스 인덱스</div>
           <q-input
             v-model="values.index"
@@ -80,28 +84,6 @@
               label="Select device active mode"
             />
           </div>
-          <!-- <div v-if="values.type === 'QSys'">
-            <div class="text margin-top">Number of channels</div>
-            <q-input
-              v-model="values.channels"
-              dense outlined bg-color="white" type="number"
-            />
-            <div class="text margin-top">Number of stations</div>
-            <q-input
-              v-model="values.stations"
-              dense outlined bg-color="white" type="number"
-            />
-            <div class="text margin-top">Number of transmitter</div>
-            <q-input
-              v-model="values.tx"
-              dense outlined bg-color="white" type="number"
-            />
-            <div class="text margin-top">Number of reciver</div>
-            <q-input
-              v-model="values.rx"
-              dense outlined bg-color="white" type="number"
-            />
-          </div> -->
         </div>
       </q-card-section>
 
@@ -207,15 +189,14 @@ export default {
 .q-field--outlined:hover .q-field__control:before {
   border: 1px solid #216dff;
 }
-.discription {
-  font-family: 나눔고딕;
-  color: grey;
-  font-size: .8rem;
-}
 .info {
   padding: .5rem .5rem;
 }
 .margin-top {
   margin-top: 1rem;
+}
+/deep/ .q-img__image {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
 }
 </style>

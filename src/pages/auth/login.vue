@@ -1,7 +1,6 @@
 <template>
   <div
     class="coulmn justify-center items-center q-mx-auto absolute-center"
-    style="width: 32rem;"
   >
     <div class="row justify-center q-mt-md">
       <LoginForm />

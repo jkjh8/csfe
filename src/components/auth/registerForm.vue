@@ -1,12 +1,16 @@
 <template>
   <q-form @submit="onSubmit">
     <q-card
-      class="q-pa-md shadow-15"
+      class="shadow-15 location_card"
       style="width: 25rem; border-radius: 2rem;"
     >
-      <q-card-section class="q-pa-sm q-gutter-sm row items-center">
-        <q-icon name="svguse:icons.svg#user-add-fill" color="cyan-8" size="2.5rem"></q-icon>
-        <span style="font-family: 나눔고딕; font-weight: 700; font-size: 1.5rem;">회원가입</span>
+      <q-card-section class="q-pa-none" style="overflow: hidden;">
+        <q-img src="/background/cover_3.png" style="height: 6rem;">
+          <div class="fit row items-center">
+            <q-icon name="svguse:icons.svg#user-add" color="cyan-4" size="1.8rem"></q-icon>
+            <span class="name q-ml-md" style="font-size: 1.5rem;">회원가입</span>
+          </div>
+        </q-img>
       </q-card-section>
       <q-separator />
       <!-- 에러 메세지 표시창 -->

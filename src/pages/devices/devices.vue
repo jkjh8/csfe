@@ -28,7 +28,8 @@ import CreateUpdate from '../../components/devices/createUpdate.vue'
 
 export default defineComponent({
   components: { Table, CreateUpdate },
-  setup () {
+  props: ['user'],
+  setup (props) {
     const { state, getters } = useStore()
 
     const count = computed(() => getters['devices/getDeviceCount'])
