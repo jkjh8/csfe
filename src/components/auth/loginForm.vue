@@ -87,7 +87,7 @@
             class="full-width"
             rounded
             type="submit"
-            color="cyan-6"
+            color="grey-8"
             padding=".6rem"
             no-caps
           >

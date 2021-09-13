@@ -35,7 +35,18 @@
       <template v-slot:body-cell-admin="props">
         <q-td :props="props">
           <div v-if="props.value === true">
-            <q-icon name="svguse:icons.svg#check-circle" size="sm" color="green-8"/>
+            <q-btn
+              icon="svguse:icons.svg#check-circle"
+              size="sm" color="green-8" round flat
+              @click="editAdmin(props.row)"
+            />
+          </div>
+          <div v-else>
+            <q-btn
+              icon="svguse:icons.svg#ban"
+              size="sm" color="red" round flat
+              @click="editAdmin(props.row)"
+            />
           </div>
         </q-td>
       </template>
@@ -73,7 +84,10 @@
     </q-table>
   </div>
   <q-dialog v-model="editDialog">
-    <EditUser :currentUser="currentUser" />
+    <EditUser :user="currentUser" />
+  </q-dialog>
+  <q-dialog v-model="popupAdmin">
+    <PopupAdmin :user="selectedUser" @close="close" />
   </q-dialog>
 </template>
 
@@ -93,45 +107,48 @@ const columns = [
 ]
 
 import { ref, onBeforeMount, computed } from 'vue'
-import { api } from '@/boot/axios'
 import moment from 'moment'
+import { useStore } from 'vuex'
 
 import EditUser from './edit'
+import PopupAdmin from './popupAdmin.vue'
 
 export default {
   props: ['user'],
-  components: { EditUser },
+  components: { EditUser, PopupAdmin },
   setup () {
     moment.locale('ko')
-    const users = ref([])
+    const { state, getters, dispatch } = useStore()
+    const users = computed(() => state.user.users)
+    const usersCount = computed(() => getters['user/numberOfUsers'])
+    const adminCount = computed(() => getters['user/numberOfAdmin'])
     const currentUser = ref(null)
     const editDialog = ref(false)
+    const selectedUser = ref(null)
+    const popupAdmin = ref(false)
 
-    const usersCount = computed(() => {
-      return users.value.length
-    })
-
-    const adminCount = computed(() => {
-      const admin = []
-      users.value.forEach(e => {
-        if (e.admin) {
-          admin.push(e)
-        }
-      })
-      return admin.length
-    })
     function editUser (user) {
       currentUser.value = user
       editDialog.value = true
+    }
+
+    function editAdmin (user) {
+      selectedUser.value = user
+      popupAdmin.value = true
+    }
+
+    function close () {
+      editDialog.value = false
+      popupAdmin.value = false
+      currentUser.value = null
+      selectedUser.value = null
     }
 
     function timeFormat2line (time) {
       return `${moment(time).format('YYYY/MM/DD')} \n ${moment(time).format('hh:mm:ss a')}`
     }
     onBeforeMount(async () => {
-      const r = await api.get('/auth/users')
-      users.value = r.data.users
-      console.log(users.value)
+      dispatch('user/getUsers')
     })
     return {
       users,
@@ -141,7 +158,11 @@ export default {
       columns,
       editDialog,
       editUser,
-      timeFormat2line
+      selectedUser,
+      popupAdmin,
+      editAdmin,
+      timeFormat2line,
+      close
     }
   }
 }

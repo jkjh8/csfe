@@ -195,7 +195,7 @@ export default {
 .margin-top {
   margin-top: 1rem;
 }
-/deep/ .q-img__image {
+:deep(.q-img__image) {
   -webkit-filter: blur(4px);
   filter: blur(4px);
 }

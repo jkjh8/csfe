@@ -34,3 +34,8 @@ export async function register ({ commit }, payload) {
     return error.response.data.message
   }
 }
+
+export async function getUsers ({ commit }) {
+  const r = await api.get('/auth/users')
+  commit('updateUsers', r.data.users)
+}

@@ -1,19 +1,21 @@
 <template>
   <q-card style="width: 26rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
-    <q-card-section>
-      <div class="row items-center">
-        <div class="col-1" style="width: 4rem;">
-          <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
-            :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
-        </div>
-        <div class="col-10">
-          <div style="font-size: 1.2rem; font-weight: 700; font-family: 나눔고딕;">
-            {{ mode === 'create' ? 'Location 추가':'Location 수정' }}
+    <q-card-section class="q-pa-none" style="overflow: hidden;">
+        <q-img src="/background/cover_1.png" style="height: 6rem;">
+          <div class="fit row items-center">
+            <div class="q-ml-md">
+              <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
+                :color="mode === 'create' ? 'cyan-6':'cyan-4'" size="2rem"/>
+            </div>
+            <div class="q-ml-md">
+              <div style="font-size: 1.2rem; font-weight: 700; font-family: 나눔고딕;">
+                {{ mode === 'create' ? 'Location 추가':'Location 수정' }}
+              </div>
+              <div class="caption">지역단위 혹은 본부 DSP 추가 및 설정</div>
+            </div>
           </div>
-          <div class="discription">지역단위 혹은 본부 DSP 추가 및 설정</div>
-        </div>
-      </div>
+        </q-img>
     </q-card-section>
 
     <q-separator class="q-mb-sm" />
@@ -35,8 +37,8 @@
 
     <q-form @submit="onSubmit">
       <q-card-section class="q-pt-sm">
-        <div class="q-px-sm q-mx-sm colume" style="border-radius: 1rem;">
-          <div class="q-pa-sm">
+        <div class="q-px-md q-mx-sm colume" style="border-radius: 1rem;">
+          <div class="q-pa-sm q-gutter-sm">
             <div>
               <div class="text">지역 인덱스</div>
               <q-input
@@ -49,6 +51,7 @@
               <q-input
                 v-model="values.name"
                 dense outlined bg-color="white"
+                placeholder="No Name"
               />
             </div>
             <div>
@@ -131,14 +134,15 @@ export default {
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
+    const indexArr = computed(() => getters['locations/getIndexArr'])
     const qsysList = computed(() => getters['devices/QsysList'])
     const barixList = computed(() => getters['devices/BarixList'])
 
     const mode = ref('create')
     const error = ref('')
     const values = ref({
-      index: 1,
-      name: 'No Name',
+      index: null,
+      name: '',
       ipaddress: '',
       type: 'Q-Sys',
       device: null
@@ -147,6 +151,9 @@ export default {
     const onSubmit = async () => {
       $q.loading.show()
       try {
+        if (values.value.name === '') {
+          values.value = 'No Name'
+        }
         if (mode.value === 'create') {
           await $api.post('/locations', values.value)
         } else {
@@ -168,6 +175,14 @@ export default {
         values.value = { ...selected.value }
       } else {
         mode.value = 'create'
+      }
+      if (!values.value.index) {
+        for (let i = 1; i <= indexArr.value.length + 1; i++) {
+          if (!indexArr.value.includes(i)) {
+            values.value.index = i
+            break
+          }
+        }
       }
     })
 

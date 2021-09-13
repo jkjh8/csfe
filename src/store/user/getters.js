@@ -6,3 +6,18 @@ export function nickname (state) {
     return ''
   }
 }
+
+export function numberOfUsers (state) {
+  if (state.users.length) return state.users.length
+  return 0
+}
+
+export function numberOfAdmin (state) {
+  const admin = []
+  state.users.forEach(e => {
+    if (e.admin) {
+      admin.push(e)
+    }
+  })
+  return admin.length
+}

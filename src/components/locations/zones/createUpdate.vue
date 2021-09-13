@@ -1,20 +1,20 @@
 <template>
   <!-- zone create -->
-  <q-card style="max-width: 40rem; width: 28rem; border-radius: 2rem;">
+  <q-card style="width: 28rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
-    <q-card-section>
-      <div class="row items-center">
-        <div class="col-1" style="width: 4rem;">
-          <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
-            :color="mode === 'create' ? 'cyan-6':'teal-6'" size="3rem"/>
-        </div>
-        <div class="col-10">
-          <div style="font-size: 1.2rem; font-weight: bold; font-family: nanumgothicbold;">
-            {{ mode === 'create' ? 'Zone 추가':'Zone 수정' }}
+    <q-card-section class="q-pa-none">
+      <q-img src="/background/cover_1.png" style="height: 6rem;">
+        <div class="fit row items-center">
+          <q-icon
+            class="q-ml-md"
+            :name="mode === 'create' ? 'svguse:icons.svg#plus-circle-fill':'svguse:icons.svg#pencil-fill'"
+            :color="mode === 'create' ? 'cyan-4':'teal-4'" size="lg"/>
+          <div class="q-ml-md">
+            <div class="name">{{ mode === 'create' ? 'Zone 추가':'Zone 수정' }}</div>
+            <div class="caption">방송구간 추가 및 설정</div>
           </div>
-          <div class="discription">방송구간 추가 및 설정</div>
         </div>
-      </div>
+      </q-img>
     </q-card-section>
 
     <q-separator class="q-mb-sm" />
@@ -37,7 +37,7 @@
     <!-- Start Form -->
     <q-form @submit="onSubmit">
       <q-card-section class="q-pt-sm">
-        <div class="q-px-sm q-mx-sm colume" style="border-radius: 1rem;">
+        <div class="q-px-md q-mx-sm colume" style="border-radius: 1rem;">
           <div class="q-pa-sm">
             <div>
               <div class="text">지역 인덱스</div>
@@ -93,8 +93,16 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".5rem 2rem" flat @click="$emit('close')" label="취소" />
-        <q-btn class="q-ma-sm text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
+        <q-btn
+          class="q-ma-sm" padding=".5rem 2rem"
+          rounded flat
+          @click="$emit('close')" label="취소"
+        />
+        <q-btn
+          class="q-mr-md" padding=".5rem 2rem"
+          unelevated rounded color="cyan"
+          type="submit" label="확인"
+        />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -151,8 +159,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn class="q-ma-sm text" padding=".3rem 2rem" flat @click="dialog=!dialog" label="취소" />
-        <q-btn class="q-ma-sm text confirm" padding=".3rem 2rem" unelevated @click="selectDevice" label="확인" />
+        <q-btn class="q-ma-sm" @click="dialog=!dialog" label="취소" />
+        <q-btn class="q-ma-sm" padding=".3rem 2rem" rounded unelevated @click="selectDevice" label="확인" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -264,24 +272,11 @@ export default {
 </script>
 
 <style scoped>
-.text {
-  font-weight: bold;
-  font-family: nanumgothicbold;
-  font-size: 1rem;
-}
-.confirm {
-  background: #22d3ee;
-}
 .q-field--outlined .q-field__control:before {
   border: 1px solid #e6e6e6;
 }
 .q-field--outlined:hover .q-field__control:before {
   border: 1px solid #216dff;
-}
-.discription {
-  font-family: nanumgothic;
-  color: grey;
-  font-size: .8rem;
 }
 .q-dialog__inner--minimized > div {
   max-width: 800px;

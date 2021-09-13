@@ -140,6 +140,10 @@
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
   </symbol>
 
+  <symbol id="ban" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+  </symbol>
+
   <symbol id="logo-circle" viewBox="0 0 320 320">
     <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#787878;stop-opacity:1" />

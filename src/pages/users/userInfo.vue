@@ -4,22 +4,19 @@
     style="margin-top: 10%;"
   >
     <q-card
-      class="shadow-15"
-      style="width: 28rem; border-radius: 2rem;"
+      class="shadow-15 location_card"
     >
-      <q-card-section>
-        <div class="row items-center">
-          <div class="logo-icon row justify-center items-center">
+      <q-card-section class="q-pa-none" style="overflow: hidden;">
+        <q-img src="/background/cover_1.jpg" style="height: 6rem;">
+          <div class="fit row items-center">
             <q-icon
-              name="fas fa-user"
-              size="20px"
-
+              class="q-ml-md"
+              name="svguse:icons.svg#user-circle-fill"
+              size="lg"
             />
+            <span class="q-ml-md name">사용자 정보</span>
           </div>
-          <div class="text-h6 text-bold q-ml-sm">
-            사용자 정보
-          </div>
-        </div>
+        </q-img>
       </q-card-section>
 
       <q-separator inset />
@@ -56,12 +53,12 @@
               <q-item-label class="text-uppercase">{{ user.admin }}</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item>
+          <!-- <q-item>
             <q-item-section>
               <q-item-label class="text-bold">TTS 권환</q-item-label>
               <q-item-label class="text-uppercase">{{ user.tts }}</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">로그인 횟수</q-item-label>
@@ -85,8 +82,7 @@
       <q-separator inset />
       <q-card-actions align="right">
         <q-btn
-          flat
-          to="/"
+          class="q-mr-md" flat rounded to="/"
         >
           홈으로
         </q-btn>
@@ -119,18 +115,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  border: 1px solid;
-  border-color: #324b3f;
-  border-radius: 50%;
-  margin: 5px 5px 5px 5px;
-  background:#324b3f;
-  color: #e5e7e6;
-}
-
-.name-tag {
-  width: 100px;
+:deep(.q-img__image) {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
 }
 </style>

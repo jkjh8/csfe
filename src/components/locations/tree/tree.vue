@@ -15,21 +15,33 @@
       <q-tree
         class="q-px-md"
         :nodes="tree"
-        node-key="index"
+        node-key="_id"
+        tick-strategy="leaf"
+        v-model:selected="selected"
+        v-model:ticked="ticked"
+        v-model:expanded="expanded"
       >
       </q-tree>
     </q-card-section>
   </q-card>
+
+  <div>
+    {{selected}}
+    {{ticked}}
+    {{expanded}}
+  </div>
 </template>
 
 <script>
-import { computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup () {
     const { state } = useStore()
-    // const tree = ref([])
+    const selected = ref('')
+    const ticked = ref([])
+    const expanded = ref([])
     const locations = computed(() => state.locations.locations)
     const zones = computed(() => state.zones.zones)
 
@@ -39,7 +51,7 @@ export default {
         const children = []
         zones.value.forEach(zone => {
           if (zone.parent.index === location.index) {
-            children.push({ _id: zone._id, channel: zone.channel, label: zone.name })
+            children.push({ _id: zone._id, index: zone.index, channel: zone.channel, label: zone.name })
           }
         })
         console.log(location)
@@ -53,14 +65,17 @@ export default {
       //
     })
     return {
-      tree
+      tree,
+      selected,
+      ticked,
+      expanded
     }
   }
 }
 </script>
 
 <style scoped>
-/deep/ .q-img__image {
+:deep(.q-img__image) {
   -webkit-filter: blur(4px);
   filter: blur(4px);
 }

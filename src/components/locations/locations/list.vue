@@ -35,7 +35,7 @@
             <q-item-section avatar>
               <q-avatar style="border: 1px solid #454545" size="2rem">
                 {{local.index}}
-                <q-badge v-if="local.status" color="red" rounded floating/>
+                <q-badge v-if="!local.status" color="red" rounded floating/>
               </q-avatar>
             </q-item-section>
 
@@ -111,7 +111,7 @@ export default {
     }
 
     function createUpdateDialogClose () {
-      selected.value = {}
+      selectItem.value = {}
       createUpdateDialog.value = false
     }
 
@@ -141,7 +141,7 @@ export default {
   background: #eaeaea;
   color: black;
 }
-/deep/ .q-img__image {
+:deep(.q-img__image) {
   -webkit-filter: blur(4px);
   filter: blur(4px);
 }
