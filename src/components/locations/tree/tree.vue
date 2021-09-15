@@ -15,6 +15,7 @@
       <q-tree
         class="q-px-md"
         :nodes="tree"
+        label-key="name"
         node-key="_id"
         tick-strategy="leaf"
         v-model:selected="selected"
@@ -26,9 +27,7 @@
   </q-card>
 
   <div>
-    {{selected}}
-    {{ticked}}
-    {{expanded}}
+    {{ selectedName }}
   </div>
 </template>
 
@@ -38,26 +37,24 @@ import { useStore } from 'vuex'
 
 export default {
   setup () {
-    const { state } = useStore()
+    const { getters } = useStore()
     const selected = ref('')
     const ticked = ref([])
     const expanded = ref([])
-    const locations = computed(() => state.locations.locations)
-    const zones = computed(() => state.zones.zones)
 
-    const tree = computed(() => {
+    const tree = computed(() => getters['locations/getTree'])
+
+    const selectedName = computed(() => {
       const rt = []
-      locations.value.forEach(location => {
-        const children = []
-        zones.value.forEach(zone => {
-          if (zone.parent.index === location.index) {
-            children.push({ _id: zone._id, index: zone.index, channel: zone.channel, label: zone.name })
-          }
+      ticked.value.forEach(e => {
+        tree.value.forEach(location => {
+          location.children.forEach(zone => {
+            if (zone._id === e) {
+              rt.push(zone)
+            }
+          })
         })
-        console.log(location)
-        rt.push({ _id: location._id, index: location.index, label: location.name, children: children })
       })
-      console.log(rt)
       return rt
     })
 
@@ -68,7 +65,8 @@ export default {
       tree,
       selected,
       ticked,
-      expanded
+      expanded,
+      selectedName
     }
   }
 }

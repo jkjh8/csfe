@@ -21,8 +21,8 @@
     <q-separator />
 
     <q-card-section class="q-mx-md q-gutter-sm">
-      <BarixInfo v-if="info.type === 'Barix' && Object.keys(deviceData).length" :deviceData="deviceData"></BarixInfo>
-      <QsysInfo v-if="info.type === 'QSys'  && Object.keys(deviceData).length" :deviceData="deviceData"></QsysInfo>
+      <BarixInfo v-if="info.type === 'Barix' && Object.keys(info).length" :deviceData="info.detail"></BarixInfo>
+      <QsysInfo v-if="info.type === 'QSys'  && Object.keys(info).length" :deviceData="info.detail"></QsysInfo>
     </q-card-section>
 
     <q-separator />
@@ -36,26 +36,16 @@
 <script>
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
-import { ref, onBeforeMount } from 'vue'
-import { api } from '../../boot/axios'
+// import { ref, onBeforeMount } from 'vue'
+// import { api } from '../../boot/axios'
 import BarixInfo from './barix/barixForm'
 import QsysInfo from './qsys/qsysForm.vue'
 export default {
   props: ['info'],
   components: { BarixInfo, QsysInfo },
   setup (props) {
-    const deviceData = ref({})
-    onBeforeMount(async () => {
-      if (props.info.type === 'QSys') {
-        const r = await api.get(`/devices/qsys?ipaddress=${props.info.ipaddress}`)
-        deviceData.value = r.data.data
-      } else if (props.info.type === 'Barix') {
-        const r = await api.get(`/devices/barix?ipaddress=${props.info.ipaddress}`)
-        deviceData.value = r.data.data
-      }
-    })
+    console.log(props.info)
     return {
-      deviceData,
       timeFormat,
       secToDays
     }

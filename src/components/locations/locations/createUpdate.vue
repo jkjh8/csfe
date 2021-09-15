@@ -134,7 +134,7 @@ export default {
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
-    const indexArr = computed(() => getters['locations/getIndexArr'])
+    const indexArr = computed(() => getters['locations/getLocationsIndexArr'])
     const qsysList = computed(() => getters['devices/QsysList'])
     const barixList = computed(() => getters['devices/BarixList'])
 

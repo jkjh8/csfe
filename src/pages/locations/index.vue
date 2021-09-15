@@ -31,19 +31,18 @@ import Tree from '@components/locations/tree/tree'
 export default {
   components: { Locations, Zones, Tree },
   setup () {
-    const { state, dispatch, getters } = useStore()
-    const count = computed(() => state.locations.count)
-    const locationsCount = computed(() => getters['locations/getCount'])
-    const zonesCount = computed(() => getters['zones/getCount'])
+    const { dispatch, getters } = useStore()
+    const locationsCount = computed(() => getters['locations/getLocationsCount'])
+    const zonesCount = computed(() => getters['locations/getZonesCount'])
 
     onBeforeMount(() => {
       dispatch('user/getUser')
       dispatch('locations/updateLocations')
-      dispatch('zones/updateZones')
+      dispatch('locations/updateZones')
       dispatch('devices/updateDevices')
     })
 
-    return { count, locationsCount, zonesCount }
+    return { locationsCount, zonesCount }
   }
 }
 </script>

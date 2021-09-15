@@ -24,3 +24,11 @@ export function BarixList (state) {
   })
   return list
 }
+
+export function newDeviceCount (state) {
+  return state.deviceList.filter(e => e.checked !== true).length
+}
+
+export function errorDeviceCount (state) {
+  return state.deviceList.filter(e => e.status !== true).length
+}

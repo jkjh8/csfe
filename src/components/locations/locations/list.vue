@@ -5,7 +5,13 @@
         <div class="fit row justify-between items-center">
           <div class="q-mx-sm q-gutter-sm row items-center">
             <q-icon name="svguse:icons.svg#map" size="1.5rem" />
-            <div>Locations</div>
+            <div>
+              <div class="name">지역설정</div>
+              <div
+                v-if="locationErrorCount"
+                class="caption"
+              >현재 {{ locationErrorCount }}개의 지역의 점검이 필요합니다</div>
+            </div>
           </div>
           <div>
             <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
@@ -81,16 +87,15 @@ import Delete from './delete.vue'
 export default {
   components: { CreateUpdate, Delete },
   setup () {
-    const { state, commit, dispatch } = useStore()
+    const { state, getters, commit, dispatch } = useStore()
     const locations = computed(() => state.locations.locations)
-
     const selected = computed(() => state.locations.selected)
+    const locationErrorCount = computed(() => getters['locations/locationsErrorCount'])
     const createUpdateDialog = ref(false)
     const deleteDialog = ref(false)
     const selectItem = ref({})
 
     function editItem (item) {
-      console.log(item)
       selectItem.value = item
       createUpdateDialog.value = true
     }
@@ -122,6 +127,7 @@ export default {
 
     return {
       locations,
+      locationErrorCount,
       createUpdateDialog,
       deleteDialog,
       selected,

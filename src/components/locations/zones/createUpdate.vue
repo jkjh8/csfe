@@ -183,10 +183,10 @@ export default {
     const $api = inject('$api')
 
     const locations = computed(() => state.locations.locations)
-    const indexArr = computed(() => getters['zones/getIndexArr'])
+    const indexArr = computed(() => getters['locations/getZonesIndexArr'])
     const devices = computed(() => state.devices.deviceList)
     const mode = ref('create')
-    const values = ref({ index: null, name: 'No Name', parent: null, device: null, channel: null, check: true })
+    const values = ref({ index: null, name: 'No Name', parent: null, device: null, channel: null, check: true, status: false })
     const filter = ref('')
     const dialog = ref(false)
     const selectDevices = ref([])
@@ -241,7 +241,7 @@ export default {
         } else {
           await $api.put('/zones', values.value)
         }
-        dispatch('zones/updateZones')
+        dispatch('locations/updateZones')
         $q.loading.hide()
         emit('close')
       } catch (err) {

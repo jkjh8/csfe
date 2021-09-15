@@ -48,7 +48,7 @@ export default {
       console.log(selected.value)
       try {
         await $api.get(`/zones/delete?_id=${selected.value._id} `)
-        await dispatch('zones/updateZones')
+        await dispatch('locations/updateZones')
         $q.loading.hide()
         emit('close')
       } catch (err) {

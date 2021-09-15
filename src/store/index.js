@@ -6,7 +6,6 @@ import user from './user'
 import eventlog from './eventlog'
 import socket from './socket'
 import locations from './locations'
-import zones from './zones'
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
@@ -15,8 +14,7 @@ export default store(function (/* { ssrContext } */) {
       eventlog,
       devices,
       socket,
-      locations,
-      zones
+      locations
     },
 
     // enable strict mode (adds overhead!)

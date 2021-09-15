@@ -4,7 +4,10 @@
       <div class="row items-center q-gutter-sm">
         <q-icon name="svguse:icons.svg#server-fill" size="sm" color="teal" />
         <span class="name">디바이스</span>
-        <span class="caption">총 {{ count }}개의 디바이스</span>
+        <span class="caption">총 {{ count }}개의 디바이스 중 신규 디바이스 {{ newConunt }}개 점검필요 {{ errorConunt }}개가 존재 합니다</span>
+      </div>
+      <div>
+        {{ message }}
       </div>
       <div class="q-mr-md">
         <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="dialog=!dialog">
@@ -33,8 +36,10 @@ export default defineComponent({
     const { state, getters } = useStore()
 
     const count = computed(() => getters['devices/getDeviceCount'])
+    const newConunt = computed(() => getters['devices/newDeviceCount'])
+    const errorConunt = computed(() => getters['devices/errorDeviceCount'])
     const connected = computed(() => state.socket.connect)
-
+    const message = ref('')
     const dialog = ref(false)
 
     function addDevice () {
@@ -45,7 +50,15 @@ export default defineComponent({
       getUser()
     })
 
-    return { count, connected, dialog, addDevice }
+    return {
+      count,
+      connected,
+      dialog,
+      message,
+      newConunt,
+      errorConunt,
+      addDevice
+    }
   }
 })
 </script>

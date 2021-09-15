@@ -4,9 +4,15 @@
     <q-card-section class="q-pa-none" style="overflow: hidden;">
       <q-img src="/background/cover_4.jpg" style="height: 6rem;">
         <div class="fit row justify-between items-center">
-          <div class="row q-gutter-sm">
+          <div class="q-mx-sm q-gutter-sm row items-center">
             <q-icon name="svguse:icons.svg#office-building" size="1.5rem" />
-            <div>Zones</div>
+            <div>
+              <div class="name">방송구간설정</div>
+              <div
+                v-if="zonesErrorCount"
+                class="caption"
+              >현재 {{ zonesErrorCount }}개의 방송구간의 점검이 필요합니다</div>
+            </div>
           </div>
           <div>
             <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
@@ -81,8 +87,9 @@ import Delete from './delete'
 export default {
   components: { CreateUpdate, Delete },
   setup () {
-    const { state } = useStore()
-    const zones = computed(() => state.zones.zones)
+    const { state, getters } = useStore()
+    const zones = computed(() => state.locations.zones)
+    const zonesErrorCount = computed(() => getters['locations/zonesErrorCount'])
 
     const createUpdateDialog = ref(false)
     const deleteDialog = ref(false)
@@ -109,6 +116,7 @@ export default {
     }
     return {
       zones,
+      zonesErrorCount,
       selected,
       createUpdateDialog,
       updateItem,
