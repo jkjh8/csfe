@@ -1,13 +1,13 @@
 export function getIndexArr (state) {
-  return state.deviceList.map(e => e.index)
+  return state.devices.map(e => e.index)
 }
 
 export function getDeviceCount (state) {
-  return state.deviceList.length
+  return state.devices.length
 }
 export function QsysList (state) {
   const list = []
-  state.deviceList.forEach(e => {
+  state.devices.forEach(e => {
     if (e.type === 'QSys') {
       list.push(e)
     }
@@ -17,7 +17,7 @@ export function QsysList (state) {
 
 export function BarixList (state) {
   const list = []
-  state.deviceList.forEach(e => {
+  state.devices.forEach(e => {
     if (e.type === 'Barix') {
       list.push(e)
     }
@@ -26,9 +26,9 @@ export function BarixList (state) {
 }
 
 export function newDeviceCount (state) {
-  return state.deviceList.filter(e => e.checked !== true).length
+  return state.devices.filter(e => e.checked !== true).length
 }
 
-export function errorDeviceCount (state) {
-  return state.deviceList.filter(e => e.status !== true).length
+export function errorCount (state) {
+  return state.devices.filter(e => e.status !== true).length
 }

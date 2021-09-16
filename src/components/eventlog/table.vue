@@ -1,11 +1,11 @@
 <template>
   <q-table
+    class="shadow-10 q-pa-sm"
     :columns="columes"
     :rows="logs.docs"
     :pagination="{ rowsPerPage: 0 }"
     hide-pagination
     style="border-radius: 1rem;"
-    class="shadow-10"
   >
     <template v-slot:body="props">
       <q-tr

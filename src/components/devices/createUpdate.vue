@@ -1,19 +1,21 @@
 <template>
-  <q-card style="border-radius: 2rem; width: 28rem;">
+  <q-card style="border-radius: 2rem; width: 24rem;">
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none" style="overflow: hidden;">
       <q-img src="/background/cover_1.png" style="height: 6rem;">
-        <div class="fit row justify-between items-center">
-          <span class="col-1" style="width: 2rem;">
-            <q-icon :name="mode === 'create' ? 'svguse:icons.svg#plus':'svguse:icons.svg#pencil-fill'"
-              :color="mode === 'create' ? 'cyan-6':'teal-6'" size="2rem"/>
-          </span>
-          <span class="col-10">
+        <div class="fit row items-center">
+          <q-avatar class="row justify-center items-center" style="border: solid 1px #fff;" size="md">
+            <q-icon
+              :name="mode === 'create' ? 'svguse:icons.svg#plus':'svguse:icons.svg#pencil-fill'"
+              color="yellow-6" size="1rem"
+            />
+          </q-avatar>
+          <div class="q-ml-md">
             <div style="font-size: 1.2rem; font-weight: bold;">
               {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
             </div>
             <div class="caption">디바이스 설정</div>
-          </span>
+          </div>
         </div>
       </q-img>
     </q-card-section>
@@ -89,9 +91,17 @@
 
       <q-separator />
 
-      <q-card-actions class="q-py-sm" align="right">
-        <q-btn class="text q-mx-sm" padding=".5rem 2rem" flat @click="emit('close')" label="취소" />
-        <q-btn class="text confirm" padding=".5rem 2rem" unelevated type="submit" label="확인" />
+      <q-card-actions align="right">
+        <q-btn
+          class="q-mr-sm" padding=".5rem 2rem"
+          flat rounded label="취소"
+          @click="emit('close')"
+        />
+        <q-btn
+          class="q-mr-sm" padding=".5rem 2rem"
+          unelevated rounded color="blue-grey-4"
+          type="submit" label="확인"
+        />
       </q-card-actions>
     </q-form>
   </q-card>

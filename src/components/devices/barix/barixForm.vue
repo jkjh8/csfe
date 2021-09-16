@@ -1,100 +1,100 @@
 <template>
   <div class="item">
     <span>Firmware</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.fwname }}</span>
+    <span class="text-uppercase q-pa-none">{{ info.detail.fwname }}</span>
   </div>
 
   <div class="item">
     <span>IP Address</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.network.ip }}</span>
+    <span class="text-uppercase q-pa-none">{{ info.detail.network.ip }}</span>
   </div>
   <div class="item">
     <span>Netmask</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.network.netmask }}</span>
+    <span class="text-uppercase q-pa-none">{{ info.detail.network.netmask }}</span>
   </div>
   <div class="item">
     <span>Gateway</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.network.gateway }}</span>
+    <span class="text-uppercase q-pa-none">{{ info.detail.network.gateway }}</span>
   </div>
   <div class="item">
     <span>MAC</span>
-    <span class="text-uppercase q-pa-none">{{ deviceData.hardware.mac }}</span>
+    <span class="text-uppercase q-pa-none">{{ info.detail.hardware.mac }}</span>
   </div>
   <div class="item">
     <span>Up Time</span>
-    <span class="text-uppercase q-pa-none">{{ secToDays(deviceData.uptime) }}</span>
+    <span class="text-uppercase q-pa-none">{{ secToDays(info.detail.uptime) }}</span>
   </div>
 
   <q-separator class="q-my-sm" color="grey-3" />
-  <div v-if="deviceData.fwname === 'StreamingClientKit'">
+  <div v-if="info.detail.fwname === 'StreamingClientKit'">
     <div class="item">
       <span>Status</span>
-      <span class="text-uppercase q-pa-none">{{ deviceData.status }}</span>
+      <span class="text-uppercase q-pa-none">{{ info.detail.status }}</span>
     </div>
     <div class="item">
       <span>Audio Out L</span>
-      <span class="text-uppercase q-pa-none">{{ deviceData.audio.outputleft }}</span>
+      <span class="text-uppercase q-pa-none">{{ info.detail.audio.outputleft }}</span>
     </div>
     <div class="item">
       <span>Audio Out R</span>
-      <span class="text-uppercase q-pa-none">{{ deviceData.audio.outputright }}</span>
+      <span class="text-uppercase q-pa-none">{{ info.detail.audio.outputright }}</span>
       </div>
       <div class="item">
         <span>Relay</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.io.relay1 === '0' ? 'OFF':'ON' }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.io.relay1 === '0' ? 'OFF':'ON' }}</span>
       </div>
       <q-separator class="q-my-sm" color="grey-3" />
       <div class="item">
         <span>Priority Port</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.priorityrtpport }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.priorityrtpport }}</span>
       </div>
       <div class="item">
         <span>URL 1</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream1 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream1 }}</span>
       </div>
       <div class="item">
         <span>URL 2</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream2 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream2 }}</span>
       </div>
       <div class="item">
         <span>URL 3</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream3 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream3 }}</span>
       </div>
     </div>
 
-    <div v-if="deviceData.fwname === 'InstreamerKit'">
+    <div v-if="info.detail.fwname === 'InstreamerKit'">
       <div class="item">
         <span>Status</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.status }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.status }}</span>
       </div>
 
       <div class="item">
         <span>Audio Input L</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.audio.inputleft }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.audio.inputleft }}</span>
       </div>
       <div class="item">
         <span>Audio Input R</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.audio.inputright }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.audio.inputright }}</span>
       </div>
       <div class="item">
         <span>stream 1</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream1 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream1 }}</span>
       </div>
       <div class="item">
         <span>stream 2</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream2 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream2 }}</span>
       </div>
       <div class="item">
         <span>stream 3</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream3 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream3 }}</span>
       </div>
       <div class="item">
         <span>stream 4</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.streaming.stream4 }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.streaming.stream4 }}</span>
       </div>
       <div class="item">
         <span>Relay 1</span>
-        <span class="text-uppercase q-pa-none">{{ deviceData.io.relay1 === '0' ? 'OFF':'ON' }}</span>
+        <span class="text-uppercase q-pa-none">{{ info.detail.io.relay1 === '0' ? 'OFF':'ON' }}</span>
       </div>
     </div>
 
@@ -102,11 +102,11 @@
 
     <div class="item">
       <span>Created At</span>
-      <span>{{ timeFormat(deviceData.createdAt) }}</span>
+      <span>{{ timeFormat(info.createdAt) }}</span>
     </div>
     <div class="item">
       <span>Updated At</span>
-      <span>{{ timeFormat(deviceData.updatedAt) }}</span>
+      <span>{{ timeFormat(info.updatedAt) }}</span>
     </div>
 </template>
 
@@ -114,7 +114,7 @@
 import timeFormat from '../../../apis/timeFormat'
 import secToDays from '../../../apis/secToDays'
 export default {
-  props: ['deviceData'],
+  props: ['info'],
   setup (props) {
     return { timeFormat, secToDays }
   }
@@ -124,6 +124,7 @@ export default {
 <style scoped>
 div {
   font-family: 나눔고딕;
+  font-size: .8rem;
   display: flex;
   flex-direction: column;
 }
@@ -135,7 +136,7 @@ span {
   padding: .5rem 0 0 0;
 }
 div > span:first-child {
-  font-weight: bold;
+  font-weight: 700;
   width: 10rem;
 }
 </style>

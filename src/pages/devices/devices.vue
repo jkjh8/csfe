@@ -37,7 +37,7 @@ export default defineComponent({
 
     const count = computed(() => getters['devices/getDeviceCount'])
     const newConunt = computed(() => getters['devices/newDeviceCount'])
-    const errorConunt = computed(() => getters['devices/errorDeviceCount'])
+    const errorConunt = computed(() => getters['devices/errorCount'])
     const connected = computed(() => state.socket.connect)
     const message = ref('')
     const dialog = ref(false)

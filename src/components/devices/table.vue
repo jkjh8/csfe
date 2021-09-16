@@ -82,7 +82,7 @@ export default {
   setup () {
     const { state, dispatch } = useStore()
     // vuex
-    const tableData = computed(() => state.devices.deviceList)
+    const tableData = computed(() => state.devices.devices)
     // variable
     const createUpdateDialog = ref(false)
     const infoDalog = ref(false)

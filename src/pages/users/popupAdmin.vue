@@ -12,7 +12,7 @@
         </div>
       </q-img>
     </q-card-section>
-    <q-card-section>
+    <q-card-section style="height: 14rem;">
       <div v-if="user.admin">
         <span class="name">{{ user.email }}</span> 사용자에게 관리자 권한을 <span class="name text-red">회수</span>하시겠습니까?
       </div>
@@ -77,7 +77,7 @@ export default {
   color: grey;
 }
 :deep(.q-img__image) {
-  -webkit-filter: blur(4px);
-  filter: blur(4px);
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
 }
 </style>

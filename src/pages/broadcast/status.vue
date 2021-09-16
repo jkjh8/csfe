@@ -36,7 +36,7 @@
               <!-- 지역표시 -->
               <div class="fit row wrap q-gutter-md" style="padding: 1rem 2rem;">
                 <div v-for="zone in location.children" :key="zone.channel">
-                  <ZoneStatus :zone="zone" />
+                  <ZoneStatus :location="location" :zone="zone" />
                 </div>
               </div>
             </q-expansion-item>
@@ -55,8 +55,8 @@ import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
 export default {
   components: { ZoneStatus },
   setup () {
-    const { getters, dispatch } = useStore()
-    const locations = computed(() => getters['locations/getTree'])
+    const { state, dispatch } = useStore()
+    const locations = computed(() => state.locations.locations)
 
     function getIp (obj) {
       return obj.ipaddress

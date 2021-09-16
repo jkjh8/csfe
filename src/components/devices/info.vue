@@ -1,28 +1,24 @@
 <template>
-  <q-card style="width: 40rem; border-radius: .5rem;">
-    <q-card-section>
-      <div class="row items-center">
-        <div>
-          <q-avatar color="blue-2" text-color="white">
-            <q-icon name="svguse:icons.svg#server-fill" />
+  <q-card style="width: 26rem; border-radius: 2rem;">
+    <q-card-section class="q-pa-none">
+      <q-img src="/background/cover_27.jpg" style="height: 6rem;">
+        <div class="fit row items-center">
+          <q-avatar style="border: solid 1px #ddd;" size="2.3rem">
+            <q-icon name="svguse:icons.svg#server-fill" size="3rem" />
           </q-avatar>
-        </div>
-        <div class="q-ml-md">
-          <div style="font-family: 나눔고딕; font-size: 1.2rem;">
-            {{ info.name ==='' ? 'No Name': info.name }}
-          </div>
-          <div style="font-family: 나눔고딕; font-size: .5rem;">
-            IP Address: {{ info.ipaddress === '' ? 'No ip address':info.ipaddress }}
+          <div class="q-ml-md">
+            <div class="name">{{ info.name }}</div>
+            <div class="caption">IP Address: {{ info.ipaddress }}</div>
           </div>
         </div>
-      </div>
+      </q-img>
     </q-card-section>
 
     <q-separator />
 
     <q-card-section class="q-mx-md q-gutter-sm">
-      <BarixInfo v-if="info.type === 'Barix' && Object.keys(info).length" :deviceData="info.detail"></BarixInfo>
-      <QsysInfo v-if="info.type === 'QSys'  && Object.keys(info).length" :deviceData="info.detail"></QsysInfo>
+      <BarixInfo v-if="info.type === 'Barix' && Object.keys(info).length" :info="info"></BarixInfo>
+      <QsysInfo v-if="info.type === 'QSys'  && Object.keys(info).length" :info="info"></QsysInfo>
     </q-card-section>
 
     <q-separator />
@@ -44,7 +40,6 @@ export default {
   props: ['info'],
   components: { BarixInfo, QsysInfo },
   setup (props) {
-    console.log(props.info)
     return {
       timeFormat,
       secToDays
@@ -56,5 +51,9 @@ export default {
 <style scoped>
 h2 {
   font-family: bebas;
+}
+:deep(.q-img__image) {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
 }
 </style>

@@ -3,7 +3,7 @@ export function updateListAsWebsoket ({ commit }, payload) {
   commit('updateList', payload)
 }
 
-export async function updateDevices ({ commit }) {
-  const r = await api.get('/devices')
+export async function updateDevices ({ commit }, payload) {
+  const r = await api.get(`/devices?id=${payload}`)
   commit('updateList', r.data.data)
 }

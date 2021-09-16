@@ -1,8 +1,6 @@
 export default function () {
   return {
-    deviceList: [],
-    qsys: [],
-    barix: [],
+    devices: [],
     count: null,
     mode: false
   }
