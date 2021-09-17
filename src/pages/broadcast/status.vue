@@ -5,7 +5,7 @@
           <q-icon name="svguse:icons.svg#view-grid-fill" size="sm" color="green" />
         </span>
         <span class="name">Status</span>
-        <span class="caption">방송구간이 있습니다</span>
+        <span class="caption">{{ locationErrorCount }} 지역 {{ zoneErrorCount }}방송구간이 점검이 필요합니다</span>
       </div>
       <div class="shadow-15 q-pa-md status" style="border-radius: 2rem;">
         <q-list>
@@ -55,8 +55,10 @@ import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
 export default {
   components: { ZoneStatus },
   setup () {
-    const { state, dispatch } = useStore()
+    const { state, getters, dispatch } = useStore()
     const locations = computed(() => state.locations.locations)
+    const locationErrorCount = computed(() => getters['locations/errorCount'])
+    const zoneErrorCount = computed(() => getters['devices/errorCount'])
 
     function getIp (obj) {
       return obj.ipaddress
@@ -69,6 +71,8 @@ export default {
 
     return {
       locations,
+      locationErrorCount,
+      zoneErrorCount,
       getIp
     }
   }

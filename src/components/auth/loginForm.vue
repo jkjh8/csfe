@@ -1,6 +1,6 @@
 <template>
   <q-form @submit="onSubmit">
-    <q-card class="shadow-15 location_card">
+    <q-card class="shadow-15 location_card" style="width: 24rem;">
       <q-card-section class="q-pa-none" style="overflow: hidden;">
         <q-img src="/background/cover_1.jpg" style="height: 6rem;">
           <div class="fit row items-center">

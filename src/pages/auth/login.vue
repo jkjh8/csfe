@@ -10,7 +10,7 @@
       class="row justify-center q-mt-xl"
     >
       <q-btn
-        style="width: 400px; height: 50px; border-radius: 1rem;"
+        style="width: 24rem; height: 50px; border-radius: 1rem;"
         outline
         color="grey"
         to="/register"

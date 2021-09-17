@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header class="text-black" style="background: #FBFBFB;">
+    <q-header class="text-black">
       <div class="row items-center" style="padding-top: 12px; text-align: center;">
         <router-link class="col-3 logo" to="/">
           Media Server
