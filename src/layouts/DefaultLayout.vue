@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, onBeforeUnmount, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 // import { useRoute } from 'vue-router'
-import { socket } from '../boot/socketio'
+// import { socket } from '../boot/socketio'
 import LinkNormal from '../components/layout/linkNormal'
 import UserStatus from '../components/layout/userStatus.vue'
 // import RouterAddress from '../components/layout/routeLink'
@@ -34,27 +34,27 @@ import UserStatus from '../components/layout/userStatus.vue'
 export default {
   components: { LinkNormal, UserStatus },
   setup () {
-    const { state, commit, dispatch } = useStore()
+    const { state } = useStore()
     const brocastMenu = ref(false)
     const user = computed(() => state.user.user)
-    onBeforeMount(() => {
-      socket.on('connect', () => {
-        console.log('socket connected')
-        commit('socket/connectState', true)
-      })
-      socket.on('disconnect', () => {
-        console.log('socket disconnect')
-        commit('socket/connectState', false)
-      })
-      socket.on('devices', (devices) => {
-        dispatch('devices/updateListAsWebsoket', devices)
-      })
-      socket.connect()
-    })
+    // onBeforeMount(() => {
+    //   socket.on('connect', () => {
+    //     console.log('socket connected')
+    //     commit('socket/connectState', true)
+    //   })
+    //   socket.on('disconnect', () => {
+    //     console.log('socket disconnect')
+    //     commit('socket/connectState', false)
+    //   })
+    //   socket.on('devices', (devices) => {
+    //     dispatch('devices/updateListAsWebsoket', devices)
+    //   })
+    //   socket.connect()
+    // })
 
-    onBeforeUnmount(() => {
-      socket.disconnect()
-    })
+    // onBeforeUnmount(() => {
+    //   socket.disconnect()
+    // })
     return {
       brocastMenu,
       user

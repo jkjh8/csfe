@@ -1,7 +1,7 @@
 <template>
   <q-card class="shadow-15 location_card" style="width: 24rem;">
-    <q-card-section class="backg" style="height: 6rem;">
-      <div class="fit row items-center text-white">
+    <q-card-section class="backg" style="height: 4rem;">
+      <div class="q-ml-sm fit row items-center text-white">
         <q-icon name="svguse:icons.svg#view-list" size="1.5rem" />
         <div class="q-ml-md name">방송구간 프리셋</div>
       </div>

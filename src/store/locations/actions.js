@@ -10,13 +10,13 @@ export async function updateLocations ({ commit }) {
   }
 }
 
-export async function updateZones ({ commit }, payload) {
-  try {
-    const r = await api.get(`/zones?id=${payload}`)
-    console.log(r)
-    commit('updateZones', r.data)
-  } catch (error) {
-    console.log('Zones update error', error)
-    commit('updateZones', [])
-  }
-}
+// export async function updateZones ({ commit }, payload) {
+//   try {
+//     const r = await api.get(`/zones?id=${payload}`)
+//     console.log(r)
+//     commit('updateZones', r.data)
+//   } catch (error) {
+//     console.log('Zones update error', error)
+//     commit('updateZones', [])
+//   }
+// }

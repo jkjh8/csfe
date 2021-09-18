@@ -65,8 +65,9 @@ export default {
     }
 
     onBeforeMount(async () => {
+      dispatch('user/getUser')
       dispatch('locations/updateLocations')
-      dispatch('locations/updateZones')
+      dispatch('devices/updateDevices')
     })
 
     return {

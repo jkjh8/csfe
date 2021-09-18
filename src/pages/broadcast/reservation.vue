@@ -12,3 +12,17 @@
     </q-table>
   </div>
 </template>
+
+<script>
+import { onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
+export default {
+  setup () {
+    const { dispatch } = useStore()
+
+    onBeforeMount(() => {
+      dispatch('user/getUser')
+    })
+  }
+}
+</script>

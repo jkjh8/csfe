@@ -32,6 +32,7 @@ export default {
     const locations = computed(() => state.locations.locations)
 
     onMounted(() => {
+      dispatch('user/getUser')
       dispatch('locations/updateLocations')
     })
 

@@ -13,27 +13,27 @@
       </div>
     </q-card-section>
     <q-card-section>
-      <div class="q-pa-md q-gutter-md">
-        <div class="listname">Selected</div>
-        <div v-if="group && group.length">
-          <q-tree
-            :nodes="group"
-            node-key="_id"
-          >
-            <template v-slot:default-header="props">
-              <div>
-                {{ props.node.name }}
-              </div>
-            </template>
-          </q-tree>
+      <div class="q-pa-md q-mr-sm q-gutter-md">
+        <!-- 선택구간 트리 -->
+        <div class="q-gutter-sm">
+          <div class="listname">Selected</div>
+          <div v-if="group && group.length">
+            <q-tree
+              :nodes="group"
+              node-key="_id"
+            >
+              <template v-slot:default-header="props">
+                <div>
+                  {{ props.node.name }}
+                </div>
+              </template>
+            </q-tree>
+          </div>
+          <div v-else style="text-align: center;">
+            <span class="text-red">선택된 방송 구간이 없습니다</span>
+          </div>
         </div>
-        <div v-else>
-          <span>선택된 방송 구간이 없습니다</span>
-        </div>
-      </div>
-    </q-card-section>
-    <q-card-section>
-      <div class="q-pa-md q-gutter-md">
+        <!-- 모드 이름 -->
         <div class="q-gutter-sm">
           <div class="listname">Mode</div>
           <div class="q-gutter-md">
@@ -68,13 +68,19 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   props: ['group'],
   setup (props) {
+    const { state } = useStore()
+    const user = computed(() => state.user.user)
     const mode = ref('global')
     const name = ref('')
     const zones = ref('')
+
+    console.log(user.value)
     return {
       mode,
       name,
@@ -89,5 +95,8 @@ export default {
   color: white;
   height: 5rem;
   background: linear-gradient(75deg, rgb(13, 96, 134), rgb(1, 27, 48))
+}
+.tree {
+  background: #999;
 }
 </style>

@@ -25,7 +25,6 @@
 <script>
 import { defineComponent, ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import getUser from '../../apis/users'
 import Table from '../../components/devices/table.vue'
 import CreateUpdate from '../../components/devices/createUpdate.vue'
 
@@ -33,7 +32,7 @@ export default defineComponent({
   components: { Table, CreateUpdate },
   props: ['user'],
   setup (props) {
-    const { state, getters } = useStore()
+    const { state, getters, dispatch } = useStore()
 
     const count = computed(() => getters['devices/getDeviceCount'])
     const newConunt = computed(() => getters['devices/newDeviceCount'])
@@ -47,7 +46,7 @@ export default defineComponent({
     }
 
     onBeforeMount(() => {
-      getUser()
+      dispatch('user/getUser')
     })
 
     return {

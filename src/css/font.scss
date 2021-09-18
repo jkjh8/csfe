@@ -83,29 +83,29 @@
 //   src: url(./fonts/NanumSquareRoundEB.woff)
 // }
 
-// @font-face {
-//   font-family: '나눔바른고딕';
-//   font-weight: 100;
-//   src: url(./fonts/NanumBarunGothicUltraLight.woff)
-// }
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 100;
+  src: url(./fonts/NanumBarunGothicUltraLight.woff)
+}
 
-// @font-face {
-//   font-family: '나눔바른고딕';
-//   font-weight: 300;
-//   src: url(./fonts/NanumBarunGothicLight.woff)
-// }
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 300;
+  src: url(./fonts/NanumBarunGothicLight.woff)
+}
 
-// @font-face {
-//   font-family: '나눔바른고딕';
-//   font-weight: 400;
-//   src: url(./fonts/NanumBarunGothic.woff)
-// }
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 400;
+  src: url(./fonts/NanumBarunGothic.woff)
+}
 
-// @font-face {
-//   font-family: '나눔바른고딕';
-//   font-weight: 500;
-//   src: url(./fonts/NanumBarunGothicBold.woff)
-// }
+@font-face {
+  font-family: '나눔바른고딕';
+  font-weight: 500;
+  src: url(./fonts/NanumBarunGothicBold.woff)
+}
 
 // @font-face {
 //   font-family: '나눔바른펜';
@@ -131,13 +131,14 @@
   font-style: normal;
   font-weight: 400;
   src: url('./fonts/NanumGothicLight.woff') format('woff');
-}
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;}
 
 @font-face {
   font-family: '나눔고딕';
   font-weight: 400;
   font-style: normal;
   font-weight: 400;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
   src: url('./fonts/NanumGothic-Regular.eot');
   src: url('./fonts/NanumGothic-Regular.eot?#iefix') format('embedded-opentype'),
        url('./fonts/NanumGothic-Regular.woff2') format('woff2'),
@@ -148,6 +149,7 @@
 @font-face {
   font-family: '나눔고딕';
   font-weight: 700;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
   src: url('./fonts/NanumGothic-Bold.eot');
   src: url('./fonts/NanumGothic-Bold.eot?#iefix') format('embedded-opentype'),
        url('./fonts/NanumGothic-Bold.woff2') format('woff2'),
@@ -158,6 +160,7 @@
 @font-face {
   font-family: '나눔고딕';
   font-weight: 800;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
   src: url('./fonts/NanumGothic-ExtraBold.eot');
   src: url('./fonts/NanumGothic-ExtraBold.eot?#iefix') format('embedded-opentype'),
        url('./fonts/NanumGothic-ExtraBold.woff2') format('woff2'),

@@ -1,6 +1,6 @@
 <template>
   <q-card flat style="width: 11rem; border: solid 1px #eee; border-radius: 1rem;">
-    <q-card-section :class="location.device.active[zone.channel - 1] ? 'bg-yellow':'bg-blue-grey-1'">
+    <q-card-section :class="getActive(zone.channel) ? 'bg-yellow':'bg-blue-grey-1'">
       <div class="row no-wrap q-gutter-md q-pr-sm items-center">
         <q-avatar class="avatar" size="1.5rem">
           <q-icon name="svguse:icons.svg#server" size="md" />
@@ -20,7 +20,7 @@
       </div>
       <div class="row no-wrap justify-between">
         <span>동작상태</span>
-        <span>{{ location.device.active[zone.channel - 1] ? '방송중':'대기중' }}</span>
+        <span>{{ getActive(zone.channel) ? '방송중':'대기중' }}</span>
       </div>
       <div class="row no-wrap justify-between">
         <span class="statustext">IP</span>
@@ -37,13 +37,35 @@
 </template>
 
 <script>
-// import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 // import { useStore } from 'vuex'
 
 export default {
   props: ['location', 'zone'],
   setup (props) {
-    //
+    const active = ref([])
+    onMounted(() => {
+      if (props.location && props.location.length) {
+        active.value = location.value.active
+      } else {
+        active.value = null
+      }
+    })
+
+    function getActive (id) {
+      try {
+        if (props.location && props.location.length) {
+          return location.value.active[id - 1]
+        } else {
+          return false
+        }
+      } catch {
+        return false
+      }
+    }
+    return {
+      getActive
+    }
   }
 }
 </script>

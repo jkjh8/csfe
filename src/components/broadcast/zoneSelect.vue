@@ -1,13 +1,23 @@
 <template>
   <q-card class="shadow-15 location_card" style="width: 24rem;">
-    <q-card-section class="backg" style="height: 6rem;">
-      <div class="fit row items-center text-white">
-        <q-icon name="svguse:icons.svg#view-grid-add" size="1.5rem"></q-icon>
-        <div class="q-ml-sm name">방송구간선택</div>
-      </div>
+    <q-card-section class="q-pa-none">
+      <q-img src="/background/cover_1.jpg" style="height: 6rem">
+        <div class="fit row items-center justify-between">
+          <div class="q-ml-sm row items-center">
+            <q-icon name="svguse:icons.svg#view-grid-add" size="1.5rem"></q-icon>
+            <div class="q-ml-sm">
+              <div class="name">방송구간선택</div>
+              <div class="caption">방송구간을 선택하거나 프리셋을 불러오세요</div>
+            </div>
+          </div>
+          <q-btn rounded>
+            Preset
+          </q-btn>
+        </div>
+      </q-img>
     </q-card-section>
     <q-card-section>
-      <q-scroll-area style="height: 28rem;">
+      <q-scroll-area style="height: 24rem;">
         <q-tree
           :nodes="locations"
           tick-strategy="leaf"
@@ -23,8 +33,9 @@
         </q-tree>
       </q-scroll-area>
     </q-card-section>
+    <q-separator />
     <q-card-actions align="right">
-      <div class="q-px-md q-gutter-md">
+      <div class="q-px-md q-gutter-md row items-center" style="height: 4rem;">
         <q-btn
           style="width: 6rem; height: 2rem;"
           flat rounded
