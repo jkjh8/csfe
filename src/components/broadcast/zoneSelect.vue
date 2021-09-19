@@ -55,7 +55,7 @@
     </q-card-actions>
   </q-card>
   <q-dialog v-model="add">
-    <PresetAdd :group="group" :selected="selected" />
+    <PresetAdd :group="group" :selected="selected" @close="add=!add" />
   </q-dialog>
 </template>
 

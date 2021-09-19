@@ -70,12 +70,14 @@
 <script>
 import { ref, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 export default {
   props: ['group', 'selected'],
-  setup (props) {
+  setup (props, { emit }) {
     const { state } = useStore()
+    const $q = useQuasar()
     const { group, selected } = toRefs(props)
     const user = computed(() => state.user.user)
     const mode = ref('global')
@@ -83,6 +85,7 @@ export default {
     const zones = ref('')
 
     async function onSubmit () {
+      $q.loading.show()
       try {
         const r = await api.post('/broadcast/preset', {
           user_id: user.value.email,
@@ -92,9 +95,11 @@ export default {
           zones: group.value
         })
         console.log(r)
+        emit('close')
       } catch (err) {
-
+        emit('close')
       }
+      $q.loading.hide()
     }
 
     return {
