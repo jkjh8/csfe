@@ -67,10 +67,10 @@
               <div class="text">Device</div>
               <q-select
                 dense outlined
-                v-model="values.ipaddress"
+                v-model="values.device_id"
                 :options="qsysList"
                 :option-label="opt => Object(opt) === opt && 'name' in opt ? `${opt.name} ${opt.ipaddress}` : '이름없음'"
-                option-value="ipaddress"
+                option-value="_id"
                 emit-value
                 map-options
               >
@@ -89,10 +89,10 @@
               <div class="text">Device</div>
               <q-select
                 dense outlined
-                v-model="values.ipaddress"
+                v-model="values.device_id"
                 :options="barixList"
                 :option-label="opt => Object(opt) === opt && 'name' in opt ? `${opt.name} ${opt.ipaddress}` : '이름없음'"
-                option-value="ipaddress"
+                option-value="_id"
                 emit-value
                 map-options
               >
@@ -143,7 +143,7 @@ export default {
     const values = ref({
       index: null,
       name: '',
-      ipaddress: '',
+      device_id: '',
       type: 'Q-Sys',
       device: null
     })

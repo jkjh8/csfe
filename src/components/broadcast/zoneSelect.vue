@@ -7,30 +7,30 @@
             <q-icon name="svguse:icons.svg#view-grid-add" size="1.5rem"></q-icon>
             <div class="q-ml-sm">
               <div class="name">방송구간선택</div>
-              <div class="caption">방송구간을 선택하거나 프리셋을 불러오세요</div>
+              <div class="caption">총 {{ selected.length }}개의 방송구간이 선택되었습니다.</div>
             </div>
           </div>
-          <q-btn rounded>
-            Preset
+          <q-btn
+            rounded label="preset"
+            style="opacity: .9"
+            :color="mode ? 'orange-10':'grey-5'"
+            @click="mode = !mode"
+          >
           </q-btn>
         </div>
       </q-img>
     </q-card-section>
     <q-card-section>
       <q-scroll-area style="height: 24rem;">
-        <q-tree
-          :nodes="locations"
-          tick-strategy="leaf"
-          node-key="_id"
-          v-model:ticked="selected"
-          @update:ticked="update"
-        >
-          <template v-slot:default-header="props">
-            <div>
-              {{ props.node.name }}
-            </div>
-          </template>
-        </q-tree>
+        <q-tab-panels v-model="panel" animated>
+          <q-tab-panel name="tree">
+            <Tree :locations="locations" />
+          </q-tab-panel>
+
+          <q-tab-panel name="preset">
+            <Preset />
+          </q-tab-panel>
+        </q-tab-panels>
       </q-scroll-area>
     </q-card-section>
     <q-separator />
@@ -55,21 +55,22 @@
     </q-card-actions>
   </q-card>
   <q-dialog v-model="add">
-    <PresetAdd :group="group" />
+    <PresetAdd :group="group" :selected="selected" />
   </q-dialog>
 </template>
 
 <script>
-import { ref, computed, toRefs } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 
 import PresetAdd from '@components/broadcast/presetAddPopup'
+import Tree from './select/broadcastTree.vue'
+import Preset from './select/preset'
 
 export default {
-  components: { PresetAdd },
+  components: { Tree, Preset, PresetAdd },
   props: ['locations'],
   setup (props) {
-    const { locations } = toRefs(props)
     const { state, getters, commit } = useStore()
     const selected = computed({
       get () { return state.locations.selectedId },
@@ -77,46 +78,37 @@ export default {
     })
     const group = computed(() => getters['locations/selectedGroup'])
     const add = ref(false)
+    const mode = ref(false)
+    const panel = computed(() => {
+      if (mode.value) {
+        return 'preset'
+      } else {
+        return 'tree'
+      }
+    })
 
     function clear () {
       commit('locations/updateSelectedId', [])
-    }
-
-    function update () {
-      const r = {
-        locations: [],
-        zones: []
-      }
-      selected.value.forEach(id => {
-        locations.value.forEach(location => {
-          if (id === location._id) {
-            r.locations.push(location)
-          }
-          location.children.forEach(e => {
-            if (id === e._id) {
-              r.zones.push(e)
-            }
-          })
-        })
-      })
-      commit('locations/updateBroadcast', r)
-      return r
     }
 
     return {
       selected,
       group,
       clear,
+      mode,
       add,
-      update
+      panel
     }
   }
 }
 </script>
 
 <style scoped>
-.backg {
-  background: linear-gradient(160deg, #aaa, #222)
+.selected {
+  border-radius: 1rem;
+  padding: .5rem 1rem;
+  font-weight: 600;
+  background: linear-gradient(160deg, #fffec8, #fffec7)
 }
 :deep(.q-img__image) {
   -webkit-filter: blur(4px);

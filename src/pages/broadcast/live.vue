@@ -6,7 +6,7 @@
           <q-icon name="svguse:icons.svg#view-grid-fill" size="sm" color="green" />
         </div>
         <div class="name">Live</div>
-        <div class="caption">방송구간이 있습니다</div>
+        <div class="caption">총 {{ locationCount }}개의 지역 {{ zoneCount }} 방송구간이 있습니다</div>
       </div>
       <q-btn rounded>방송시작</q-btn>
     </div>
@@ -26,10 +26,12 @@ import ZonePreset from '@components/broadcast/zonePreset'
 export default {
   components: { SelectBroadcastZones, ZonePreset },
   setup () {
-    const { state, dispatch } = useStore()
+    const { state, getters, dispatch } = useStore()
 
     const selected = ref([])
     const locations = computed(() => state.locations.locations)
+    const locationCount = computed(() => getters['locations/getCount'])
+    const zoneCount = computed(() => getters['devices/getDeviceCount'])
 
     onMounted(() => {
       dispatch('user/getUser')
@@ -38,7 +40,9 @@ export default {
 
     return {
       selected,
-      locations
+      locations,
+      locationCount,
+      zoneCount
     }
   }
 }

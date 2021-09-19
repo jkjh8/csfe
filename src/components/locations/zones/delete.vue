@@ -1,29 +1,38 @@
 <template>
-  <q-card style="width: 100%; border-radius: .5rem;">
+  <q-card style="width: 20rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
-    <q-card-section>
-      <div class="row">
-        <span class="col-2" style="width: 4rem;">
-          <q-avatar color="red-1" text-color="red">
-            <q-icon name="svguse:icons.svg#exclamation" color="red" size="2rem"/>
-          </q-avatar>
-        </span>
-        <span class="col-10">
-          <div style="font-size: 1.5rem; font-weight: 700; font-family: 나눔고딕;">
-            Location 삭제
-          </div>
-          <div class="q-mt-md discription">
-            이름: <strong>{{ props.selected.name }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong> 해당 지역을 삭제 하시겠습니까? 삭제 후에는 복구가 불가능 하며 설정된 방송 구간에 방송이 송출되지 않을 수 있으니 다시 한번 확인 해주세요.
-          </div>
-        </span>
+    <q-card-section class="q-pa-none">
+      <q-img src="/background/cover_27.jpg" style="height: 6rem;">
+        <div class="fit row items-center">
+          <q-icon name="svguse:icons.svg#exclamation" color="red" size="md" />
+          <div class="q-ml-md name">방송구간 삭제</div>
+        </div>
+      </q-img>
+    </q-card-section>
+
+    <q-card-section style="height: 12rem;">
+      <div class="q-mt-md text">
+        이름: <strong>{{ props.selected.name }}</strong>, 인덱스: <strong>{{ props.selected.index }}</strong> 해당 지역을 삭제 하시겠습니까?<br> 삭제 후에는 복구가 불가능 하며 설정된 방송 구간에 방송이 송출되지 않을 수 있으니 다시 한번 확인 해주세요.
       </div>
     </q-card-section>
 
     <q-separator />
 
     <q-card-actions align="right">
-      <q-btn class="q-mx-sm text" padding=".3rem 2rem" flat @click="emit('close')" label="취소" />
-      <q-btn class="q-mx-sm text confirm" padding=".3rem 2rem" unelevated color="red" @click="onSubmit" label="삭제" />
+      <q-btn
+        class="q-mx-sm text"
+        padding=".3rem 2rem"
+        flat rounded
+        @click="emit('close')"
+        label="취소"
+      />
+      <q-btn
+        class="q-mx-sm"
+        padding=".3rem 2rem"
+        rounded unelevated color="red"
+        label="삭제"
+        @click="onSubmit"
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -47,8 +56,8 @@ export default {
       $q.loading.show()
       console.log(selected.value)
       try {
-        await $api.get(`/zones/delete?_id=${selected.value._id} `)
-        await dispatch('locations/updateZones')
+        await $api.get(`/devices/delete?ipaddress=${selected.value.ipaddress} `)
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
         emit('close')
       } catch (err) {
@@ -68,19 +77,10 @@ export default {
 </script>
 
 <style scoped>
-.q-field--outlined .q-field__control:before {
-  border: 1px solid #e6e6e6;
-}
-.q-field--outlined:hover .q-field__control:before {
-  border: 1px solid #216dff;
-}
-.discription {
+.text {
   font-family: 나눔고딕;
-  color: grey;
-}
-.discription > strong {
-  font-family: 나눔고딕;
-  font-weight: 700;
-  font-size: 1rem;
+  font-size: .9rem;
+  font-weight: 400;
+  color: #333;
 }
 </style>

@@ -69,7 +69,7 @@
               <div class="subname">location</div>
               <q-select
                 dense outlined
-                v-model="values.location_id"
+                v-model="values.parent_id"
                 :options="locations"
                 :display-value="selectedlocation"
                 option-value="_id"
@@ -131,7 +131,7 @@ export default {
     const values = ref({
       index: null,
       name: 'No Name',
-      location_id: null,
+      parent_id: null,
       location_name: '',
       device: null,
       ipaddress: '',
@@ -152,7 +152,7 @@ export default {
         }
       }
       locations.value.forEach(e => {
-        if (e._id === values.value.location_id) {
+        if (e._id === values.value.parent_id) {
           console.log('selected = ', e._id)
           selectedlocation.value = e.name
         }
