@@ -20,7 +20,7 @@
         </div>
       </q-img>
     </q-card-section>
-    <q-card-section>
+    <q-card-section class="q-px-none">
       <q-scroll-area style="height: 24rem;">
         <q-tab-panels v-model="panel" animated>
           <q-tab-panel name="tree">
@@ -74,7 +74,10 @@ export default {
     const { state, getters, commit } = useStore()
     const selected = computed({
       get () { return state.locations.selectedId },
-      set (value) { commit('locations/updateSelectedId', value) }
+      set (value) {
+        commit('locations/updateSelectedId', value)
+        commit('locations/updateSelectedZonePreset', null)
+      }
     })
     const group = computed(() => getters['locations/selectedGroup'])
     const add = ref(false)
@@ -89,6 +92,7 @@ export default {
 
     function clear () {
       commit('locations/updateSelectedId', [])
+      commit('locations/updateSelectedZonePreset', null)
     }
 
     return {

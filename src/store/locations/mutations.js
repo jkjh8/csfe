@@ -13,3 +13,11 @@ export function updateBroadcast (state, payload) {
 export function updateSelectedId (state, payload) {
   state.selectedId = payload
 }
+
+export function updateZonePresets (state, payload) {
+  state.zonePresets = payload
+}
+
+export function updateSelectedZonePreset (state, payload) {
+  state.selectedZonePreset = payload
+}

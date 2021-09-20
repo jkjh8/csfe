@@ -3,6 +3,8 @@ export default function () {
     locations: [],
     selectBroadcast: [],
     selected: null,
+    zonePresets: [],
+    selectedZonePreset: null,
     selectedId: []
   }
 }

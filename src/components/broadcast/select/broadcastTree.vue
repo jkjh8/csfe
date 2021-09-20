@@ -27,7 +27,10 @@ export default {
     const group = computed(() => getters['locations/selectedGroup'])
     const selected = computed({
       get () { return state.locations.selectedId },
-      set (value) { commit('locations/updateSelectedId', value) }
+      set (value) {
+        commit('locations/updateSelectedId', value)
+        commit('locations/updateSelectedZonePreset', null)
+      }
     })
 
     function update () {
