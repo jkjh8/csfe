@@ -1,8 +1,7 @@
 export default function () {
   return {
     locations: [],
-    selectBroadcast: [],
-    selected: null,
+    selectedLocation: null,
     zonePresets: [],
     selectedZonePreset: null,
     selectedId: []

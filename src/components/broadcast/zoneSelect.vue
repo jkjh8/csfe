@@ -45,7 +45,7 @@
         </q-btn>
         <q-btn
           style="width: 6rem; height: 2rem;"
-          unelevated rounded color="grey-8"
+          unelevated rounded color="dark"
           @click="add = !add"
         >
           프리셋등록

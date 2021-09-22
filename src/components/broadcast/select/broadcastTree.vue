@@ -4,7 +4,6 @@
     tick-strategy="leaf"
     node-key="_id"
     v-model:ticked="selected"
-    @update:ticked="update"
   >
     <template v-slot:default-header="props">
       <div>
@@ -15,13 +14,12 @@
 </template>
 
 <script>
-import { computed, toRefs } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   props: ['locations'],
   setup (props) {
-    const { locations } = toRefs(props)
     const { state, getters, commit } = useStore()
 
     const group = computed(() => getters['locations/selectedGroup'])
@@ -33,31 +31,9 @@ export default {
       }
     })
 
-    function update () {
-      const r = {
-        locations: [],
-        zones: []
-      }
-      selected.value.forEach(id => {
-        locations.value.forEach(location => {
-          if (id === location._id) {
-            r.locations.push(location)
-          }
-          location.children.forEach(e => {
-            if (id === e._id) {
-              r.zones.push(e)
-            }
-          })
-        })
-      })
-      commit('locations/updateBroadcast', r)
-      return r
-    }
-
     return {
       selected,
-      group,
-      update
+      group
     }
   }
 }

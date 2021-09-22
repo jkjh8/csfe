@@ -89,7 +89,7 @@ export default {
   setup () {
     const { state, getters, commit, dispatch } = useStore()
     const locations = computed(() => state.locations.locations)
-    const selected = computed(() => state.locations.selected)
+    const selected = computed(() => state.locations.selectedLocation)
     const locationErrorCount = computed(() => getters['locations/errorCount'])
     const createUpdateDialog = ref(false)
     const deleteDialog = ref(false)
@@ -107,10 +107,10 @@ export default {
 
     function clickItem (item) {
       if (item === selected.value) {
-        commit('locations/updateSelected', null)
+        commit('locations/updateSelectedLocation', null)
         dispatch('devices/updateDevices', '')
       } else {
-        commit('locations/updateSelected', item)
+        commit('locations/updateSelectedLocation', item)
         dispatch('devices/updateDevices', item._id)
       }
     }

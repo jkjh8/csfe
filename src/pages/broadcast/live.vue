@@ -8,11 +8,10 @@
         <div class="name">Live</div>
         <div class="caption">총 {{ locationCount }}개의 지역 {{ zoneCount }} 방송구간이 있습니다</div>
       </div>
-      <q-btn rounded>방송시작</q-btn>
     </div>
     <div class="row q-gutter-md">
       <SelectBroadcastZones :locations="locations"/>
-      <ZonePreset />
+      <Live />
     </div>
   </div>
 </template>
@@ -21,10 +20,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import SelectBroadcastZones from '@components/broadcast/zoneSelect'
-import ZonePreset from '@components/broadcast/zonePreset'
+import Live from '@components/broadcast/live'
 
 export default {
-  components: { SelectBroadcastZones, ZonePreset },
+  components: { SelectBroadcastZones, Live },
   setup () {
     const { state, getters, dispatch } = useStore()
 

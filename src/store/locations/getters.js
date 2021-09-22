@@ -30,6 +30,7 @@ export function selectedGroup (state) {
     } else {
       // 자식 확인
       const children = []
+      const zones = []
       locate.children.forEach(child => {
         if (selected.includes(child._id)) {
           children.push({
@@ -37,6 +38,7 @@ export function selectedGroup (state) {
             name: child.name,
             channel: child.channel
           })
+          zones.push(child.channel)
         }
       })
       // 자식수 지역수 확인
@@ -46,7 +48,8 @@ export function selectedGroup (state) {
           name: locate.name,
           location: locate._id,
           all: children.length === locate.children.length ?? true,
-          children: children
+          children: children,
+          zones: zones
         })
       }
     }

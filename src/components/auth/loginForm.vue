@@ -112,62 +112,76 @@
   </q-form>
 </template>
 
-<script setup>
+<script>
 import { ref, reactive, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-const $q = useQuasar()
-const { dispatch } = useStore()
-const router = useRouter()
-const error = ref('')
-const saveEmail = ref(false)
-const showPassword = ref(false)
+export default {
+  setup () {
+    const $q = useQuasar()
+    const { dispatch } = useStore()
+    const router = useRouter()
+    const error = ref('')
+    const saveEmail = ref(false)
+    const showPassword = ref(false)
 
-const rules = reactive({
-  email: [
-    value => !!value || '이메일을 입력하세요.',
-    v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'
-  ],
-  password: [
-    value => !!value || '비밀번호를 입력하세요.',
-    v => v.length >= 8 || '최소 8자 이상 입력하세요.'
-  ]
-})
+    const rules = reactive({
+      email: [
+        value => !!value || '이메일을 입력하세요.',
+        v => /.+@.+\..+/.test(v) || '이메일 형식이 아닙니다.'
+      ],
+      password: [
+        value => !!value || '비밀번호를 입력하세요.',
+        v => v.length >= 8 || '최소 8자 이상 입력하세요.'
+      ]
+    })
 
-const userInfo = reactive({
-  userId: '',
-  password: '',
-  keepLoggedin: false
-})
+    const userInfo = reactive({
+      userId: '',
+      password: '',
+      keepLoggedin: false
+    })
 
-onMounted(() => {
-  saveEmail.value = localStorage.getItem('saveId') === 'true'
-  if (saveEmail.value) {
-    userInfo.userId = localStorage.getItem('userId')
-  }
-})
+    onMounted(() => {
+      saveEmail.value = localStorage.getItem('saveId') === 'true'
+      if (saveEmail.value) {
+        userInfo.userId = localStorage.getItem('userId')
+      }
+    })
 
-function saveIdToLocal () {
-  if (saveEmail.value) {
-    localStorage.setItem('saveId', true)
-    localStorage.setItem('userId', userInfo.userId)
-  } else {
-    localStorage.setItem('saveId', false)
-    localStorage.removeItem('userId')
+    function saveIdToLocal () {
+      if (saveEmail.value) {
+        localStorage.setItem('saveId', true)
+        localStorage.setItem('userId', userInfo.userId)
+      } else {
+        localStorage.setItem('saveId', false)
+        localStorage.removeItem('userId')
+      }
+    }
+
+    async function onSubmit () {
+      saveIdToLocal()
+      $q.loading.show({
+        message: '로그인 중입니다. 잠시만 기다려주세요.'
+      })
+      error.value = await dispatch('user/login', userInfo)
+      $q.loading.hide()
+      if (!error.value) return router.push('/')
+    }
+    return {
+      error,
+      saveEmail,
+      showPassword,
+      rules,
+      userInfo,
+      saveIdToLocal,
+      onSubmit
+    }
   }
 }
 
-async function onSubmit () {
-  saveIdToLocal()
-  $q.loading.show({
-    message: '로그인 중입니다. 잠시만 기다려주세요.'
-  })
-  error.value = await dispatch('user/login', userInfo)
-  $q.loading.hide()
-  if (!error.value) return router.push('/')
-}
 </script>
 
 <style scoped>
@@ -175,7 +189,7 @@ async function onSubmit () {
   color: red !important;
   color: red !important;
 }
-/deep/ .q-img__image {
+:deep(.q-img__image) {
   -webkit-filter: blur(4px);
   filter: blur(4px);
 }
