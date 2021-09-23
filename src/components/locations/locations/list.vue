@@ -14,7 +14,11 @@
             </div>
           </div>
           <div>
-            <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
+            <q-btn
+              flat round color="cyan-7"
+              icon="svguse:icons.svg#plus-circle-fill"
+              @click="createUpdateDialog=!createUpdateDialog"
+            ></q-btn>
           </div>
         </div>
       </q-img>
