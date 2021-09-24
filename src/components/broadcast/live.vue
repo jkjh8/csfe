@@ -1,17 +1,17 @@
 <template>
-  <q-card class="shadow-15 location_card" style="width: 24rem;">
+  <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img
-        src="/background/cover_1.png" style="height:6rem;"
-      >
-        <div class="q-ml-sm fit row items-center text-white">
-          <q-icon name="svguse:icons.svg#view-list" size="1.5rem" />
-          <div class="q-ml-md name">실시간 방송</div>
+      <q-img src="/background/cover_1.png">
+        <div class="card-name-align">
+          <div class="card-name">
+            <q-icon name="svguse:icons.svg#view-list" />
+            <div>실시간 방송</div>
+          </div>
         </div>
       </q-img>
     </q-card-section>
     <q-card-section>
-      <q-scroll-area style="height: 24rem;">
+      <q-scroll-area style="height: 28rem;">
         <div class="q-px-md q-gutter-md">
           <!-- mode 선택 -->
           <div class="q-gutter-sm">
@@ -74,9 +74,10 @@
     </q-card-section>
     <q-separator />
     <q-card-actions align="center">
-      <div class="fit row justify-center items-center" style="height: 4rem;">
+      <div class="q-mx-md fit">
         <q-btn
-          style="width: 20rem; height:2rem; margin: 5px 0;"
+          class="full-width"
+          style="height:2rem; margin: .5rem 1rem;"
           rounded
           unelevated
           color="primary"
@@ -88,17 +89,19 @@
 
   <!-- 다이얼 로그 -->
   <q-dialog v-model="fileDialog">
-    <q-card style="width: 26rem; border-radius: 2rem;">
+    <q-card class="card-large">
       <q-card-section class="q-pa-none">
-        <q-img src="/background/cover_11.jpg" style="height: 6rem;">
-          <div class="fit row items-center">
-            <q-icon
-              class="q-ml-sm"
-              name="save" color="primary" size="md"
-            />
-            <div class="q-ml-md">
-              <div class="name">파일선택</div>
-              <div class="caption">재생할 파일을 선택하세요</div>
+        <q-img src="/background/cover_11.jpg">
+          <div class="card-name-align">
+            <div class="card-name">
+              <q-icon
+                class="q-ml-sm"
+                name="save" color="primary" size="md"
+              />
+              <div class="q-ml-md">
+                <div class="name">파일선택</div>
+                <div class="caption">재생할 파일을 선택하세요</div>
+              </div>
             </div>
           </div>
         </q-img>
@@ -118,32 +121,40 @@
           <q-list>
             <q-item>
               <q-item-section>
-                <q-list>
-                  <q-item dense clickable
-                    v-for="file in files" :key="file.idx"
-                    @click="clickFile(file)"
-                  >
-                    <!-- 아이콘 -->
-                    <q-item-section avatar>
-                      <div v-if="file.type === 'directory'">
-                        <q-icon name="svguse:icons.svg#folder-fill" color="yellow" size="md" />
-                      </div>
-                      <div v-else-if="file.type === 'audio'">
-                        <q-icon name="svguse:icons.svg#music-note-fill" color="grey" size="sm" />
-                      </div>
-                    </q-item-section>
-                    <!-- 파일 이름 -->
-                    <q-item-section>
-                      {{ file.name }}
-                    </q-item-section>
-                    <!-- 미리 듣기 -->
-                    <q-item-section side v-if="file.type !== 'directory'">
-                      <q-btn icon="play_arrow" flat round color="green"
-                        @click.stop.prevent="preview = true"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
+                <q-scroll-area style="height: 20rem;">
+                  <q-list>
+                    <q-item
+                      class="q-px-sm"
+                      style="border-radius: 2rem"
+                      dense clickable
+                      v-for="file in files" :key="file.idx"
+                      @click="clickFile(file)"
+                    >
+                      <!-- 아이콘 -->
+                      <q-item-section avatar>
+                        <div v-if="file.type === 'directory'">
+                          <q-icon name="svguse:icons.svg#folder-fill" color="yellow" size="md" />
+                        </div>
+                        <div v-else-if="file.type === 'audio'">
+                          <q-icon name="svguse:icons.svg#music-note-fill" color="grey" size="sm" />
+                        </div>
+                        <div v-else-if="file.type === 'video'">
+                          <q-icon name="svguse:icons.svg#video-camera-fill" color="blue-grey" size="sm" />
+                        </div>
+                      </q-item-section>
+                      <!-- 파일 이름 -->
+                      <q-item-section>
+                        {{ file.name }}
+                      </q-item-section>
+                      <!-- 미리 듣기 -->
+                      <q-item-section side v-if="file.type !== 'directory'">
+                        <q-btn icon="play_arrow" flat round color="green"
+                          @click.stop.prevent="preview=true;selectFile=file"
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-scroll-area>
               </q-item-section>
             </q-item>
           </q-list>
@@ -153,10 +164,14 @@
   </q-dialog>
   <!-- 미리듣기 플레이어 -->
   <q-dialog v-model="preview" seamless transition-show="fade" transition-hide="fade">
-    <div class="fixed-bottom-right q-ma-md shadow-0" style="background: transparent;">
-      <audio style="width: 20rem;" controls></audio>
-      <q-btn class="fixed-top" round></q-btn>
-    </div>
+    <AudioPlayer :file="selectFile"/>
+    <!-- <q-card class="absolute-bottom-right q-mr-xl q-mb-xl" style="overflow: visible; border-radius: 1rem;">
+      <q-btn class="close shadow-5 z-top" icon="close" round color="red" size="sm" @click="preview = false"></q-btn>
+      <q-card-section>Audio Player</q-card-section>
+      <q-card-section>
+        <audio controls />
+      </q-card-section>
+    </q-card> -->
   </q-dialog>
 </template>
 
@@ -166,7 +181,10 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
+import AudioPlayer from './audioPlay'
+
 export default {
+  components: { AudioPlayer },
   setup () {
     const { state, getters } = useStore()
     const $q = useQuasar()
@@ -180,6 +198,7 @@ export default {
     const fileDialog = ref(false)
     const filePath = ref([''])
     const files = ref([])
+    const selectFile = ref(null)
     const preview = ref(false)
 
     async function clickFile (file) {
@@ -225,6 +244,7 @@ export default {
       liveChannel,
       ttsText,
       playAudioFile,
+      selectFile,
       files,
       fileDialog,
       filePath,
@@ -240,10 +260,6 @@ export default {
 .q-textarea .q-field__native {
   padding: 5px 5px !important;
 }
-:deep(.q-img__image) {
-  -webkit-filter: blur(8px);
-  filter: blur(8px);
-}
 .dir {
   text-decoration: underline;
   font-size: .8rem;
@@ -257,5 +273,15 @@ export default {
   font-weight: 700;
   color: #111;
   cursor: pointer;
+}
+.close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  border: 4px solid #fefefe;
+}
+audio::-webkit-media-controls-enclosure {
+    border-radius: 5px;
+    background-color: #fff;
 }
 </style>

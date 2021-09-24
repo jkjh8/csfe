@@ -9,9 +9,13 @@
         <div class="caption">총 {{ locationCount }}개의 지역 {{ zoneCount }} 방송구간이 있습니다</div>
       </div>
     </div>
-    <div class="row q-gutter-md">
-      <SelectBroadcastZones :locations="locations"/>
-      <Live />
+    <div class="row wrap justify-between">
+      <div class="col-6 q-pr-md">
+        <SelectBroadcastZones class="col-6" :locations="locations"/>
+      </div>
+      <div class="col-6 q-pl-md">
+        <Live />
+      </div>
     </div>
   </div>
 </template>

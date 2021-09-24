@@ -1,6 +1,5 @@
-
 .body--light {
-  background: #FBFBFB;
+  background: #fbfbfb;
 }
 
 .q-header {
@@ -9,12 +8,12 @@
 
 .qsys {
   color: rgb(0, 117, 185);
-  font-size: .5rem;
+  font-size: 0.5rem;
   text-transform: uppercase;
 }
 .barix {
   color: black;
-  font-size: .5rem;
+  font-size: 0.5rem;
   text-transform: uppercase;
 }
 .location_card {
@@ -27,14 +26,76 @@
   font-family: 나눔고딕;
   font-weight: 600;
   font-size: 1.2rem;
-  line-height: 2rem;
 }
 .caption {
   font-family: 나눔고딕;
   font-weight: 300;
-  font-size: .5rem;
+  font-size: 0.5rem;
 }
 .listname {
   font-family: 나눔고딕;
   font-weight: 700;
+}
+
+.card-name {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.card-name-align {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-name > div {
+  margin-left: 1rem;
+}
+
+.card-name > .q-icon {
+  font-size: 2rem;
+  margin-left: 1rem;
+}
+
+.card-nomal {
+  width: 24rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 2rem #999;
+}
+
+.card-large {
+  width: 100%;
+  max-width: 30rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 2rem #999;
+}
+
+.q-dialog__inner > div {
+  border-radius: 1.5rem;
+}
+
+.card-table {
+  width: 100%;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 2rem #999;
+}
+
+.q-img {
+  height: 6rem;
+}
+
+.q-img__image {
+  -webkit-filter: blur(0.5rem);
+  filter: blur(0.5rem);
+}
+
+q-img .q-img__content > div {
+  padding: none;
 }

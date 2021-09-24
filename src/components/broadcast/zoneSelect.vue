@@ -1,5 +1,5 @@
 <template>
-  <q-card class="shadow-15 location_card" style="width: 24rem;">
+  <q-card class="card-large">
     <q-card-section class="q-pa-none">
       <q-img src="/background/cover_1.jpg" style="height: 6rem">
         <div class="fit row items-center justify-between">

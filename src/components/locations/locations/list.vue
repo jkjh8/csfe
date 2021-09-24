@@ -1,19 +1,19 @@
 <template>
-  <q-card class="shadow-15 location_card">
-    <q-card-section class="q-pa-none" style="overflow: hidden;">
-      <q-img src="/background/cover_1.jpg" style="height: 6rem;">
-        <div class="fit row justify-between items-center">
-          <div class="q-mx-sm q-gutter-sm row items-center">
-            <q-icon name="svguse:icons.svg#map" size="1.5rem" />
+  <q-card class="card-large">
+    <q-card-section class="q-pa-none">
+      <q-img src="/background/cover_1.jpg">
+        <div class="card-name-align">
+          <div class="card-name">
+            <q-icon name="svguse:icons.svg#map" />
             <div>
-              <div class="name">지역설정</div>
+              <div>지역설정</div>
               <div
                 v-if="locationErrorCount"
                 class="caption"
               >현재 {{ locationErrorCount }}개의 지역의 점검이 필요합니다</div>
             </div>
           </div>
-          <div>
+          <div class="q-pa-none q-ma-none">
             <q-btn
               flat round color="cyan-7"
               icon="svguse:icons.svg#plus-circle-fill"
