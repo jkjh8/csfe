@@ -59,8 +59,14 @@
           >
             <div class="listname"></div>
             <div class="row justify-center items-center q-mt-md">
-              <q-btn class="full-width"
-                rounded unelevated color="primary">파일선택</q-btn>
+              <q-btn
+                class="full-width"
+                rounded unelevated
+                color="primary"
+                @click="getDir('/')"
+              >
+                파일선택
+              </q-btn>
             </div>
           </div>
         </div>
@@ -72,29 +78,145 @@
         <q-btn
           style="width: 20rem; height:2rem; margin: 5px 0;"
           rounded
+          unelevated
           color="primary"
           label="방송시작"
         ></q-btn>
       </div>
     </q-card-actions>
   </q-card>
+
+  <!-- 다이얼 로그 -->
+  <q-dialog v-model="fileDialog">
+    <q-card style="width: 26rem; border-radius: 2rem;">
+      <q-card-section class="q-pa-none">
+        <q-img src="/background/cover_11.jpg" style="height: 6rem;">
+          <div class="fit row items-center">
+            <q-icon
+              class="q-ml-sm"
+              name="save" color="primary" size="md"
+            />
+            <div class="q-ml-md">
+              <div class="name">파일선택</div>
+              <div class="caption">재생할 파일을 선택하세요</div>
+            </div>
+          </div>
+        </q-img>
+      </q-card-section>
+
+      <q-card-section>
+        <div>
+          <span v-for="(path, index) in filePath" :key="index">
+          <button
+            class="dir" @click="getDir(index)"
+          >
+            {{ path }}
+          </button>
+          </span>
+        </div>
+        <div>
+          <q-list>
+            <q-item>
+              <q-item-section>
+                <q-list>
+                  <q-item dense clickable
+                    v-for="file in files" :key="file.idx"
+                    @click="clickFile(file)"
+                  >
+                    <!-- 아이콘 -->
+                    <q-item-section avatar>
+                      <div v-if="file.type === 'directory'">
+                        <q-icon name="svguse:icons.svg#folder-fill" color="yellow" size="md" />
+                      </div>
+                      <div v-else-if="file.type === 'audio'">
+                        <q-icon name="svguse:icons.svg#music-note-fill" color="grey" size="sm" />
+                      </div>
+                    </q-item-section>
+                    <!-- 파일 이름 -->
+                    <q-item-section>
+                      {{ file.name }}
+                    </q-item-section>
+                    <!-- 미리 듣기 -->
+                    <q-item-section side v-if="file.type !== 'directory'">
+                      <q-btn icon="play_arrow" flat round color="green"
+                        @click.stop.prevent="preview = true"
+                      />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <!-- 미리듣기 플레이어 -->
+  <q-dialog v-model="preview" seamless transition-show="fade" transition-hide="fade">
+    <div class="fixed-bottom-right q-ma-md shadow-0" style="background: transparent;">
+      <audio style="width: 20rem;" controls></audio>
+      <q-btn class="fixed-top" round></q-btn>
+    </div>
+  </q-dialog>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-// import { api } from '@api/axios'
+import { useQuasar } from 'quasar'
+import { api } from '@/boot/axios'
 
 export default {
   setup () {
     const { state, getters } = useStore()
+    const $q = useQuasar()
     const selected = computed(() => state.locations.selectedId)
     const group = computed(() => getters['locations/selectedGroup'])
 
-    const mode = ref('Live')
+    const mode = ref('Play Audio')
     const liveChannel = ref(1)
     const ttsText = ref('')
     const playAudioFile = ref('')
+    const fileDialog = ref(false)
+    const filePath = ref([''])
+    const files = ref([])
+    const preview = ref(false)
+
+    async function clickFile (file) {
+      $q.loading.show()
+      if (file.type === 'directory') {
+        const reqPath = filePath.value.splice(1, 1).join('/') + '/' + file.name
+        console.log(reqPath)
+        await updateDir(reqPath)
+      } else {
+        console.log(file)
+      }
+      $q.loading.hide()
+    }
+
+    async function getDir (index) {
+      $q.loading.show()
+      let reqPath = ''
+      if (index) {
+        for (let i = 0; i < index; i++) {
+          reqPath = reqPath + '/' + filePath.value[i + 1]
+        }
+      } else {
+        reqPath = '/'
+      }
+      if (!fileDialog.value) { fileDialog.value = true }
+      await updateDir(reqPath)
+      $q.loading.hide()
+    }
+
+    async function updateDir (reqPath) {
+      const r = await api.get(`/files?link=${reqPath}`)
+      filePath.value = r.data.path
+      if (filePath.value[filePath.value.length] === '') {
+        filePath.value.splice(-1, 1)
+      }
+      files.value = r.data.files
+    }
 
     return {
       selected,
@@ -102,14 +224,38 @@ export default {
       mode,
       liveChannel,
       ttsText,
-      playAudioFile
+      playAudioFile,
+      files,
+      fileDialog,
+      filePath,
+      preview,
+      clickFile,
+      getDir
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .q-textarea .q-field__native {
   padding: 5px 5px !important;
+}
+:deep(.q-img__image) {
+  -webkit-filter: blur(8px);
+  filter: blur(8px);
+}
+.dir {
+  text-decoration: underline;
+  font-size: .8rem;
+  font-family: 나눔고딕;
+  font-weight: 700;
+  border: none;
+  color: #676767;
+  background: #FBFBFB;
+}
+.dir:hover {
+  font-weight: 700;
+  color: #111;
+  cursor: pointer;
 }
 </style>
