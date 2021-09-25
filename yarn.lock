@@ -1457,6 +1457,16 @@
     estree-walker "^2.0.1"
     source-map "^0.6.1"
 
+"@vue/compiler-core@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.18.tgz#239f8ed2e8a95e87f6a6235a4798d8d29e5b4dd8"
+  integrity sha512-zNKVUx2gN/46xjKy+fNRB3+PJVO2WoGUUdpQo9w5GylWj8vs/r7pMuzQralP8J02YDp6YgJ61v1Yjq7nW5xK6Q==
+  dependencies:
+    "@babel/parser" "^7.15.0"
+    "@vue/shared" "3.2.18"
+    estree-walker "^2.0.2"
+    source-map "^0.6.1"
+
 "@vue/compiler-dom@3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.1.5.tgz#cbb97020c62a5faa3fbc2a97916bd98041ac9856"
@@ -1464,6 +1474,14 @@
   dependencies:
     "@vue/compiler-core" "3.1.5"
     "@vue/shared" "3.1.5"
+
+"@vue/compiler-dom@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.2.18.tgz#6bb3b0e318a7eb16c02eb42fefa96a58766c6730"
+  integrity sha512-AqCND7Q0vYFlsBcwWnbcmOiVS/J/70qTZOCPxJnktvH+w4Y7F9omKDyuhsd/ZsJCmSvvpzqBNf2hgtMnoTjNiw==
+  dependencies:
+    "@vue/compiler-core" "3.2.18"
+    "@vue/shared" "3.2.18"
 
 "@vue/compiler-sfc@3.1.5":
   version "3.1.5"
@@ -1488,6 +1506,22 @@
     postcss-selector-parser "^6.0.4"
     source-map "^0.6.1"
 
+"@vue/compiler-sfc@^3.0.0":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.18.tgz#d2dfcd09d2bb5a1dfe70d686ac5139473b25d5ef"
+  integrity sha512-ui+w1WtVjxlSlnvR4uYgVbbYcN75SrADyMuStnhRqhQM8E2MzJ99W/7Qm3UDs+GxzCEDyQA1CmUvtCg5tlwOMw==
+  dependencies:
+    "@babel/parser" "^7.15.0"
+    "@vue/compiler-core" "3.2.18"
+    "@vue/compiler-dom" "3.2.18"
+    "@vue/compiler-ssr" "3.2.18"
+    "@vue/ref-transform" "3.2.18"
+    "@vue/shared" "3.2.18"
+    estree-walker "^2.0.2"
+    magic-string "^0.25.7"
+    postcss "^8.1.10"
+    source-map "^0.6.1"
+
 "@vue/compiler-ssr@3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.1.5.tgz#f068652774293256a1e53084bed48a67682df9d2"
@@ -1495,6 +1529,14 @@
   dependencies:
     "@vue/compiler-dom" "3.1.5"
     "@vue/shared" "3.1.5"
+
+"@vue/compiler-ssr@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.2.18.tgz#d2801ac5e7472d0b3079f553a4ab98def96e7be9"
+  integrity sha512-qncqUn+y00o2X8h75XUmekzpxjlQOtZkR2XzEDkBFyRfe+jruG2l0MBFKq88wMeiHRzAfysRNqRQd2KXopHPFQ==
+  dependencies:
+    "@vue/compiler-dom" "3.2.18"
+    "@vue/shared" "3.2.18"
 
 "@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.14":
   version "6.0.0-beta.15"
@@ -1518,6 +1560,17 @@
   integrity sha512-1tdfLmNjWG6t/CsPldh+foumYFo3cpyCHgBYQ34ylaMsJ+SNHQ1kApMIa8jN+i593zQuaw3AdWH0nJTARzCFhg==
   dependencies:
     "@vue/shared" "3.1.5"
+
+"@vue/ref-transform@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/ref-transform/-/ref-transform-3.2.18.tgz#270be5502dd95d312ec970f518239d0e85548bc9"
+  integrity sha512-STPcQbA8u3DftZjZW/dS+0mGIABKgbXCxOJTyEYxP+rxa66tqa/QSkeuz54h0zk2wgPfe4vo2QPtcFGl3kl45A==
+  dependencies:
+    "@babel/parser" "^7.15.0"
+    "@vue/compiler-core" "3.2.18"
+    "@vue/shared" "3.2.18"
+    estree-walker "^2.0.2"
+    magic-string "^0.25.7"
 
 "@vue/runtime-core@3.1.5":
   version "3.1.5"
@@ -1548,6 +1601,11 @@
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.5.tgz#74ee3aad995d0a3996a6bb9533d4d280514ede03"
   integrity sha512-oJ4F3TnvpXaQwZJNF3ZK+kLPHKarDmJjJ6jyzVNDKH9md1dptjC7lWR//jrGuLdek/U6iltWxqAnYOu8gCiOvA==
+
+"@vue/shared@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.18.tgz#f601356e14e455428e5db8281c966ba4c1bc3403"
+  integrity sha512-vFa2annVlbI082ICC3BH239UFO66nn2Syxy9shI7N2haPrc4rFRyNuDjWKJRe3sX7py4yhYL7fopB5tWGwGVyA==
 
 "@vuelidate/validators@^2.0.0-alpha.18":
   version "2.0.0-alpha.21"
@@ -3520,6 +3578,11 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
+eslint-config-prettier@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
+  integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
 eslint-config-standard@^16.0.2:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-16.0.3.tgz#6c8761e544e96c531ff92642eeb87842b8488516"
@@ -3582,15 +3645,32 @@ eslint-plugin-node@^11.0.0:
     resolve "^1.10.1"
     semver "^6.1.0"
 
+eslint-plugin-prettier-vue@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier-vue/-/eslint-plugin-prettier-vue-3.1.0.tgz#57f2ebb58913c59b48445f8705978b7f5cbefb9c"
+  integrity sha512-PxJxmHTAqBv5v6rU/hSg55cyJAp+LhF2K0ffF+MeR3zt0Njy36X5AcYQ75sYLt0KKdgA35XkQHIBrgLF63hTxA==
+  dependencies:
+    "@vue/compiler-sfc" "^3.0.0"
+    chalk "^4.0.0"
+    prettier "^2.0.0"
+    prettier-linter-helpers "^1.0.0"
+
+eslint-plugin-prettier@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-4.0.0.tgz#8b99d1e4b8b24a762472b4567992023619cb98e0"
+  integrity sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==
+  dependencies:
+    prettier-linter-helpers "^1.0.0"
+
 eslint-plugin-promise@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-5.1.0.tgz#fb2188fb734e4557993733b41aa1a688f46c6f24"
   integrity sha512-NGmI6BH5L12pl7ScQHbg7tvtk4wPxxj8yPHH47NvSmMtFneC077PSeY3huFj06ZWZvtbfxSPt3RuOQD5XcR4ng==
 
-eslint-plugin-vue@^7.0.0:
-  version "7.15.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.15.1.tgz#699c1f3ce2032ea8843b8d5d1adb863b7979965c"
-  integrity sha512-4/r+n/i+ovyeW2gVRRH92kpy4lkpFbyPR4BMxGBTLtGnwqOKKzjSo6EMSaT0RhWPvEjK9uifcY8e7z5n8BIEgw==
+eslint-plugin-vue@^7.18.0:
+  version "7.18.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.18.0.tgz#02a452142330c7f27c242db21a1b9e25238540f6"
+  integrity sha512-ceDXlXYMMPMSXw7tdKUR42w9jlzthJGJ3Kvm3YrZ0zuQfvAySNxe8sm6VHuksBW0+060GzYXhHJG6IHVOfF83Q==
   dependencies:
     eslint-utils "^2.1.0"
     natural-compare "^1.4.0"
@@ -3727,7 +3807,7 @@ estraverse@^5.1.0, estraverse@^5.2.0:
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-5.2.0.tgz#307df42547e6cc7324d3cf03c155d5cdb8c53880"
   integrity sha512-BxbNGGNm0RyRYvUdHpIwv9IWzeM9XClbOxwoATuFdOE7ZE6wHL+HQ5T8hoPM+zHvmKzzsEqhgy0GrQ5X13afiQ==
 
-estree-walker@^2.0.1:
+estree-walker@^2.0.1, estree-walker@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
   integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
@@ -3853,6 +3933,11 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
+
+fast-diff@^1.1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
+  integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
 fast-glob@3.2.7, fast-glob@^3.1.1, fast-glob@^3.2.5:
   version "3.2.7"
@@ -6725,6 +6810,18 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
+
+prettier-linter-helpers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/prettier-linter-helpers/-/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
+  integrity sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==
+  dependencies:
+    fast-diff "^1.1.2"
+
+prettier@^2.0.0, prettier@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
+  integrity sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==
 
 pretty-error@3.0.4, pretty-error@^3.0.4:
   version "3.0.4"

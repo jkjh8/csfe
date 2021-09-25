@@ -11,7 +11,7 @@
     </div>
     <div class="row wrap justify-between">
       <div class="col-6 q-pr-md">
-        <SelectBroadcastZones class="col-6" :locations="locations"/>
+        <SelectBroadcastZones class="col-6" />
       </div>
       <div class="col-6 q-pl-md">
         <Live />
@@ -27,23 +27,23 @@ import SelectBroadcastZones from '@components/broadcast/zoneSelect'
 import Live from '@components/broadcast/live'
 
 export default {
+  props: ['user'],
   components: { SelectBroadcastZones, Live },
-  setup () {
-    const { state, getters, dispatch } = useStore()
+  setup (props) {
+    const { getters, dispatch } = useStore()
 
     const selected = ref([])
-    const locations = computed(() => state.locations.locations)
     const locationCount = computed(() => getters['locations/getCount'])
     const zoneCount = computed(() => getters['devices/getDeviceCount'])
 
     onMounted(() => {
       dispatch('user/getUser')
       dispatch('locations/updateLocations')
+      dispatch('devices/updateDevices')
     })
 
     return {
       selected,
-      locations,
       locationCount,
       zoneCount
     }
