@@ -6,10 +6,16 @@
     <q-btn round flat>
       <q-avatar text-color="white" size="md">
         <img src="/patterns/5.png" />
-        <div class="absolute-center">{{nickname}}</div>
+        <div class="absolute-center">
+          {{ nickname }}
+        </div>
       </q-avatar>
       <!-- <q-icon name="svguse:icons.svg#user-circle-fill" size="md" color="grey-8" /> -->
-      <q-menu class="shadow-15" style="border-radius: 1.5rem;" :offset="[40,10]">
+      <q-menu
+        class="shadow-15"
+        style="border-radius: 1.5rem"
+        :offset="[40, 10]"
+      >
         <q-item>
           <q-item-section
             class="column justify-center items-center q-my-md"
@@ -70,19 +76,19 @@
           <q-item-section>
             <q-btn
               class="q-mx-xl q-my-md"
-              style="color: #F2F2F2; background: #0B3B24;"
+              style="color: #f2f2f2; background: #0b3b24"
               flat
               rounded
               label="Logout"
               @click="logout"
-            ></q-btn>
+            />
           </q-item-section>
         </q-item>
       </q-menu>
     </q-btn>
   </div>
   <div v-else>
-    <q-btn flat rounded size="sm" to="/login">로그인</q-btn>
+    <q-btn flat rounded size="sm" to="/login"> 로그인 </q-btn>
   </div>
 </template>
 
@@ -92,10 +98,10 @@ import { useStore } from 'vuex'
 import { api } from '../../boot/axios'
 export default {
   props: ['user'],
-  setup (props) {
+  setup() {
     const { getters, commit } = useStore()
     const nickname = computed(() => getters['user/nickname'])
-    async function logout () {
+    async function logout() {
       const r = await api.get('/auth/logout')
       if (r) {
         commit('user/updateUser', r.data.user)

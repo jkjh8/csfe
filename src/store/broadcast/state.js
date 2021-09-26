@@ -1,5 +1,7 @@
 export default function () {
   return {
-    playFile: null
+    playFile: null,
+    preview: false,
+    previewFile: null
   }
 }

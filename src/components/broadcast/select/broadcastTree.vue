@@ -1,11 +1,11 @@
 <template>
   <q-tree
+    v-model:ticked="selected"
     :nodes="locations"
     tick-strategy="leaf"
     node-key="_id"
-    v-model:ticked="selected"
   >
-    <template v-slot:default-header="props">
+    <template #default-header="props">
       <div>
         {{ props.node.name }}
       </div>
@@ -18,14 +18,16 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  props: ['locations'],
-  setup (props) {
+  props: { locations: Array },
+  setup() {
     const { state, getters, commit } = useStore()
 
     const group = computed(() => getters['locations/selectedGroup'])
     const selected = computed({
-      get () { return state.locations.selectedId },
-      set (value) {
+      get() {
+        return state.locations.selectedId
+      },
+      set(value) {
         commit('locations/updateSelectedId', value)
         commit('locations/updateSelectedZonePreset', null)
       }

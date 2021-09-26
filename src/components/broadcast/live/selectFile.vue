@@ -6,11 +6,17 @@
           <div class="card-name">
             <q-icon
               class="q-ml-sm"
-              name="save" color="primary" size="md"
+              name="save"
+              color="primary"
+              size="md"
             />
             <div class="q-ml-md">
-              <div class="name">파일선택</div>
-              <div class="caption">재생할 파일을 선택하세요</div>
+              <div class="name">
+                파일선택
+              </div>
+              <div class="caption">
+                재생할 파일을 선택하세요
+              </div>
             </div>
           </div>
         </div>
@@ -19,8 +25,14 @@
 
     <q-card-section>
       <div>
-        <span v-for="(path, index) in filePath" :key="index">
-          <button class="dir" @click="getDir(index)">
+        <span
+          v-for="(path, index) in filePath"
+          :key="index"
+        >
+          <button
+            class="dir"
+            @click="getDir(index)"
+          >
             {{ path }}
           </button>
         </span>
@@ -29,23 +41,35 @@
         <q-scroll-area style="height: 20rem">
           <q-list>
             <q-item
+              v-for="file in files"
+              :key="file.idx"
               class="q-px-sm radius"
               dense
               clickable
-              v-for="file in files"
-              :key="file.idx"
               @click="clickFile(file)"
             >
               <!-- 아이콘 -->
               <q-item-section avatar>
                 <div v-if="file.type === 'directory'">
-                  <q-icon name="svguse:icons.svg#folder-fill" color="yellow" size="md" />
+                  <q-icon
+                    name="svguse:icons.svg#folder-fill"
+                    color="yellow"
+                    size="md"
+                  />
                 </div>
                 <div v-else-if="file.type === 'audio'">
-                  <q-icon name="svguse:icons.svg#music-note-fill" color="grey" size="sm" />
+                  <q-icon
+                    name="svguse:icons.svg#music-note-fill"
+                    color="grey"
+                    size="sm"
+                  />
                 </div>
                 <div v-else-if="file.type === 'video'">
-                  <q-icon name="svguse:icons.svg#video-camera-fill" color="blue-grey" size="sm" />
+                  <q-icon
+                    name="svguse:icons.svg#video-camera-fill"
+                    color="blue-grey"
+                    size="sm"
+                  />
                 </div>
               </q-item-section>
               <!-- 파일 이름 -->
@@ -53,9 +77,16 @@
                 {{ file.name }}
               </q-item-section>
               <!-- 미리 듣기 -->
-              <q-item-section side v-if="file.type !== 'directory'">
-                <q-btn icon="play_arrow" flat round color="green"
-                  @click.stop.prevent="preview=true;selectForPlay=file"
+              <q-item-section
+                v-if="file.type !== 'directory'"
+                side
+              >
+                <q-btn
+                  icon="play_arrow"
+                  flat
+                  round
+                  color="green"
+                  @click.stop.prevent="startPreview(file)"
                 />
               </q-item-section>
             </q-item>
@@ -67,11 +98,11 @@
 
   <q-dialog
     v-model="preview"
-     seamless
+    seamless
     transition-show="fade"
     transition-hide="fade"
   >
-    <AudioPlayer :file="selectForPlay"></AudioPlayer>
+    <AudioPlayer :file="selectForPlay" />
   </q-dialog>
 </template>
 
@@ -85,7 +116,9 @@ import AudioPlayer from '@components/broadcast/audioPlay'
 
 export default {
   components: { AudioPlayer },
-  setup  () {
+  emits: ['close'],
+  // eslint-disable-next-line no-unused-vars
+  setup (props, { emit }) {
     const { commit } = useStore()
     const $q = useQuasar()
 
@@ -107,6 +140,7 @@ export default {
         commit('broadcast/updatePlayFile', file)
       }
       $q.loading.hide()
+      emit('close')
     }
 
     async function getDir (index) {
@@ -134,6 +168,10 @@ export default {
       }
       files.value = r.data.files
     }
+    function startPreview (file) {
+      commit('broadcast/setPreview', true)
+      commit('broadcast/updatePreviewFile', file)
+    }
 
     onMounted(() => {
       getDir('/')
@@ -146,7 +184,8 @@ export default {
       selectForPlay,
       clickFile,
       getDir,
-      updateDir
+      updateDir,
+      startPreview
     }
   }
 }

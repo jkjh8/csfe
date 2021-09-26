@@ -16,7 +16,7 @@ import NeedLogin from '../components/needLogin.vue'
 export default {
   components: { Today, NeedLogin },
   props: ['user'],
-  setup (props) {
+  setup() {
     const { dispatch } = useStore()
     const today = ref('')
     moment.locale('ko')
@@ -32,7 +32,6 @@ export default {
 }
 </script>
 <style scoped>
-
 .login {
   position: relative;
   width: 400px;

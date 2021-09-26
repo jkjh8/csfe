@@ -5,7 +5,9 @@
   </div>
   <div class="item">
     <span>Status</span>
-    <span class="text-uppercase q-pa-none">{{ info.detail.Status.String }}</span>
+    <span class="text-uppercase q-pa-none">{{
+      info.detail.Status.String
+    }}</span>
   </div>
   <div class="item">
     <span>State</span>
@@ -49,7 +51,7 @@ import timeFormat from '../../../apis/timeFormat'
 import secToDays from '../../../apis/secToDays'
 export default {
   props: ['info'],
-  setup (props) {
+  setup() {
     return { timeFormat, secToDays }
   }
 }
@@ -58,7 +60,7 @@ export default {
 <style scoped>
 div {
   font-family: 나눔고딕;
-  font-size: .8rem;
+  font-size: 0.8rem;
   display: flex;
   flex-direction: column;
 }
@@ -67,7 +69,7 @@ div {
 }
 span {
   display: flex;
-  padding: .5rem 0 0 0;
+  padding: 0.5rem 0 0 0;
 }
 div > span:first-child {
   font-weight: 700;

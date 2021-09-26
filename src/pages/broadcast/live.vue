@@ -1,12 +1,20 @@
 <template>
-  <div style="margin: 10% 10% 0 10%;">
+  <div style="margin: 10% 10% 0 10%">
     <div class="q-mb-lg row justify-between">
       <div class="q-gutter-sm row items-center">
         <div>
-          <q-icon name="svguse:icons.svg#view-grid-fill" size="sm" color="green" />
+          <q-icon
+            name="svguse:icons.svg#view-grid-fill"
+            size="sm"
+            color="green"
+          />
         </div>
-        <div class="name">Live</div>
-        <div class="caption">총 {{ locationCount }}개의 지역 {{ zoneCount }} 방송구간이 있습니다</div>
+        <div class="name">
+          Live
+        </div>
+        <div class="caption">
+          총 {{ locationCount }}개의 지역 {{ zoneCount }} 방송구간이 있습니다
+        </div>
       </div>
     </div>
     <div class="row wrap justify-between">
@@ -27,9 +35,14 @@ import SelectBroadcastZones from '@components/broadcast/zoneSelect'
 import Live from '@components/broadcast/live'
 
 export default {
-  props: ['user'],
-  components: { SelectBroadcastZones, Live },
-  setup (props) {
+  components: {
+    SelectBroadcastZones,
+    Live
+  },
+  props: {
+    user: Object
+  },
+  setup() {
     const { getters, dispatch } = useStore()
 
     const selected = ref([])

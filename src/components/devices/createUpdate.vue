@@ -1,20 +1,33 @@
 <template>
   <q-card style="border-radius: 2rem; width: 24rem;">
     <!-- 이름 테그 -->
-    <q-card-section class="q-pa-none" style="overflow: hidden;">
-      <q-img src="/background/cover_1.png" style="height: 6rem;">
+    <q-card-section
+      class="q-pa-none"
+      style="overflow: hidden;"
+    >
+      <q-img
+        src="/background/cover_1.png"
+        style="height: 6rem;"
+      >
         <div class="fit row items-center">
-          <q-avatar class="row justify-center items-center" style="border: solid 1px #fff;" size="md">
+          <q-avatar
+            class="row justify-center items-center"
+            style="border: solid 1px #fff;"
+            size="md"
+          >
             <q-icon
               :name="mode === 'create' ? 'svguse:icons.svg#plus':'svguse:icons.svg#pencil-fill'"
-              color="yellow-6" size="1rem"
+              color="yellow-6"
+              size="1rem"
             />
           </q-avatar>
           <div class="q-ml-md">
             <div style="font-size: 1.2rem; font-weight: bold;">
               {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
             </div>
-            <div class="caption">디바이스 설정</div>
+            <div class="caption">
+              디바이스 설정
+            </div>
           </div>
         </div>
       </q-img>
@@ -23,39 +36,67 @@
     <q-separator class="q-mb-md" />
 
     <!-- 에러 메세지 표시창 -->
-      <q-card-section class="q-pb-none q-mx-lg row justify-center" v-if="error">
-        <div style="position: relative; height: 3rem; width: 25rem;">
-          <div
-            class="text-white row justify-end"
-            style="position: absolute; border-radius: .5rem; width:100%; height: 3rem; background: #FF0000;"
-          >
-            <q-btn style="z-index: 10;" round flat icon="cancel" @click="error=null"></q-btn>
-          </div>
-          <div style="position: absolute;width:100%; text-align: center; color: white; line-height: 3rem;">
-            {{ error }}
-          </div>
+    <q-card-section
+      v-if="error"
+      class="q-pb-none q-mx-lg row justify-center"
+    >
+      <div style="position: relative; height: 3rem; width: 25rem;">
+        <div
+          class="text-white row justify-end"
+          style="position: absolute; border-radius: .5rem; width:100%; height: 3rem; background: #FF0000;"
+        >
+          <q-btn
+            style="z-index: 10;"
+            round
+            flat
+            icon="cancel"
+            @click="error=null"
+          />
         </div>
-      </q-card-section>
+        <div style="position: absolute;width:100%; text-align: center; color: white; line-height: 3rem;">
+          {{ error }}
+        </div>
+      </div>
+    </q-card-section>
 
     <q-form @submit="onSubmit">
-      <q-card-section class="q-pt-sm q-mb-md row justify-center scroll" style="max-height: 50vh">
-        <div class="colume update" style="width: 20rem;">
-          <div class="text">디바이스 인덱스</div>
+      <q-card-section
+        class="q-pt-sm q-mb-md row justify-center scroll"
+        style="max-height: 50vh"
+      >
+        <div
+          class="colume update"
+          style="width: 20rem;"
+        >
+          <div class="text">
+            디바이스 인덱스
+          </div>
           <q-input
             v-model="values.index"
-            dense outlined bg-color="white" type="number"
+            dense
+            outlined
+            bg-color="white"
+            type="number"
           />
-          <div class="text margin-top">디바이스 이름</div>
+          <div class="text margin-top">
+            디바이스 이름
+          </div>
           <q-input
             v-model="values.name"
-            dense outlined bg-color="white"
+            dense
+            outlined
+            bg-color="white"
             placeholder="Device Name"
           />
-          <div class="text margin-top">IP Address</div>
+          <div class="text margin-top">
+            IP Address
+          </div>
           <q-input
             v-model="values.ipaddress"
             :disable="mode === 'create' ? false:true"
-            dense outlined bg-color="white"
+            dense
+            outlined
+            bg-color="white"
             lazy-rules
             :rules="[
               $rules.required('필수 입력 항목 입니다.'),
@@ -63,25 +104,37 @@
             ]"
             placeholder="Ip Address"
           />
-          <div class="text">Mac Address</div>
+          <div class="text">
+            Mac Address
+          </div>
           <q-input
-            :disable="mode === 'create' ? false:true"
             v-model="values.mac"
-            dense outlined bg-color="white"
+            :disable="mode === 'create' ? false:true"
+            dense
+            outlined
+            bg-color="white"
             placeholder="Mac Address"
           />
-          <div class="text margin-top">Device Type</div>
+          <div class="text margin-top">
+            Device Type
+          </div>
           <q-select
             v-model="values.type"
-            dense outlined bg-color="white"
+            dense
+            outlined
+            bg-color="white"
             :options="['Barix', 'QSys']"
             label="Select device type"
           />
           <div v-if="values.type === 'Barix'">
-            <div class="text margin-top">Mode</div>
+            <div class="text margin-top">
+              Mode
+            </div>
             <q-select
               v-model="values.mode"
-              dense outlined bg-color="white"
+              dense
+              outlined
+              bg-color="white"
               :options="['Input', 'Output']"
               label="Select device active mode"
             />
@@ -93,14 +146,21 @@
 
       <q-card-actions align="right">
         <q-btn
-          class="q-mr-sm" padding=".5rem 2rem"
-          flat rounded label="취소"
+          class="q-mr-sm"
+          padding=".5rem 2rem"
+          flat
+          rounded
+          label="취소"
           @click="emit('close')"
         />
         <q-btn
-          class="q-mr-sm" padding=".5rem 2rem"
-          unelevated rounded color="blue-grey-4"
-          type="submit" label="확인"
+          class="q-mr-sm"
+          padding=".5rem 2rem"
+          unelevated
+          rounded
+          color="blue-grey-4"
+          type="submit"
+          label="확인"
         />
       </q-card-actions>
     </q-form>
@@ -113,7 +173,9 @@ import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 
 export default {
-  props: ['selected'],
+  props: {
+    selected: Array
+  },
   emits: ['close'],
   setup (props, { emit }) {
     const { selected } = toRefs(props)

@@ -5,30 +5,24 @@
     :rows="logs.docs"
     :pagination="{ rowsPerPage: 0 }"
     hide-pagination
-    style="border-radius: 1rem;"
+    style="border-radius: 1rem"
   >
-    <template v-slot:body="props">
-      <q-tr
-        :props="props"
-        v-if="props.cols[2].value === 'error'"
-      >
+    <template #body="props">
+      <q-tr v-if="props.cols[2].value === 'error'" :props="props">
         <q-td
-          class="text-red"
           v-for="col in props.cols"
           :key="col.name"
+          class="text-red"
           :props="props"
         >
-          {{ col.value}}
+          {{ col.value }}
         </q-td>
       </q-tr>
-      <q-tr
-        :props="props"
-        v-else
-      >
+      <q-tr v-else :props="props">
         <q-td
-          class="text-black"
           v-for="col in props.cols"
           :key="col.name"
+          class="text-black"
           :props="props"
         >
           <div v-if="col.name === 'date'">
@@ -57,25 +51,19 @@
         text-color="grey-10"
         active-color="primary"
         :max-pages="$q.screen.gt.md ? 7 : 3"
-
         @update:model-value="pageChange"
-      ></q-pagination>
+      />
     </span>
     <span class="col-3 row justify-end items-center">
-      <div
-        class="row items-center"
-      >
-        <span>
-          RowsPerPage :
-        </span>
+      <div class="row items-center">
+        <span> RowsPerPage : </span>
         <q-select
-          class="q-mx-sm"
           v-model="rowsPerPage"
+          class="q-mx-sm"
           :options="[5, 10, 15, 20, 25, 30, 40, 50]"
           dense
           borderless
-        >
-        </q-select>
+        />
       </div>
     </span>
   </div>
@@ -88,35 +76,77 @@ import { useQuasar } from 'quasar'
 import timeFormat from '../../apis/timeFormat'
 
 const columes = [
-  { name: 'date', align: 'center', label: 'Date', field: 'createdAt', sortable: true },
-  { name: 'source', align: 'center', label: 'Source', field: 'source', sortable: true },
-  { name: 'category', align: 'center', label: 'Category', field: 'category', sortable: true },
-  { name: 'priority', align: 'center', label: 'Priority', field: 'priority', sortable: true },
-  { name: 'zones', align: 'center', label: 'zones', field: 'zones', sortable: true },
-  { name: 'message', align: 'center', label: 'Message', field: 'message', sortable: true }
+  {
+    name: 'date',
+    align: 'center',
+    label: 'Date',
+    field: 'createdAt',
+    sortable: true
+  },
+  {
+    name: 'source',
+    align: 'center',
+    label: 'Source',
+    field: 'source',
+    sortable: true
+  },
+  {
+    name: 'category',
+    align: 'center',
+    label: 'Category',
+    field: 'category',
+    sortable: true
+  },
+  {
+    name: 'priority',
+    align: 'center',
+    label: 'Priority',
+    field: 'priority',
+    sortable: true
+  },
+  {
+    name: 'zones',
+    align: 'center',
+    label: 'zones',
+    field: 'zones',
+    sortable: true
+  },
+  {
+    name: 'message',
+    align: 'center',
+    label: 'Message',
+    field: 'message',
+    sortable: true
+  }
 ]
 export default {
-  setup () {
+  setup() {
     const { proxy } = getCurrentInstance()
     const { state, commit, dispatch } = useStore()
     const $q = useQuasar()
     // VUEX
     const logs = computed(() => state.eventlog.logs)
     const rowsPerPage = computed({
-      get () { return state.eventlog.logs.limit },
-      set (value) {
+      get() {
+        return state.eventlog.logs.limit
+      },
+      set(value) {
         commit('eventlog/updateRowsPerPage', value)
         return dispatch('eventlog/getLogs')
       }
     })
     const page = computed({
-      get () { return state.eventlog.logs.page },
-      set (value) { return commit('eventlog/updatePage', value) }
+      get() {
+        return state.eventlog.logs.page
+      },
+      set(value) {
+        return commit('eventlog/updatePage', value)
+      }
     })
     // Var
     const pagination = ref(null)
     // Function
-    async function pageChange (value) {
+    async function pageChange() {
       $q.loading.show({ spinnerColor: 'cyan' })
       await proxy.$store.dispatch('eventlog/getLogs')
       $q.loading.hide()
@@ -136,5 +166,4 @@ export default {
     }
   }
 }
-
 </script>

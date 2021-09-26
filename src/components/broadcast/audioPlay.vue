@@ -1,40 +1,59 @@
 <template>
-  <q-card class="local-card-style">
-    <q-btn
-      class="close-btn"
-      round
-      icon="close"
-      v-close-popup
-    ></q-btn>
-    <q-card-section class="q-pa-none">
-      <div class="backg">
-        <div class="local-name row items-center">
-          {{ file.name }}
+  <q-dialog
+    v-model="preview"
+    seamless
+    transition-hide="fade"
+    transition-show="fade"
+  >
+    <q-card class="local-card-style">
+      <q-btn
+        v-close-popup
+        class="close-btn"
+        round
+        icon="close"
+      />
+      <q-card-section class="q-pa-none">
+        <div class="backg">
+          <div class="local-name row items-center">
+            {{ file.name }}
+          </div>
         </div>
-      </div>
-    </q-card-section>
+      </q-card-section>
 
-    <q-card-section>
-      <audio controls :src="source" />
-    </q-card-section>
-
-  </q-card>
+      <q-card-section>
+        <audio
+          controls
+          :src="source"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
+import { useStore } from 'vuex'
 import { computed } from 'vue'
+
 export default {
-  props: ['file'],
-  setup (props) {
+  setup () {
+    const { state, commit } = useStore()
+
+    const preview = computed({
+      get () { return state.broadcast.preview },
+      set (value) { return commit('broadcast/setPreview', value)}
+    })
+    const file  = computed(() => state.broadcast.previewFile)
     const source = computed(() => {
       let r = `http://${window.location.hostname}:3000/media`
-      if (props.file.src) {
-        r = r + '/' + props.file.src
+      if (file.value.src) {
+        r = r + '/' + file.value.src
       }
-      r = r + '/' + props.file.name
+      r = r + '/' + file.value.name
       return r
     })
     return {
+      preview,
+      file,
       source
     }
   }

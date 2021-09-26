@@ -18,8 +18,7 @@
             style="opacity: 0.9"
             :color="mode ? 'orange-10' : 'grey-5'"
             @click="mode = !mode"
-          >
-          </q-btn>
+          />
         </div>
       </q-img>
     </q-card-section>
@@ -70,7 +69,7 @@ import Preset from './select/preset'
 
 export default {
   components: { Tree, Preset, PresetAdd },
-  setup(props) {
+  setup() {
     const { state, getters, commit } = useStore()
     const selected = computed({
       get() {

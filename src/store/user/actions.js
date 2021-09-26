@@ -1,6 +1,6 @@
 import { api } from '../../boot/axios'
 
-export async function getUser ({ commit }) {
+export async function getUser({ commit }) {
   try {
     let user = await api.get('/auth/getUser')
     if (!user.data.user) {
@@ -14,7 +14,7 @@ export async function getUser ({ commit }) {
   }
 }
 
-export async function login ({ commit }, payload) {
+export async function login({ commit }, payload) {
   try {
     const r = await api.post('/auth/login', payload)
     commit('updateUser', r.data.user)
@@ -24,7 +24,7 @@ export async function login ({ commit }, payload) {
   }
 }
 
-export async function register ({ commit }, payload) {
+export async function register(payload) {
   const user = { ...payload }
   user.email = payload.userId
   try {
@@ -35,7 +35,7 @@ export async function register ({ commit }, payload) {
   }
 }
 
-export async function getUsers ({ commit }) {
+export async function getUsers({ commit }) {
   const r = await api.get('/auth/users')
   commit('updateUsers', r.data.users)
 }

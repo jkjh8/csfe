@@ -1,8 +1,14 @@
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header class="text-black">
-      <div class="row items-center" style="padding-top: 12px; text-align: center;">
-        <router-link class="col-3 logo" to="/">
+      <div
+        class="row items-center"
+        style="padding-top: 12px; text-align: center;"
+      >
+        <router-link
+          class="col-3 logo"
+          to="/"
+        >
           Media Server
         </router-link>
         <div class="col-7 q-gutter-md">
@@ -17,7 +23,7 @@
     <q-page-container>
       <router-view :user="user" />
     </q-page-container>
-
+    <AudioPlay />
   </q-layout>
 </template>
 
@@ -31,8 +37,9 @@ import UserStatus from '../components/layout/userStatus.vue'
 // import RouterAddress from '../components/layout/routeLink'
 // import Notice from '../components/layout/notice.vue'
 // import UserMenu from '../components/layout/user.vue'
+import AudioPlay from '@components/broadcast/audioPlay'
 export default {
-  components: { LinkNormal, UserStatus },
+  components: { LinkNormal, UserStatus, AudioPlay },
   setup () {
     const { state } = useStore()
     const brocastMenu = ref(false)
