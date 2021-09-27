@@ -2,12 +2,15 @@
   <div style="padding: 5% 10% 0 10%">
     <div class="row justify-between items-center q-ml-lg q-mb-lg">
       <div class="row items-center q-gutter-sm">
-        <q-icon name="svguse:icons.svg#server-fill" size="sm" color="teal" />
+        <q-icon
+          name="svguse:icons.svg#server-fill"
+          size="sm"
+          color="teal"
+        />
         <span class="name">디바이스</span>
         <span class="caption">
           총 {{ count }}개의 디바이스 중 신규 디바이스 {{ newConunt }}개
-          점검필요 {{ errorConunt }}개가 존재 합니다</span
-        >
+          점검필요 {{ errorConunt }}개가 존재 합니다</span>
       </div>
       <div>
         {{ message }}
@@ -21,7 +24,10 @@
           color="teal-6"
           @click="dialog = !dialog"
         >
-          <q-tooltip class="bg-white text-black" :delay="500">
+          <q-tooltip
+            class="bg-white text-black"
+            :delay="500"
+          >
             디바이스 추가
           </q-tooltip>
         </q-btn>
@@ -29,7 +35,10 @@
     </div>
     <Table />
   </div>
-  <q-dialog v-model="dialog" persistent>
+  <q-dialog
+    v-model="dialog"
+    persistent
+  >
     <CreateUpdate @close="dialog = false" />
   </q-dialog>
 </template>

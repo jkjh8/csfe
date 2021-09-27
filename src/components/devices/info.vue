@@ -1,16 +1,27 @@
 <template>
   <q-card style="width: 26rem; border-radius: 2rem">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_27.jpg" style="height: 6rem">
+      <q-img
+        src="/background/cover_27.jpg"
+        style="height: 6rem"
+      >
         <div class="fit row items-center">
-          <q-avatar style="border: solid 1px #ddd" size="2.3rem">
-            <q-icon name="svguse:icons.svg#server-fill" size="3rem" />
+          <q-avatar
+            style="border: solid 1px #ddd"
+            size="2.3rem"
+          >
+            <q-icon
+              name="svguse:icons.svg#server-fill"
+              size="3rem"
+            />
           </q-avatar>
           <div class="q-ml-md">
             <div class="name">
               {{ info.name }}
             </div>
-            <div class="caption">IP Address: {{ info.ipaddress }}</div>
+            <div class="caption">
+              IP Address: {{ info.ipaddress }}
+            </div>
           </div>
         </div>
       </q-img>
@@ -31,8 +42,16 @@
 
     <q-separator />
 
-    <q-card-actions v-close-popup align="right">
-      <q-btn class="q-ma-sm" padding=".5rem 2rem" flat label="Close" />
+    <q-card-actions
+      v-close-popup
+      align="right"
+    >
+      <q-btn
+        class="q-ma-sm"
+        padding=".5rem 2rem"
+        flat
+        label="Close"
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -46,7 +65,9 @@ import BarixInfo from './barix/barixForm'
 import QsysInfo from './qsys/qsysForm.vue'
 export default {
   components: { BarixInfo, QsysInfo },
-  props: ['info'],
+  props: {
+    info: Object
+  },
   setup() {
     return {
       timeFormat,

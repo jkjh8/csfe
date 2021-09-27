@@ -1,11 +1,27 @@
 <template>
   <q-form @submit="onSubmit">
-    <q-card class="shadow-15 location_card" style="width: 24rem;">
-      <q-card-section class="q-pa-none" style="overflow: hidden;">
-        <q-img src="/background/cover_1.jpg" style="height: 6rem;">
+    <q-card
+      class="shadow-15 location_card"
+      style="width: 24rem;"
+    >
+      <q-card-section
+        class="q-pa-none"
+        style="overflow: hidden;"
+      >
+        <q-img
+          src="/background/cover_1.jpg"
+          style="height: 6rem;"
+        >
           <div class="fit row items-center">
-            <q-icon name="svguse:icons.svg#user-circle-fill" color="cyan-4" size="2.5rem"></q-icon>
-            <span class="name q-ml-md" style="font-size: 1.5rem;">로그인</span>
+            <q-icon
+              name="svguse:icons.svg#user-circle-fill"
+              color="cyan-4"
+              size="2.5rem"
+            />
+            <span
+              class="name q-ml-md"
+              style="font-size: 1.5rem;"
+            >로그인</span>
           </div>
         </q-img>
       </q-card-section>
@@ -17,13 +33,21 @@
             class="bg-red text-white row justify-end"
             style="position: absolute; border-radius: 1.5rem; width:100%; height: 3rem;"
           >
-            <q-btn style="z-index: 10;" round flat icon="cancel" @click="error=null"></q-btn>
+            <q-btn
+              style="z-index: 10;"
+              round
+              flat
+              icon="cancel"
+              @click="error=null"
+            />
           </div>
-          <div style="position: absolute;
+          <div
+            style="position: absolute;
                       width:100%;
                       text-align: center;
                       color: white;
-                      line-height: 3rem;">
+                      line-height: 3rem;"
+          >
             {{ error }}
           </div>
         </div>
@@ -51,9 +75,12 @@
         >
           <q-input
             v-model="userInfo.userId"
-            outlined dense bg-color="white"
-            lazy-rules :rules="rules.email"
-          ></q-input>
+            outlined
+            dense
+            bg-color="white"
+            lazy-rules
+            :rules="rules.email"
+          />
         </div>
         <div class="row justify-between q-mt-lg text-bold">
           비밀번호
@@ -62,8 +89,8 @@
           class="q-my-sm"
         >
           <q-input
-            class="inputs"
             v-model="userInfo.password"
+            class="inputs"
             outlined
             dense
             bg-color="white"
@@ -72,11 +99,11 @@
             :type="showPassword ? 'text' : 'password'"
             @keyup.enter="onSubmit"
           >
-            <template v-slot:append>
+            <template #append>
               <q-icon
                 :name="showPassword ? 'visibility' : 'visibility_off'"
-                @click="showPassword=!showPassword"
                 size="sm"
+                @click="showPassword=!showPassword"
               />
             </template>
           </q-input>
@@ -91,7 +118,10 @@
             padding=".6rem"
             no-caps
           >
-            <div class="name" style="font-size: 1rem;">
+            <div
+              class="name"
+              style="font-size: 1rem;"
+            >
               로그인
             </div>
           </q-btn>

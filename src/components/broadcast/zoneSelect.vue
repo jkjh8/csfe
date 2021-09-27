@@ -6,7 +6,9 @@
           <div class="card-name">
             <q-icon name="svguse:icons.svg#view-grid-add" />
             <div>
-              <div class="name">방송구간선택</div>
+              <div class="name">
+                방송구간선택
+              </div>
               <div class="caption">
                 총 {{ selected.length }}개의 방송구간이 선택되었습니다
               </div>
@@ -24,7 +26,10 @@
     </q-card-section>
     <q-card-section class="q-px-none">
       <q-scroll-area style="height: 24rem">
-        <q-tab-panels v-model="panel" animated>
+        <q-tab-panels
+          v-model="panel"
+          animated
+        >
           <q-tab-panel name="tree">
             <Tree :locations="locations" />
           </q-tab-panel>
@@ -37,8 +42,16 @@
     </q-card-section>
     <q-separator />
     <q-card-actions align="right">
-      <div class="q-px-md q-gutter-md row items-center" style="height: 4rem">
-        <q-btn style="width: 6rem; height: 2rem" flat rounded @click="clear">
+      <div
+        class="q-px-md q-gutter-md row items-center"
+        style="height: 4rem"
+      >
+        <q-btn
+          style="width: 6rem; height: 2rem"
+          flat
+          rounded
+          @click="clear"
+        >
           초기화
         </q-btn>
         <q-btn
@@ -55,7 +68,11 @@
     </q-card-actions>
   </q-card>
   <q-dialog v-model="add">
-    <PresetAdd :group="group" :selected="selected" @close="add = !add" />
+    <PresetAdd
+      :group="group"
+      :selected="selected"
+      @close="add = !add"
+    />
   </q-dialog>
 </template>
 

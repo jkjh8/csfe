@@ -1,8 +1,14 @@
 <template>
   <q-card style="width: 26rem; border-radius: 2rem">
     <!-- 이름 테그 -->
-    <q-card-section class="q-pa-none" style="overflow: hidden">
-      <q-img src="/background/cover_1.png" style="height: 6rem">
+    <q-card-section
+      class="q-pa-none"
+      style="overflow: hidden"
+    >
+      <q-img
+        src="/background/cover_1.png"
+        style="height: 6rem"
+      >
         <div class="fit row items-center">
           <div class="q-ml-md">
             <q-icon
@@ -21,7 +27,9 @@
             >
               {{ mode === 'create' ? 'Location 추가' : 'Location 수정' }}
             </div>
-            <div class="caption">지역단위 혹은 본부 DSP 추가 및 설정</div>
+            <div class="caption">
+              지역단위 혹은 본부 DSP 추가 및 설정
+            </div>
           </div>
         </div>
       </q-img>
@@ -30,7 +38,10 @@
     <q-separator class="q-mb-sm" />
 
     <!-- 에러 메세지 표시창 -->
-    <q-card-section v-if="error" class="q-pb-none q-mx-lg">
+    <q-card-section
+      v-if="error"
+      class="q-pb-none q-mx-lg"
+    >
       <div style="position: relative; height: 3rem">
         <div
           class="text-white row justify-end"
@@ -66,10 +77,15 @@
 
     <q-form @submit="onSubmit">
       <q-card-section class="q-pt-sm">
-        <div class="q-px-md q-mx-sm colume" style="border-radius: 1rem">
+        <div
+          class="q-px-md q-mx-sm colume"
+          style="border-radius: 1rem"
+        >
           <div class="q-pa-sm q-gutter-sm">
             <div>
-              <div class="text">지역 인덱스</div>
+              <div class="text">
+                지역 인덱스
+              </div>
               <q-input
                 v-model="values.index"
                 dense
@@ -79,7 +95,9 @@
               />
             </div>
             <div class="q-mt-md">
-              <div class="text">지역 이름</div>
+              <div class="text">
+                지역 이름
+              </div>
               <q-input
                 v-model="values.name"
                 dense
@@ -89,7 +107,9 @@
               />
             </div>
             <div>
-              <div class="text">Type</div>
+              <div class="text">
+                Type
+              </div>
               <q-select
                 v-model="values.type"
                 dense
@@ -98,7 +118,9 @@
               />
             </div>
             <div v-if="values.type === 'Q-Sys'">
-              <div class="text">Device</div>
+              <div class="text">
+                Device
+              </div>
               <q-select
                 v-model="values.device_id"
                 dense
@@ -128,7 +150,9 @@
             </div>
 
             <div v-if="values.type === 'Barix'">
-              <div class="text">Device</div>
+              <div class="text">
+                Device
+              </div>
               <q-select
                 v-model="values.device_id"
                 dense
@@ -188,7 +212,9 @@ import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
 
 export default {
-  props: ['selected'],
+  props: {
+    selscted: Object
+  },
   emits: ['close'],
   setup(props, { emit }) {
     const { selected } = toRefs(props)

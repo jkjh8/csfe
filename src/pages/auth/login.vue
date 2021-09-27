@@ -20,7 +20,9 @@
           size="12px"
           color="black"
         />
-        <div class="text-grey-10 text-bold q-ml-sm">회원가입</div>
+        <div class="text-grey-10 text-bold q-ml-sm">
+          회원가입
+        </div>
       </q-btn>
     </div>
 

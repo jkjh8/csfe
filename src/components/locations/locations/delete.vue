@@ -3,9 +3,19 @@
     <!-- 이름 테그 -->
     <q-card-section>
       <div class="row">
-        <span class="col-2" style="width: 4rem;">
-          <q-avatar color="red-1" text-color="red">
-            <q-icon name="svguse:icons.svg#exclamation" color="red" size="2rem"/>
+        <span
+          class="col-2"
+          style="width: 4rem;"
+        >
+          <q-avatar
+            color="red-1"
+            text-color="red"
+          >
+            <q-icon
+              name="svguse:icons.svg#exclamation"
+              color="red"
+              size="2rem"
+            />
           </q-avatar>
         </span>
         <span class="col-10">
@@ -22,8 +32,21 @@
     <q-separator />
 
     <q-card-actions align="right">
-      <q-btn class="q-mx-sm text" padding=".3rem 2rem" flat @click="emit('close')" label="취소" />
-      <q-btn class="q-mx-sm text confirm" padding=".3rem 2rem" unelevated color="red" @click="onSubmit" label="삭제" />
+      <q-btn
+        class="q-mx-sm text"
+        padding=".3rem 2rem"
+        flat
+        label="취소"
+        @click="emit('close')"
+      />
+      <q-btn
+        class="q-mx-sm text confirm"
+        padding=".3rem 2rem"
+        unelevated
+        color="red"
+        label="삭제"
+        @click="onSubmit"
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -34,7 +57,10 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
 export default {
-  props: ['selected'],
+  props: {
+    selected: Object
+  },
+  emits: ['close'],
   setup (props, { emit }) {
     const { dispatch } = useStore()
     const { selected } = toRefs(props)

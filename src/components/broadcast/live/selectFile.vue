@@ -138,9 +138,9 @@ export default {
         await updateDir(reqPath)
       } else {
         commit('broadcast/updatePlayFile', file)
+        emit('close')
       }
       $q.loading.hide()
-      emit('close')
     }
 
     async function getDir (index) {

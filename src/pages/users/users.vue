@@ -9,14 +9,15 @@
         />
       </span>
       <span class="name">사용자 관리</span>
-      <span class="caption self-end q-gutter-sm" style="margin-bottom: 2px">
+      <span
+        class="caption self-end q-gutter-sm"
+        style="margin-bottom: 2px"
+      >
         <span>
-          총 <strong>{{ usersCount }}</strong
-          >명의 사용자가 있습니다
+          총 <strong>{{ usersCount }}</strong>명의 사용자가 있습니다
         </span>
         <span>
-          그중 <strong>{{ adminCount }}</strong
-          >명의 관리자가 있습니다
+          그중 <strong>{{ adminCount }}</strong>명의 관리자가 있습니다
         </span>
       </span>
     </div>
@@ -108,7 +109,10 @@
     <EditUser :user="currentUser" />
   </q-dialog>
   <q-dialog v-model="popupAdmin">
-    <PopupAdmin :user="selectedUser" @close="close" />
+    <PopupAdmin
+      :user="selectedUser"
+      @close="close"
+    />
   </q-dialog>
 </template>
 

@@ -48,27 +48,38 @@
             class="q-gutter-sm"
           >
             <div class="listname">
-              TEXT
+              Name
             </div>
             <q-input
-              v-model="ttsText"
-              class="bg-grey-2"
+              v-model="tts.name"
+              outlined
+              rounded
+              dense
+            />
+            <div class="listname">
+              Text
+            </div>
+            <q-input
+              v-model="tts.text"
+              filled
               type="textarea"
             />
             <div class="row justify-between q-mt-md">
               <q-btn
+                style="width: 6rem; height: 2rem;"
                 rounded
-                unelevated
-                color="yellow-10"
+                flat
               >
                 미리듣기
               </q-btn>
               <q-btn
+                style="width: 7rem; height: 2rem;"
                 rounded
                 unelevated
                 color="primary"
+                @click="messageDialog=!messageDialog"
               >
-                메세지관리
+                메시지 관리
               </q-btn>
             </div>
           </div>
@@ -150,6 +161,7 @@
           unelevated
           color="primary"
           label="방송시작"
+          @click="startLive"
         />
       </div>
     </q-card-actions>
@@ -159,6 +171,9 @@
   <q-dialog v-model="fileDialog">
     <FileSelect @close="fileDialog=false" />
   </q-dialog>
+  <q-dialog v-model="messageDialog">
+    <MessageSelect />
+  </q-dialog>
 </template>
 
 <script>
@@ -166,59 +181,37 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 
 import FileSelect from '@components/broadcast/live/selectFile'
+import MessageSelect from '@components/broadcast/live/selectMessage'
 
 export default {
-  components: { FileSelect },
+  components: {
+    FileSelect,
+    MessageSelect
+  },
   setup() {
     const { state, getters, commit } = useStore()
     const selected = computed(() => state.locations.selectedId)
     const group = computed(() => getters['locations/selectedGroup'])
     const file = computed(() => state.broadcast.playFile)
-
-    const mode = ref('Play Audio')
+    const mode = computed({
+      get () { return state.broadcast.liveMode },
+      set (v) { return commit('broadcast/updateLiveMode', v)}
+    })
+    const tts = computed({
+      get () { return state.broadcast.tts},
+      set (v) { return commit('updateTts', v)}
+    })
     const liveChannel = ref(1)
-    const ttsText = ref('')
+    // const ttsText = ref('')
     const playAudioFile = ref('')
     const fileDialog = ref(false)
+    const messageDialog = ref(false)
     const preview = ref(false)
 
-    // async function clickFile(file) {
-    //   $q.loading.show()
-    //   if (file.type === 'directory') {
-    //     const reqPath = filePath.value.splice(1, 1).join('/') + '/' + file.name
-    //     console.log(reqPath)
-    //     await updateDir(reqPath)
-    //   } else {
-    //     console.log(file)
-    //   }
-    //   $q.loading.hide()
-    // }
-
-    // async function getDir(index) {
-    //   $q.loading.show()
-    //   let reqPath = ''
-    //   if (index) {
-    //     for (let i = 0; i < index; i++) {
-    //       reqPath = reqPath + '/' + filePath.value[i + 1]
-    //     }
-    //   } else {
-    //     reqPath = '/'
-    //   }
-    //   if (!fileDialog.value) {
-    //     fileDialog.value = true
-    //   }
-    //   await updateDir(reqPath)
-    //   $q.loading.hide()
-    // }
-
-    // async function updateDir(reqPath) {
-    //   const r = await api.get(`/files?link=${reqPath}`)
-    //   filePath.value = r.data.path
-    //   if (filePath.value[filePath.value.length] === '') {
-    //     filePath.value.splice(-1, 1)
-    //   }
-    //   files.value = r.data.files
-    // }
+    function startLive () {
+      console.log('start live')
+      commit('broadcast/setLive', true)
+    }
 
     function startPreview (file) {
       commit('broadcast/setPreview', true)
@@ -230,12 +223,14 @@ export default {
       group,
       mode,
       liveChannel,
-      ttsText,
+      tts,
+      messageDialog,
       playAudioFile,
       file,
       fileDialog,
       preview,
-      startPreview
+      startPreview,
+      startLive
     }
   }
 }

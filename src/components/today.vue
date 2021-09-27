@@ -1,16 +1,23 @@
 <template>
-  <div id="today" class="col-12">
-    <div class="line_top"></div>
+  <div
+    id="today"
+    class="col-12"
+  >
+    <div class="line_top" />
     <div class="today">
       <div>
-        <q-icon name="svguse:icons.svg#calendar" color="green-10" size="3rem" />
+        <q-icon
+          name="svguse:icons.svg#calendar"
+          color="green-10"
+          size="3rem"
+        />
         <span> 오늘은</span>
       </div>
       <div class="q-pl-sm">
         {{ today }}입니다
       </div>
     </div>
-    <div class="line_bottom"></div>
+    <div class="line_bottom" />
   </div>
 </template>
 

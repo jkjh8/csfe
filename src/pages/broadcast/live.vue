@@ -19,7 +19,7 @@
     </div>
     <div class="row wrap justify-between">
       <div class="col-6 q-pr-md">
-        <SelectBroadcastZones class="col-6" />
+        <SelectBroadcastZones />
       </div>
       <div class="col-6 q-pl-md">
         <Live />
@@ -39,13 +39,11 @@ export default {
     SelectBroadcastZones,
     Live
   },
-  props: {
-    user: Object
-  },
   setup() {
-    const { getters, dispatch } = useStore()
+    const { state, getters, dispatch } = useStore()
 
     const selected = ref([])
+    const user = computed(() => state.user.user)
     const locationCount = computed(() => getters['locations/getCount'])
     const zoneCount = computed(() => getters['devices/getDeviceCount'])
 
@@ -58,7 +56,8 @@ export default {
     return {
       selected,
       locationCount,
-      zoneCount
+      zoneCount,
+      user
     }
   }
 }

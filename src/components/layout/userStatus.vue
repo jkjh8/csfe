@@ -1,11 +1,27 @@
 <template>
-  <div v-if="user" class="q-gutter-sm">
-    <q-btn round flat>
-      <q-icon name="svguse:icons.svg#chat-alt" size="sm" color="grey-8" />
+  <div
+    v-if="user"
+    class="q-gutter-sm"
+  >
+    <q-btn
+      round
+      flat
+    >
+      <q-icon
+        name="svguse:icons.svg#chat-alt"
+        size="sm"
+        color="grey-8"
+      />
     </q-btn>
-    <q-btn round flat>
-      <q-avatar text-color="white" size="md">
-        <img src="/patterns/5.png" />
+    <q-btn
+      round
+      flat
+    >
+      <q-avatar
+        text-color="white"
+        size="md"
+      >
+        <img src="/patterns/5.png">
         <div class="absolute-center">
           {{ nickname }}
         </div>
@@ -27,7 +43,7 @@
               color="grey-10"
               text-color="white"
             >
-              <img src="/patterns/12.png" />
+              <img src="/patterns/12.png">
               <!-- <q-icon
                 name="fas fa-user-alt"
                 color="white"
@@ -56,7 +72,10 @@
           </q-item-section>
         </q-item>
         <q-item>
-          <q-item-section class="row justify-center" style="width: 200px">
+          <q-item-section
+            class="row justify-center"
+            style="width: 200px"
+          >
             <q-btn
               class="btn q-mx-xl q-my-md"
               to="/userInfo"
@@ -88,7 +107,14 @@
     </q-btn>
   </div>
   <div v-else>
-    <q-btn flat rounded size="sm" to="/login"> 로그인 </q-btn>
+    <q-btn
+      flat
+      rounded
+      size="sm"
+      to="/login"
+    >
+      로그인
+    </q-btn>
   </div>
 </template>
 
@@ -97,7 +123,9 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { api } from '../../boot/axios'
 export default {
-  props: ['user'],
+  props: {
+    user: Object
+  },
   setup() {
     const { getters, commit } = useStore()
     const nickname = computed(() => getters['user/nickname'])

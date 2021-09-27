@@ -23,7 +23,10 @@
     <q-page-container>
       <router-view :user="user" />
     </q-page-container>
+
+    <!-- Global Dialog -->
     <AudioPlay />
+    <Live />
   </q-layout>
 </template>
 
@@ -38,8 +41,15 @@ import UserStatus from '../components/layout/userStatus.vue'
 // import Notice from '../components/layout/notice.vue'
 // import UserMenu from '../components/layout/user.vue'
 import AudioPlay from '@components/broadcast/audioPlay'
+import Live from '@components/broadcast/live/broadcast'
+
 export default {
-  components: { LinkNormal, UserStatus, AudioPlay },
+  components: {
+    LinkNormal,
+    UserStatus,
+    AudioPlay,
+    Live
+    },
   setup () {
     const { state } = useStore()
     const brocastMenu = ref(false)

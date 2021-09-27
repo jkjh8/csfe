@@ -31,7 +31,10 @@
     }}</span>
   </div>
 
-  <q-separator class="q-my-sm" color="grey-3" />
+  <q-separator
+    class="q-my-sm"
+    color="grey-3"
+  />
   <div v-if="info.detail.fwname === 'StreamingClientKit'">
     <div class="item">
       <span>Status</span>
@@ -55,7 +58,10 @@
         info.detail.io.relay1 === '0' ? 'OFF' : 'ON'
       }}</span>
     </div>
-    <q-separator class="q-my-sm" color="grey-3" />
+    <q-separator
+      class="q-my-sm"
+      color="grey-3"
+    />
     <div class="item">
       <span>Priority Port</span>
       <span class="text-uppercase q-pa-none">{{
@@ -132,7 +138,10 @@
     </div>
   </div>
 
-  <q-separator class="q-my-sm" color="grey-3" />
+  <q-separator
+    class="q-my-sm"
+    color="grey-3"
+  />
 
   <div class="item">
     <span>Created At</span>
@@ -148,7 +157,9 @@
 import timeFormat from '../../../apis/timeFormat'
 import secToDays from '../../../apis/secToDays'
 export default {
-  props: ['info'],
+  props: {
+    info: Object
+  },
   setup() {
     return { timeFormat, secToDays }
   }

@@ -4,11 +4,24 @@
       class="shadow-15 location_card"
       style="width: 25rem; border-radius: 2rem;"
     >
-      <q-card-section class="q-pa-none" style="overflow: hidden;">
-        <q-img src="/background/cover_3.png" style="height: 6rem;">
+      <q-card-section
+        class="q-pa-none"
+        style="overflow: hidden;"
+      >
+        <q-img
+          src="/background/cover_3.png"
+          style="height: 6rem;"
+        >
           <div class="fit row items-center">
-            <q-icon name="svguse:icons.svg#user-add" color="cyan-4" size="1.8rem"></q-icon>
-            <span class="name q-ml-md" style="font-size: 1.5rem;">회원가입</span>
+            <q-icon
+              name="svguse:icons.svg#user-add"
+              color="cyan-4"
+              size="1.8rem"
+            />
+            <span
+              class="name q-ml-md"
+              style="font-size: 1.5rem;"
+            >회원가입</span>
           </div>
         </q-img>
       </q-card-section>
@@ -20,7 +33,13 @@
             class="bg-red text-white row justify-end"
             style="position: absolute; border-radius: 1rem; width:100%; height: 3rem;"
           >
-            <q-btn style="z-index: 10;" round flat icon="cancel" @click="error=null"></q-btn>
+            <q-btn
+              style="z-index: 10;"
+              round
+              flat
+              icon="cancel"
+              @click="error=null"
+            />
           </div>
           <div style="position: absolute;width:100%; text-align: center; color: white; line-height: 3rem;">
             {{ error }}
@@ -44,7 +63,7 @@
               bg-color="white"
               lazy-rules
               :rules="rules.name"
-            ></q-input>
+            />
           </div>
 
           <div class="text-bold">
@@ -60,7 +79,7 @@
               bg-color="white"
               lazy-rules
               :rules="rules.email"
-            ></q-input>
+            />
           </div>
 
           <div class="row justify-between q-mt-lg text-bold">
@@ -79,11 +98,11 @@
               :type="showPassword ? 'text' : 'password'"
               @keyup.enter="onSubmit"
             >
-              <template v-slot:append>
+              <template #append>
                 <q-icon
                   :name="showPassword ? 'visibility' : 'visibility_off'"
-                  @click="showPassword=!showPassword"
                   size="sm"
+                  @click="showPassword=!showPassword"
                 />
               </template>
             </q-input>
@@ -105,17 +124,17 @@
               :type="showChkPassword ? 'text' : 'password'"
               @keyup.enter="onSubmit"
             >
-              <template v-slot:append>
+              <template #append>
                 <q-icon
                   :name="showChkPassword ? 'visibility' : 'visibility_off'"
-                  @click="showChkPassword=!showChkPassword"
                   size="sm"
+                  @click="showChkPassword=!showChkPassword"
                 />
               </template>
             </q-input>
           </div>
 
-      <!-- submit -->
+          <!-- submit -->
           <div class="q-mt-lg">
             <q-btn
               class="full-width"
@@ -125,12 +144,12 @@
               rounded
               unelevated
             >
-              <div v-if='loading'>
+              <div v-if="loading">
                 <q-spinner
                   color="teal"
                   size="24px"
                   :thickness="10"
-                ></q-spinner>
+                />
               </div>
               <div
                 v-else

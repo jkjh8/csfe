@@ -1,12 +1,22 @@
 <template>
   <q-card style="width: 24rem; border-radius: 2rem;">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_1.png" style="height: 6rem">
+      <q-img
+        src="/background/cover_1.png"
+        style="height: 6rem"
+      >
         <div class="fit row items-center">
-          <q-icon name="svguse:icons.svg#view-grid-add" size="1.5rem" />
+          <q-icon
+            name="svguse:icons.svg#view-grid-add"
+            size="1.5rem"
+          />
           <div class="q-ml-sm">
-            <div class="name">프리셋 추가</div>
-            <div class="caption">방송구간 프리셋을 추가 합니다</div>
+            <div class="name">
+              프리셋 추가
+            </div>
+            <div class="caption">
+              방송구간 프리셋을 추가 합니다
+            </div>
           </div>
         </div>
       </q-img>
@@ -15,48 +25,72 @@
       <div class="q-pa-md q-mr-sm q-gutter-md">
         <!-- 선택구간 트리 -->
         <div class="q-gutter-sm">
-          <div class="listname">Selected</div>
+          <div class="listname">
+            Selected
+          </div>
           <div v-if="group && group.length">
             <q-tree
               :nodes="group"
               node-key="_id"
             >
-              <template v-slot:default-header="props">
+              <template #default-header="props">
                 <div>
                   {{ props.node.name }}
                 </div>
               </template>
             </q-tree>
           </div>
-          <div v-else style="text-align: center;">
+          <div
+            v-else
+            style="text-align: center;"
+          >
             <span class="text-red">선택된 방송 구간이 없습니다</span>
           </div>
         </div>
         <!-- 모드 이름 -->
         <div class="q-gutter-sm">
-          <div class="listname">Mode</div>
+          <div class="listname">
+            Mode
+          </div>
           <div class="q-gutter-md">
-            <q-radio v-model="mode" val="global" label="글로벌 프리셋" />
-            <q-radio v-model="mode" val="private" label="개인 프리셋" />
+            <q-option-group
+              v-model="mode"
+              :options="[
+                { label: 'Global', value: 'global' },
+                { label: 'Private', value: 'private' }
+              ]"
+              color="primary"
+              inline
+            />
           </div>
         </div>
         <div class="q-gutter-sm">
-          <div class="listname">Name</div>
-          <q-input dense outlined v-model="name" />
+          <div class="listname">
+            Name
+          </div>
+          <q-input
+            v-model="name"
+            dense
+            outlined
+          />
         </div>
       </div>
     </q-card-section>
     <q-card-actions align="right">
       <div class="q-mx-sm q-mb-sm q-gutter-sm">
         <q-btn
+          v-close-popup
           style="width: 6rem; height: 2rem"
-          flat rounded v-close-popup
+          flat
+          rounded
         >
           취소
         </q-btn>
         <q-btn
           style="width: 6rem; height: 2rem"
-          unelevated rounded color="blue-grey-8"
+          unelevated
+          rounded
+          color="blue-grey-8"
           :disable="!group || !group.length"
           @click="onSubmit"
         >
@@ -74,7 +108,11 @@ import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 export default {
-  props: ['group', 'selected'],
+  props: {
+    group: Object,
+    selected: Object
+  },
+  emits: ['close'],
   setup (props, { emit }) {
     const { state } = useStore()
     const $q = useQuasar()

@@ -8,7 +8,10 @@
     style="border-radius: 1rem"
   >
     <template #body="props">
-      <q-tr v-if="props.cols[2].value === 'error'" :props="props">
+      <q-tr
+        v-if="props.cols[2].value === 'error'"
+        :props="props"
+      >
         <q-td
           v-for="col in props.cols"
           :key="col.name"
@@ -18,7 +21,10 @@
           {{ col.value }}
         </q-td>
       </q-tr>
-      <q-tr v-else :props="props">
+      <q-tr
+        v-else
+        :props="props"
+      >
         <q-td
           v-for="col in props.cols"
           :key="col.name"

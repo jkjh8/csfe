@@ -9,24 +9,33 @@
         />
       </span>
       <span class="name">Status</span>
-      <span class="caption"
-        >{{ locationErrorCount }} 지역 {{ zoneErrorCount }}방송구간이 점검이
-        필요합니다</span
-      >
+      <span
+        class="caption"
+      >{{ locationErrorCount }} 지역 {{ zoneErrorCount }}방송구간이 점검이
+        필요합니다</span>
     </div>
-    <div class="shadow-15 q-pa-md status" style="border-radius: 2rem">
+    <div
+      class="shadow-15 q-pa-md status"
+      style="border-radius: 2rem"
+    >
       <q-list>
-        <div v-for="location in locations" :key="location.index">
+        <div
+          v-for="location in locations"
+          :key="location.index"
+        >
           <q-expansion-item
             class="overflow-hidden exp-style"
             expand-separator
             default-opened
           >
             <!--  헤더  -->
-            <template v-slot:header>
+            <template #header>
               <q-item-section avatar>
-                <q-avatar style="border: 1px solid #454545" size="2rem">
-                  <q-icon name="svguse:icons.svg#map"></q-icon>
+                <q-avatar
+                  style="border: 1px solid #454545"
+                  size="2rem"
+                >
+                  <q-icon name="svguse:icons.svg#map" />
                   <q-badge
                     v-if="!location.status"
                     rounded
@@ -46,9 +55,18 @@
             </template>
 
             <!-- 지역표시 -->
-            <div class="fit row wrap q-gutter-md" style="padding: 1rem 2rem">
-              <div v-for="zone in location.children" :key="zone.channel">
-                <ZoneStatus :location="location" :zone="zone" />
+            <div
+              class="fit row wrap q-gutter-md"
+              style="padding: 1rem 2rem"
+            >
+              <div
+                v-for="zone in location.children"
+                :key="zone.channel"
+              >
+                <ZoneStatus
+                  :location="location"
+                  :zone="zone"
+                />
               </div>
             </div>
           </q-expansion-item>

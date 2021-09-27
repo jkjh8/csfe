@@ -61,6 +61,13 @@
   margin-left: 1rem;
 }
 
+.card-small {
+  width: 24rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 2rem #999;
+}
+
 .card-nomal {
   width: 24rem;
   border-radius: 2rem;
@@ -102,4 +109,17 @@ q-img .q-img__content > div {
 
 .radius {
   border-radius: 2rem;
+}
+
+.active-link {
+  background: #eaeaea;
+  color: black;
+}
+.errorMsg {
+  padding: .5rem 1rem;
+  color: #fff;
+  font-family: 나눔고딕;
+  font-weight: 700;
+  background: red;
+  border-radius: 1rem;
 }

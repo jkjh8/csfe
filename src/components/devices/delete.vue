@@ -2,10 +2,19 @@
   <q-card style="width: 20rem; border-radius: 2rem;">
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_27.jpg" style="height: 6rem;">
+      <q-img
+        src="/background/cover_27.jpg"
+        style="height: 6rem;"
+      >
         <div class="fit row items-center">
-          <q-icon name="svguse:icons.svg#exclamation" color="red" size="md" />
-          <div class="q-ml-md name">디바이스 삭제</div>
+          <q-icon
+            name="svguse:icons.svg#exclamation"
+            color="red"
+            size="md"
+          />
+          <div class="q-ml-md name">
+            디바이스 삭제
+          </div>
         </div>
       </q-img>
     </q-card-section>
@@ -22,14 +31,17 @@
       <q-btn
         class="q-mx-sm text"
         padding=".3rem 2rem"
-        flat rounded
-        @click="emit('close')"
+        flat
+        rounded
         label="취소"
+        @click="emit('close')"
       />
       <q-btn
         class="q-mx-sm"
         padding=".3rem 2rem"
-        rounded unelevated color="red"
+        rounded
+        unelevated
+        color="red"
         label="삭제"
         @click="onSubmit"
       />
@@ -43,7 +55,8 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
 export default {
-  props: ['selected'],
+  props: {selected: Object},
+  emits: ['close'],
   setup (props, { emit }) {
     const { dispatch } = useStore()
     const { selected } = toRefs(props)

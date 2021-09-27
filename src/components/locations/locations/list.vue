@@ -10,15 +10,19 @@
               <div
                 v-if="locationErrorCount"
                 class="caption"
-              >현재 {{ locationErrorCount }}개의 지역의 점검이 필요합니다</div>
+              >
+                현재 {{ locationErrorCount }}개의 지역의 점검이 필요합니다
+              </div>
             </div>
           </div>
           <div class="q-pa-none q-ma-none">
             <q-btn
-              flat round color="cyan-7"
+              flat
+              round
+              color="cyan-7"
               icon="svguse:icons.svg#plus-circle-fill"
               @click="createUpdateDialog=!createUpdateDialog"
-            ></q-btn>
+            />
           </div>
         </div>
       </q-img>
@@ -33,38 +37,59 @@
       >
         <q-list>
           <q-item
-            class="q-px-lg"
             v-for="local in locations"
             :key="local.index"
-            clickable
             v-ripple
+            class="q-px-lg"
+            clickable
             :active="local === selected"
-            @click="clickItem(local)"
             active-class="active-link"
+            @click="clickItem(local)"
           >
             <q-item-section avatar>
-              <q-avatar style="border: 1px solid #454545" size="2rem">
-                {{local.index}}
-                <q-badge v-if="!local.status" color="red" rounded floating/>
+              <q-avatar
+                style="border: 1px solid #454545"
+                size="2rem"
+              >
+                {{ local.index }}
+                <q-badge
+                  v-if="!local.status"
+                  color="red"
+                  rounded
+                  floating
+                />
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
               <q-item-label>
                 <span class="listname">{{ local.name }}</span>
-                <span class="q-ml-sm" :class="local.type === 'Q-Sys'? 'qsys':'barix'">{{ local.type }}</span>
+                <span
+                  class="q-ml-sm"
+                  :class="local.type === 'Q-Sys'? 'qsys':'barix'"
+                >{{ local.type }}</span>
               </q-item-label>
-              <q-item-label caption>{{ local.ipaddress }}</q-item-label>
+              <q-item-label caption>
+                {{ local.ipaddress }}
+              </q-item-label>
             </q-item-section>
 
             <q-item-section side>
               <div>
                 <q-btn
-                  flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6"
+                  flat
+                  round
+                  icon="svguse:icons.svg#pencil-fill"
+                  size="sm"
+                  color="teal-6"
                   @click.prevent.stop="editItem(local)"
                 />
                 <q-btn
-                  flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6"
+                  flat
+                  round
+                  icon="svguse:icons.svg#trash-fill"
+                  size="sm"
+                  color="red-6"
                   @click.prevent.stop="deleteItem(local)"
                 />
               </div>
@@ -74,11 +99,23 @@
       </q-scroll-area>
     </q-card-section>
   </q-card>
-  <q-dialog v-model="createUpdateDialog" persistent>
-    <CreateUpdate :selected="selectItem" @close="createUpdateDialogClose" />
+  <q-dialog
+    v-model="createUpdateDialog"
+    persistent
+  >
+    <CreateUpdate
+      :selected="selectItem"
+      @close="createUpdateDialogClose"
+    />
   </q-dialog>
-  <q-dialog v-model="deleteDialog" persistent>
-    <Delete :selected="selectItem" @close="deleteDialogClose" />
+  <q-dialog
+    v-model="deleteDialog"
+    persistent
+  >
+    <Delete
+      :selected="selectItem"
+      @close="deleteDialogClose"
+    />
   </q-dialog>
 </template>
 
@@ -147,12 +184,12 @@ export default {
 </script>
 
 <style scoped>
-.active-link {
+/* .active-link {
   background: #eaeaea;
   color: black;
 }
 :deep(.q-img__image) {
   -webkit-filter: blur(4px);
   filter: blur(4px);
-}
+} */
 </style>

@@ -1,5 +1,8 @@
 <template>
-  <div class="fit row wrap justify-center items-center" style="padding: 5% 0">
+  <div
+    class="fit row wrap justify-center items-center"
+    style="padding: 5% 0"
+  >
     <Today />
     <NeedLogin v-if="!user" />
   </div>
@@ -15,7 +18,9 @@ import NeedLogin from '../components/needLogin.vue'
 
 export default {
   components: { Today, NeedLogin },
-  props: ['user'],
+  props: {
+    user: Object
+  },
   setup() {
     const { dispatch } = useStore()
     const today = ref('')

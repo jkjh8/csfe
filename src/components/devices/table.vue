@@ -6,37 +6,109 @@
     :rows="tableData"
     :pagination="{ rowsPerPage: 10 }"
   >
-    <template v-slot:body="props">
+    <template #body="props">
       <q-tr :props="props">
-        <q-td key="index" :props="props">
-          <q-avatar class="shadow-3" size="2rem">
-            <q-badge v-if="props.row.alarm" floating rounded color="orange" />
-            <q-badge v-if="!props.row.checked" floating rounded color="yellow" />
-            <q-badge v-if="!props.row.status" floating rounded color="red" />
+        <q-td
+          key="index"
+          :props="props"
+        >
+          <q-avatar
+            class="shadow-3"
+            size="2rem"
+          >
+            <q-badge
+              v-if="props.row.alarm"
+              floating
+              rounded
+              color="orange"
+            />
+            <q-badge
+              v-if="!props.row.checked"
+              floating
+              rounded
+              color="yellow"
+            />
+            <q-badge
+              v-if="!props.row.status"
+              floating
+              rounded
+              color="red"
+            />
             {{ props.row.index }}
           </q-avatar>
         </q-td>
-        <q-td key="index" :props="props">
-          <div class="listname">{{ props.row.name ?? 'No Name' }}</div>
+        <q-td
+          key="index"
+          :props="props"
+        >
+          <div class="listname">
+            {{ props.row.name ?? 'No Name' }}
+          </div>
         </q-td>
-        <q-td key="ipaddress" :props="props">
-          <a :href="`http://${props.row.ipaddress}`" target="_blank">{{ props.row.ipaddress }}</a>
+        <q-td
+          key="ipaddress"
+          :props="props"
+        >
+          <a
+            :href="`http://${props.row.ipaddress}`"
+            target="_blank"
+          >{{ props.row.ipaddress }}</a>
         </q-td>
-        <q-td key="type" :props="props">
+        <q-td
+          key="type"
+          :props="props"
+        >
           {{ props.row.type }}
         </q-td>
-        <q-td key="mode" :props="props">
+        <q-td
+          key="mode"
+          :props="props"
+        >
           <div>{{ (props.row.mode) }}</div>
         </q-td>
-        <q-td key="createdAt" :props="props">
+        <q-td
+          key="createdAt"
+          :props="props"
+        >
           <div>{{ timeFormat(props.row.createdAt) }}</div>
         </q-td>
-        <q-td key="actions" :props="props">
+        <q-td
+          key="actions"
+          :props="props"
+        >
           <div>
-            <q-btn flat round icon="svguse:icons.svg#dot3-h" size="sm" color="grey-8" @click="openInfo(props.row)" />
-            <q-btn flat round icon="svguse:icons.svg#check" size="sm" color="blue-grey-6" @click="checkItem(props.row)" />
-            <q-btn flat round icon="svguse:icons.svg#pencil-fill" size="sm" color="teal-6" @click="createUpdateItem(props.row)" />
-            <q-btn flat round icon="svguse:icons.svg#trash-fill" size="sm" color="red-6" @click="deleteItem(props.row)" />
+            <q-btn
+              flat
+              round
+              icon="svguse:icons.svg#dot3-h"
+              size="sm"
+              color="grey-8"
+              @click="openInfo(props.row)"
+            />
+            <q-btn
+              flat
+              round
+              icon="svguse:icons.svg#check"
+              size="sm"
+              color="blue-grey-6"
+              @click="checkItem(props.row)"
+            />
+            <q-btn
+              flat
+              round
+              icon="svguse:icons.svg#pencil-fill"
+              size="sm"
+              color="teal-6"
+              @click="createUpdateItem(props.row)"
+            />
+            <q-btn
+              flat
+              round
+              icon="svguse:icons.svg#trash-fill"
+              size="sm"
+              color="red-6"
+              @click="deleteItem(props.row)"
+            />
           </div>
         </q-td>
       </q-tr>
@@ -47,12 +119,24 @@
     <Info :info="info" />
   </q-dialog>
 
-  <q-dialog v-model="createUpdateDialog" persistent>
-    <CreateUpdate :selected="selected" @close="createUpdateDialog = false"/>
+  <q-dialog
+    v-model="createUpdateDialog"
+    persistent
+  >
+    <CreateUpdate
+      :selected="selected"
+      @close="createUpdateDialog = false"
+    />
   </q-dialog>
 
-  <q-dialog v-model="deleteDialog" persistent>
-    <Delete :selected="selected" @close="deleteDialogClose" />
+  <q-dialog
+    v-model="deleteDialog"
+    persistent
+  >
+    <Delete
+      :selected="selected"
+      @close="deleteDialogClose"
+    />
   </q-dialog>
 </template>
 

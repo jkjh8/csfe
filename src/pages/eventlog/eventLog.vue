@@ -2,7 +2,11 @@
   <div style="padding: 5% 5% 0 5%;">
     <div class="row justify-between items-center q-ml-lg q-mb-lg">
       <div class="row items-center q-gutter-sm">
-        <q-icon name="svguse:icons.svg#collection" size="sm" color="cyan" />
+        <q-icon
+          name="svguse:icons.svg#collection"
+          size="sm"
+          color="cyan"
+        />
         <span class="name">
           이벤트 로그
         </span>
@@ -12,28 +16,35 @@
       </div>
       <div class="q-mr-sm row items-center">
         <q-input
-          rounded outlined dense hide-bottom-space
-          placeholder="검색"
           v-model="search"
+          rounded
+          outlined
+          dense
+          hide-bottom-space
+          placeholder="검색"
           input-style="margin-left: 10px;"
           @keyup.enter="getLogWithSearch"
         >
-          <template v-slot:append>
+          <template #append>
             <q-btn
-              round flat
+              round
+              flat
               size="xs"
               icon="fas fa-search"
               @click="getLogWithSearch"
-            >
-            </q-btn>
+            />
           </template>
         </q-input>
         <span class="q-ml-sm q-pa-none">
           <q-btn
-            round flat
+            round
+            flat
             @click="getLogWithSearch"
           >
-            <q-icon name="sync" size="1.5rem" />
+            <q-icon
+              name="sync"
+              size="1.5rem"
+            />
           </q-btn>
         </span>
       </div>

@@ -1,8 +1,18 @@
 <template>
-  <div class="colume" style="padding: 5% 8% 0 8%">
-    <div class="row items-start q-px-md" style="height: 5rem;">
+  <div
+    class="colume"
+    style="padding: 5% 8% 0 8%"
+  >
+    <div
+      class="row items-start q-px-md"
+      style="height: 5rem;"
+    >
       <div class="row items-center q-gutter-sm">
-        <q-icon name="svguse:icons.svg#server-fill" size="sm" color="teal" />
+        <q-icon
+          name="svguse:icons.svg#server-fill"
+          size="sm"
+          color="teal"
+        />
         <span class="name">방송구간</span>
         <span class="caption">총 {{ locationsCount }}개 지역의 {{ }} 방송구간이 있습니다</span>
       </div>
