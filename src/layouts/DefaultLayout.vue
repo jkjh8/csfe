@@ -21,7 +21,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view :user="user" />
+      <router-view />
     </q-page-container>
 
     <!-- Global Dialog -->

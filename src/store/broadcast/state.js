@@ -5,6 +5,7 @@ export default function () {
     previewFile: null,
     live: false,
     liveMode: 'Live',
+    liveChannel: 1,
     tts: {
       type: 'global',
       name: '',

@@ -21,3 +21,7 @@ export function updateTts (state, payload) {
 export function updateLiveMode (state, payload) {
   state.liveMode = payload
 }
+
+export function updateLiveChannel (state, payload) {
+  state.liveChannel = payload
+}

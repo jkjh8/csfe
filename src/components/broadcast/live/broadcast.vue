@@ -25,25 +25,10 @@
       <q-card-section>
         <div class="row justify-center">
           <Clock />
-          <Check />
+          <Check class="q-ml-lg" />
         </div>
       </q-card-section>
-      <q-card-section>
-        <div>
-          <div>
-            <span>방송 모드: </span>
-            <span>{{ mode }}</span>
-          </div>
-          <div>
-            <span>방송 구간: </span>
-            <q-tree
-              :nodes="zones"
-              node-key="_id"
-              label-key="name"
-            />
-          </div>
-        </div>
-      </q-card-section>
+
       <q-card-section>
         <div class="row justify-center items-center">
           <div

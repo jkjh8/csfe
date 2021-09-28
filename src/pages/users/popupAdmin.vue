@@ -1,11 +1,8 @@
 <template>
-  <q-card style="width: 20rem; border-radius: 2rem">
+  <q-card style="width: 20rem; border-radius: 1rem">
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none">
-      <q-img
-        src="/background/cover_1.jpg"
-        style="height: 6rem"
-      >
+      <div class="backg">
         <div class="fit row items-center">
           <q-icon
             class="q-ml-md"
@@ -17,7 +14,7 @@
             관리자 권한 수정
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
     <q-card-section style="height: 14rem">
       <div v-if="user.admin">
@@ -108,8 +105,12 @@ export default {
   font-family: 나눔고딕;
   color: grey;
 }
-:deep(.q-img__image) {
-  -webkit-filter: blur(2px);
-  filter: blur(2px);
+.backg {
+  height: 6rem;
+  color: #fff;
+  z-index: 1;
+  background: linear-gradient(226deg, rgba(255,0,0,.8), rgba(255,0,0,0) 60.71%),
+              linear-gradient(127deg, rgba(0,180,0,.8), rgba(0,255,0,0) 90.71%),
+              linear-gradient(333deg, rgba(0,0,255,.8), rgba(0,0,255,0) 99%);
 }
 </style>

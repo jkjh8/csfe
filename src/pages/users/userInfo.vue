@@ -4,25 +4,20 @@
     style="margin-top: 10%;"
   >
     <q-card
-      class="shadow-15 location_card"
+      class="card-large"
     >
-      <q-card-section
-        class="q-pa-none"
-        style="overflow: hidden;"
-      >
-        <q-img
-          src="/background/cover_1.jpg"
-          style="height: 6rem;"
-        >
-          <div class="fit row items-center">
-            <q-icon
-              class="q-ml-md"
-              name="svguse:icons.svg#user-circle-fill"
-              size="lg"
-            />
-            <span class="q-ml-md name">사용자 정보</span>
+      <q-card-section class="q-pa-none">
+        <div class="backg-re-gr">
+          <div class="card-name-align">
+            <div class="card-name">
+              <q-icon
+                name="svguse:icons.svg#user-circle-fill"
+                color="grey-10"
+              />
+              <div>사용자 정보</div>
+            </div>
           </div>
-        </q-img>
+        </div>
       </q-card-section>
 
       <q-separator inset />

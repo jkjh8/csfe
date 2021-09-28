@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 
@@ -18,11 +18,9 @@ import NeedLogin from '../components/needLogin.vue'
 
 export default {
   components: { Today, NeedLogin },
-  props: {
-    user: Object
-  },
   setup() {
-    const { dispatch } = useStore()
+    const { state, dispatch } = useStore()
+    const user = computed(() => state.user.user)
     const today = ref('')
     moment.locale('ko')
 
@@ -31,6 +29,7 @@ export default {
       today.value = moment().format('MM월 DD일 dddd')
     })
     return {
+      user,
       today
     }
   }

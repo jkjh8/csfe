@@ -1,29 +1,20 @@
 <template>
   <q-form @submit="onSubmit">
-    <q-card
-      class="shadow-15 location_card"
-      style="width: 24rem;"
-    >
-      <q-card-section
-        class="q-pa-none"
-        style="overflow: hidden;"
-      >
-        <q-img
-          src="/background/cover_1.jpg"
-          style="height: 6rem;"
-        >
-          <div class="fit row items-center">
-            <q-icon
-              name="svguse:icons.svg#user-circle-fill"
-              color="cyan-4"
-              size="2.5rem"
-            />
-            <span
-              class="name q-ml-md"
-              style="font-size: 1.5rem;"
-            >로그인</span>
+    <q-card class="card-nomal">
+      <q-card-section class="q-pa-none">
+        <div class="backg-gr-bl">
+          <div class="card-name-align">
+            <div class="card-name">
+              <q-icon
+                name="svguse:icons.svg#user-circle-fill"
+                color="teal-10"
+              />
+              <div>
+                로그인
+              </div>
+            </div>
           </div>
-        </q-img>
+        </div>
       </q-card-section>
       <q-separator />
       <!-- 에러 메세지 표시창 -->
@@ -55,76 +46,78 @@
 
       <!-- 로그인 정보 시작 -->
       <q-card-section>
-        <div class="row justify-between">
-          <span class="text-bold">
-            이메일
-          </span>
-          <span>
-            <q-checkbox
-              v-model="saveEmail"
-              dense
-              left-label
-              label="이메일 저장"
-              color="cyan-6"
-              @click="saveIdToLocal"
-            />
-          </span>
-        </div>
-        <div
-          class="q-my-sm"
-        >
-          <q-input
-            v-model="userInfo.userId"
-            outlined
-            dense
-            bg-color="white"
-            lazy-rules
-            :rules="rules.email"
-          />
-        </div>
-        <div class="row justify-between q-mt-lg text-bold">
-          비밀번호
-        </div>
-        <div
-          class="q-my-sm"
-        >
-          <q-input
-            v-model="userInfo.password"
-            class="inputs"
-            outlined
-            dense
-            bg-color="white"
-            lazy-rules
-            :rules="rules.password"
-            :type="showPassword ? 'text' : 'password'"
-            @keyup.enter="onSubmit"
-          >
-            <template #append>
-              <q-icon
-                :name="showPassword ? 'visibility' : 'visibility_off'"
-                size="sm"
-                @click="showPassword=!showPassword"
+        <div class="q-pa-md">
+          <div class="row justify-between">
+            <span class="text-bold">
+              이메일
+            </span>
+            <span>
+              <q-checkbox
+                v-model="saveEmail"
+                dense
+                left-label
+                label="이메일 저장"
+                color="cyan-6"
+                @click="saveIdToLocal"
               />
-            </template>
-          </q-input>
-        </div>
-
-        <div class="q-mt-lg">
-          <q-btn
-            class="full-width"
-            rounded
-            type="submit"
-            color="grey-8"
-            padding=".6rem"
-            no-caps
+            </span>
+          </div>
+          <div
+            class="q-my-sm"
           >
-            <div
-              class="name"
-              style="font-size: 1rem;"
+            <q-input
+              v-model="userInfo.userId"
+              outlined
+              dense
+              bg-color="white"
+              lazy-rules
+              :rules="rules.email"
+            />
+          </div>
+          <div class="row justify-between q-mt-lg text-bold">
+            비밀번호
+          </div>
+          <div
+            class="q-my-sm"
+          >
+            <q-input
+              v-model="userInfo.password"
+              class="inputs"
+              outlined
+              dense
+              bg-color="white"
+              lazy-rules
+              :rules="rules.password"
+              :type="showPassword ? 'text' : 'password'"
+              @keyup.enter="onSubmit"
             >
-              로그인
-            </div>
-          </q-btn>
+              <template #append>
+                <q-icon
+                  :name="showPassword ? 'visibility' : 'visibility_off'"
+                  size="sm"
+                  @click="showPassword=!showPassword"
+                />
+              </template>
+            </q-input>
+          </div>
+
+          <div class="q-mt-lg">
+            <q-btn
+              class="full-width"
+              rounded
+              type="submit"
+              color="grey-8"
+              padding=".6rem"
+              no-caps
+            >
+              <div
+                class="name"
+                style="font-size: 1rem;"
+              >
+                로그인
+              </div>
+            </q-btn>
+          </div>
         </div>
       </q-card-section>
       <q-card-section class="row justify-center">

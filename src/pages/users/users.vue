@@ -100,6 +100,7 @@
             icon="svguse:icons.svg#trash-fill"
             size="sm"
             color="red"
+            @click="startDeleteUser(props.row)"
           />
         </q-td>
       </template>
@@ -113,6 +114,51 @@
       :user="selectedUser"
       @close="close"
     />
+  </q-dialog>
+
+  <q-dialog v-model="mdDeleteUser">
+    <q-card style="width: 20rem;">
+      <!-- 이름 테그 -->
+      <q-card-section class="q-pa-none">
+        <div class="backg">
+          <div class="fit row items-center">
+            <q-icon
+              class="q-ml-md"
+              name="svguse:icons.svg#exclamation"
+              color="red"
+              size="md"
+            />
+            <div class="q-ml-sm name">
+              관리자 권한 수정
+            </div>
+          </div>
+        </div>
+      </q-card-section>
+
+      <q-card-section style="height: 14rem">
+        <div class="q-ma-md text-grey">
+          <strong class="listname text-black">{{ selectedUser.email }}</strong> 사용자를 삭제 하시겠습니까?
+        </div>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn
+          v-close-popup
+          padding=".3rem 2rem"
+          flat
+          rounded
+          label="취소"
+        />
+        <q-btn
+          class="q-mx-md"
+          padding=".3rem 2rem"
+          unelevated
+          rounded
+          color="cyan"
+          label="확인"
+          @click="fnDeleteUser"
+        />
+      </q-card-actions>
+    </q-card>
   </q-dialog>
 </template>
 
@@ -139,6 +185,7 @@ const columns = [
 import { ref, onBeforeMount, computed } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
+import { api } from '@/boot/axios'
 
 import EditUser from "./edit";
 import PopupAdmin from "./popupAdmin.vue";
@@ -158,6 +205,7 @@ export default {
     const editDialog = ref(false);
     const selectedUser = ref(null);
     const popupAdmin = ref(false);
+    const mdDeleteUser = ref(false)
 
     function editUser(user) {
       currentUser.value = user;
@@ -167,6 +215,11 @@ export default {
     function editAdmin(user) {
       selectedUser.value = user;
       popupAdmin.value = true;
+    }
+
+    function startDeleteUser(user) {
+      selectedUser.value = user
+      mdDeleteUser.value = true
     }
 
     function close() {
@@ -180,6 +233,12 @@ export default {
       return `${moment(time).format("YYYY/MM/DD")} \n ${moment(time).format(
         "hh:mm:ss a"
       )}`;
+    }
+
+    async function fnDeleteUser () {
+      await api.get(`/auth/users/delete?id=${selectedUser.value._id}`)
+      dispatch('user/getUsers')
+      mdDeleteUser.value = false
     }
     onBeforeMount(async () => {
       dispatch("user/getUsers");
@@ -197,7 +256,21 @@ export default {
       editAdmin,
       timeFormat2line,
       close,
+      startDeleteUser,
+      mdDeleteUser,
+      fnDeleteUser
     };
   },
 };
 </script>
+
+<style scoped>
+.backg {
+  height: 6rem;
+  color: #fff;
+  z-index: 1;
+  background: linear-gradient(226deg, rgba(255,0,0,.8), rgba(255,0,0,0) 60.71%),
+              linear-gradient(127deg, rgba(0,180,0,.8), rgba(0,255,0,0) 90.71%),
+              linear-gradient(333deg, rgba(0,0,255,.8), rgba(0,0,255,0) 99%);
+}
+</style>

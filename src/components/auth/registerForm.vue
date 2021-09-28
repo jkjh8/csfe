@@ -1,29 +1,20 @@
 <template>
   <q-form @submit="onSubmit">
-    <q-card
-      class="shadow-15 location_card"
-      style="width: 25rem; border-radius: 2rem;"
-    >
-      <q-card-section
-        class="q-pa-none"
-        style="overflow: hidden;"
-      >
-        <q-img
-          src="/background/cover_3.png"
-          style="height: 6rem;"
-        >
-          <div class="fit row items-center">
-            <q-icon
-              name="svguse:icons.svg#user-add"
-              color="cyan-4"
-              size="1.8rem"
-            />
-            <span
-              class="name q-ml-md"
-              style="font-size: 1.5rem;"
-            >회원가입</span>
+    <q-card class="card-nomal">
+      <q-card-section class="q-pa-none">
+        <div class="backg-re-bl">
+          <div class="card-name-align">
+            <div class="card-name">
+              <q-icon
+                name="svguse:icons.svg#user-add"
+                color="teal-10"
+              />
+              <div>
+                회원가입
+              </div>
+            </div>
           </div>
-        </q-img>
+        </div>
       </q-card-section>
       <q-separator />
       <!-- 에러 메세지 표시창 -->
@@ -49,7 +40,7 @@
 
       <!-- 가입 정보 시작 -->
       <q-card-section>
-        <div>
+        <div class="q-pa-md">
           <div class="text-bold">
             이름
           </div>
@@ -211,6 +202,7 @@ export default {
       $q.loading.show({
         message: '회원 가입중입니다. 잠시만 기다려주세요.'
       })
+      console.log(userInfo)
       error.value = await dispatch('user/register', userInfo)
       $q.loading.hide()
       if (!error.value) {

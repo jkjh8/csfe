@@ -45,10 +45,12 @@ export default {
     const file  = computed(() => state.broadcast.previewFile)
     const source = computed(() => {
       let r = `http://${window.location.hostname}:3000/media`
+      // let r = `http://${window.location.hostname}/media`
       if (file.value.src) {
         r = r + '/' + file.value.src
       }
       r = r + '/' + file.value.name
+      console.log(r)
       return r
     })
     return {

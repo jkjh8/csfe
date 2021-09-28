@@ -12,6 +12,14 @@
           방송 모드는 {{ mode }} 입니다.
         </span>
       </div>
+      <div>
+        <div v-if="mode === 'TTS'">
+          <div>{{ tts.name }}</div>
+        </div>
+        <div v-if="mode === 'Play Audio'">
+          <div>{{ file.name }}</div>
+        </div>
+      </div>
       <div class="q-mt-xl">
         <div>
           <q-avatar
@@ -28,6 +36,7 @@
         <q-scroll-area style="height: 10rem;">
           <q-tree
             color="grey"
+            text-color="grey-5"
             class="tree_font"
             :nodes="zones"
             node-key="_id"
@@ -36,7 +45,7 @@
         </q-scroll-area>
       </div>
     </div>
-    <div />
+    <div class="line_bottom" />
   </div>
 </template>
 
@@ -47,11 +56,15 @@ export default {
   setup () {
     const { state, getters } = useStore()
     const mode = computed(() => state.broadcast.liveMode)
+    const tts = computed(() => state.broadcast.tts)
+    const file = computed(() => state.broadcast.playFile)
     const zones = computed(() => getters['locations/selectedGroup'])
 
     return {
       mode,
-      zones
+      zones,
+      tts,
+      file
     }
   }
   
@@ -89,11 +102,11 @@ export default {
   left: 24rem;
   height: 4rem;
   width: 2rem;
-  background: rgba(255, 255, 0, 0.5);;
+  background: rgba(0, 255, 255, 0.5);;
   transform: rotate(45deg);
   border-radius: 1rem;
 }
 .tree_font {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 </style>

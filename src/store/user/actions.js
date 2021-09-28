@@ -24,11 +24,13 @@ export async function login({ commit }, payload) {
   }
 }
 
-export async function register(payload) {
+export async function register({ state }, payload) {
   const user = { ...payload }
+  console.log(user)
   user.email = payload.userId
   try {
     const r = await api.post('/auth/register', user)
+    state.user
     if (r.status === 200) return null
   } catch (error) {
     return error.response.data.message

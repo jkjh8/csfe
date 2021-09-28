@@ -201,7 +201,10 @@ export default {
       get () { return state.broadcast.tts},
       set (v) { return commit('updateTts', v)}
     })
-    const liveChannel = ref(1)
+    const liveChannel = computed({
+      get () { return state.broadcast.liveChannel },
+      set (v) { return commit('broadcast/updateLiveChannel', v)}
+    })
     // const ttsText = ref('')
     const playAudioFile = ref('')
     const fileDialog = ref(false)

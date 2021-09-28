@@ -1,30 +1,29 @@
 <template>
-  <q-card style="width: 26rem; border-radius: 2rem">
+  <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img
-        src="/background/cover_27.jpg"
-        style="height: 6rem"
-      >
-        <div class="fit row items-center">
-          <q-avatar
-            style="border: solid 1px #ddd"
-            size="2.3rem"
-          >
-            <q-icon
-              name="svguse:icons.svg#server-fill"
-              size="3rem"
-            />
-          </q-avatar>
-          <div class="q-ml-md">
-            <div class="name">
-              {{ info.name }}
-            </div>
-            <div class="caption">
-              IP Address: {{ info.ipaddress }}
+      <div class="backg-re-gr">
+        <div class="card-name-align">
+          <div class="card-name q-ml-md">
+            <q-avatar
+              style="border: solid 2px #ddd; overflow: hidden;"
+              size="2.4rem"
+            >
+              <q-icon
+                name="svguse:icons.svg#server-fill"
+                size="3rem"
+              />
+            </q-avatar>
+            <div class="q-ml-md">
+              <div class="name">
+                {{ info.name }}
+              </div>
+              <div class="caption">
+                IP Address: {{ info.ipaddress }}
+              </div>
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator />
@@ -76,13 +75,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-h2 {
-  font-family: bebas;
-}
-:deep(.q-img__image) {
-  -webkit-filter: blur(4px);
-  filter: blur(4px);
-}
-</style>

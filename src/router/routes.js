@@ -77,6 +77,13 @@ const routes = [
       { path: '', component: () => import('src/pages/broadcast/reservation.vue') }
     ]
   },
+  {
+    path: '/broadcast/files',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/broadcast/files.vue') }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

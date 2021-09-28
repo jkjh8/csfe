@@ -6,7 +6,7 @@
     방송
     <q-menu
       class="row justify-center items-center text-white bg-black"
-      style="width: 18rem; height: 3rem; border-radius: 2rem;"
+      style="width: 20rem; height: 3rem; border-radius: 2rem;"
       :offset="[110,5]"
     >
       <div
@@ -20,6 +20,9 @@
         </router-link>
         <router-link to="/broadcast/reservation">
           예약방송
+        </router-link>
+        <router-link to="/broadcast/files">
+          파일관리
         </router-link>
       </div>
     </q-menu>
