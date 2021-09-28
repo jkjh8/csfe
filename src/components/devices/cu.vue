@@ -1,36 +1,25 @@
 <template>
-  <q-card style="border-radius: 2rem; width: 24rem;">
+  <q-card class="card-nomal">
     <!-- 이름 테그 -->
-    <q-card-section
-      class="q-pa-none"
-      style="overflow: hidden;"
-    >
-      <q-img
-        src="/background/cover_1.png"
-        style="height: 6rem;"
-      >
-        <div class="fit row items-center">
-          <q-avatar
-            class="row justify-center items-center"
-            style="border: solid 1px #fff;"
-            size="md"
-          >
+    <q-card-section class="q-pa-none">
+      <div class="backg-re-bl">
+        <div class="card-name-align">
+          <div class="card-name">
             <q-icon
               :name="mode === 'create' ? 'svguse:icons.svg#plus':'svguse:icons.svg#pencil-fill'"
               color="yellow-6"
-              size="1rem"
             />
-          </q-avatar>
-          <div class="q-ml-md">
-            <div style="font-size: 1.2rem; font-weight: bold;">
-              {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
-            </div>
-            <div class="caption">
-              디바이스 설정
+            <div class="q-ml-md">
+              <div style="font-size: 1.2rem; font-weight: bold;">
+                {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
+              </div>
+              <div class="caption">
+                {{ mode === 'create' ? '디바이스 추가':'디바이스 수정' }}
+              </div>
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator class="q-mb-md" />
@@ -72,7 +61,7 @@
             디바이스 인덱스
           </div>
           <q-input
-            v-model="values.index"
+            v-model="deviceInfo.index"
             dense
             outlined
             bg-color="white"
@@ -82,7 +71,7 @@
             디바이스 이름
           </div>
           <q-input
-            v-model="values.name"
+            v-model="deviceInfo.name"
             dense
             outlined
             bg-color="white"
@@ -92,7 +81,7 @@
             IP Address
           </div>
           <q-input
-            v-model="values.ipaddress"
+            v-model="deviceInfo.ipaddress"
             :disable="mode === 'create' ? false:true"
             dense
             outlined
@@ -108,7 +97,7 @@
             Mac Address
           </div>
           <q-input
-            v-model="values.mac"
+            v-model="deviceInfo.mac"
             :disable="mode === 'create' ? false:true"
             dense
             outlined
@@ -119,19 +108,19 @@
             Device Type
           </div>
           <q-select
-            v-model="values.type"
+            v-model="deviceInfo.type"
             dense
             outlined
             bg-color="white"
             :options="['Barix', 'QSys']"
             label="Select device type"
           />
-          <div v-if="values.type === 'Barix'">
+          <div v-if="deviceInfo.type === 'Barix'">
             <div class="text margin-top">
               Mode
             </div>
             <q-select
-              v-model="values.mode"
+              v-model="deviceInfo.mode"
               dense
               outlined
               bg-color="white"
@@ -168,25 +157,24 @@
 </template>
 
 <script>
-import { inject, ref, toRefs, onMounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
+import { api } from '@/boot/axios'
 
 export default {
   props: {
-    selected: Array
+    id: String
   },
   emits: ['close'],
   setup (props, { emit }) {
-    const { selected } = toRefs(props)
-    const $api = inject('$api')
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
     const indexArr = computed(() => getters['devices/getIndexArr'])
     const mode = ref('create')
     const error = ref('')
-    const values = ref({
+    const deviceInfo = ref({
       index: null,
       name: '',
       mac: '',
@@ -200,9 +188,9 @@ export default {
       $q.loading.show()
       try {
         if (mode.value === 'create') {
-          await $api.post('/devices', values.value)
+          await api.post('/devices', deviceInfo.value)
         } else {
-          await $api.put('/devices', values.value)
+          await api.put('/devices', deviceInfo.value)
         }
         await dispatch('devices/updateDevices')
         $q.loading.hide()
@@ -214,19 +202,24 @@ export default {
       }
     }
 
-    onMounted(() => {
-      if (selected.value && Object.keys(selected.value).length) {
-        mode.value = 'edit'
-        for (const property in selected.value) {
-          values.value[property] = selected.value[property]
+    onMounted(async () => {
+      $q.loading.show()
+      if (props.id) {
+        const r = await api.get(`/devices/info?id=${props.id}`)
+        if (r) {
+          mode.value = 'edit'
+          deviceInfo.value = r.data
+        } else {
+          mode.value = 'create'
         }
       } else {
         mode.value = 'create'
       }
-      if (!values.value.index) {
+      $q.loading.hide()
+      if (!deviceInfo.value.index) {
         for (let i = 1; i <= indexArr.value.length + 1; i++) {
           if (!indexArr.value.includes(i)) {
-            values.value.index = i
+            deviceInfo.value.index = i
             break
           }
         }
@@ -237,7 +230,7 @@ export default {
       locationNames,
       mode,
       error,
-      values,
+      deviceInfo,
       onSubmit,
       emit
     }

@@ -115,17 +115,17 @@
     </template>
   </q-table>
 
-  <q-dialog v-model="infoDalog">
-    <Info :info="info" />
+  <q-dialog v-model="mdInfo">
+    <Info :id="selected._id" />
   </q-dialog>
 
   <q-dialog
-    v-model="createUpdateDialog"
+    v-model="mdCu"
     persistent
   >
     <CreateUpdate
-      :selected="selected"
-      @close="createUpdateDialog = false"
+      :id="selected._id"
+      @close="mdCu = false"
     />
   </q-dialog>
 
@@ -156,7 +156,7 @@ import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
-import CreateUpdate from './createUpdate.vue'
+import CreateUpdate from './cu.vue'
 import Delete from './delete.vue'
 
 import Info from './info.vue'
@@ -168,21 +168,21 @@ export default {
     // vuex
     const tableData = computed(() => state.devices.devices)
     // variable
-    const createUpdateDialog = ref(false)
-    const infoDalog = ref(false)
+    const mdCu = ref(false)
+    const mdInfo = ref(false)
     const selected = ref(null)
     const info = ref(null)
 
     const deleteDialog = ref(false)
 
     function openInfo (data) {
-      info.value = data
-      infoDalog.value = true
+      selected.value = data
+      mdInfo.value = true
     }
 
     function createUpdateItem (item) {
       selected.value = item
-      createUpdateDialog.value = true
+      mdCu.value = true
     }
 
     function deleteDialogClose () {
@@ -211,8 +211,8 @@ export default {
       timeFormat,
       secToDays,
       tableData,
-      createUpdateDialog,
-      infoDalog,
+      mdCu,
+      mdInfo,
       info,
       openInfo,
       createUpdateItem,

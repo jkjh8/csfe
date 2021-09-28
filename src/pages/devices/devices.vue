@@ -47,15 +47,13 @@
 import { defineComponent, ref, computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import Table from "../../components/devices/table.vue";
-import CreateUpdate from "../../components/devices/createUpdate.vue";
+import CreateUpdate from "../../components/devices/cu.vue";
 
 export default defineComponent({
   components: { Table, CreateUpdate },
-  props: {
-    user: Object,
-  },
   setup() {
     const { state, getters, dispatch } = useStore();
+    const user = computed(() => state.user.user)
 
     const count = computed(() => getters["devices/getDeviceCount"]);
     const newConunt = computed(() => getters["devices/newDeviceCount"]);
@@ -73,6 +71,7 @@ export default defineComponent({
     });
 
     return {
+      user,
       count,
       connected,
       dialog,

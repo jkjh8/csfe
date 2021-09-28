@@ -1,16 +1,10 @@
 <template>
-  <q-card style="width: 26rem; border-radius: 2rem">
+  <q-card class="card-nomal">
     <!-- 이름 테그 -->
-    <q-card-section
-      class="q-pa-none"
-      style="overflow: hidden"
-    >
-      <q-img
-        src="/background/cover_1.png"
-        style="height: 6rem"
-      >
-        <div class="fit row items-center">
-          <div class="q-ml-md">
+    <q-card-section class="q-pa-none">
+      <div class="backg-re-bl">
+        <div class="card-name-align">
+          <div class="card-name">
             <q-icon
               :name="
                 mode === 'create'
@@ -18,21 +12,18 @@
                   : 'svguse:icons.svg#pencil-fill'
               "
               :color="mode === 'create' ? 'cyan-6' : 'cyan-4'"
-              size="2rem"
             />
-          </div>
-          <div class="q-ml-md">
-            <div
-              style="font-size: 1.2rem; font-weight: 700; font-family: 나눔고딕"
-            >
-              {{ mode === 'create' ? 'Location 추가' : 'Location 수정' }}
-            </div>
-            <div class="caption">
-              지역단위 혹은 본부 DSP 추가 및 설정
+            <div>
+              <div>
+                {{ mode === 'create' ? 'Location 추가' : 'Location 수정' }}
+              </div>
+              <div class="caption">
+                지역단위 혹은 본부 DSP 추가 및 설정
+              </div>
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator class="q-mb-sm" />
@@ -77,17 +68,14 @@
 
     <q-form @submit="onSubmit">
       <q-card-section class="q-pt-sm">
-        <div
-          class="q-px-md q-mx-sm colume"
-          style="border-radius: 1rem"
-        >
+        <div class="q-pa-md colume">
           <div class="q-pa-sm q-gutter-sm">
             <div>
               <div class="text">
                 지역 인덱스
               </div>
               <q-input
-                v-model="values.index"
+                v-model="selectedLocation.index"
                 dense
                 outlined
                 bg-color="white"
@@ -99,7 +87,7 @@
                 지역 이름
               </div>
               <q-input
-                v-model="values.name"
+                v-model="selectedLocation.name"
                 dense
                 outlined
                 bg-color="white"
@@ -111,18 +99,18 @@
                 Type
               </div>
               <q-select
-                v-model="values.type"
+                v-model="selectedLocation.type"
                 dense
                 outlined
                 :options="['Q-Sys', 'Barix']"
               />
             </div>
-            <div v-if="values.type === 'Q-Sys'">
+            <div v-if="selectedLocation.type === 'Q-Sys'">
               <div class="text">
                 Device
               </div>
               <q-select
-                v-model="values.device_id"
+                v-model="selectedLocation.device._id"
                 dense
                 outlined
                 :options="qsysList"
@@ -149,12 +137,12 @@
               </q-select>
             </div>
 
-            <div v-if="values.type === 'Barix'">
+            <div v-if="selectedLocation.type === 'Barix'">
               <div class="text">
                 Device
               </div>
               <q-select
-                v-model="values.device_id"
+                v-model="selectedLocation.device._id"
                 dense
                 outlined
                 :options="barixList"
@@ -207,18 +195,17 @@
 </template>
 
 <script>
-import { inject, ref, toRefs, onMounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useStore } from 'vuex'
+import { api } from '@/boot/axios'
 
 export default {
   props: {
-    selscted: Object
+    id: String
   },
   emits: ['close'],
   setup(props, { emit }) {
-    const { selected } = toRefs(props)
-    const $api = inject('$api')
     const { getters, dispatch } = useStore()
     const $q = useQuasar()
     const locationNames = computed(() => getters['locations/getLocationNames'])
@@ -228,24 +215,25 @@ export default {
 
     const mode = ref('create')
     const error = ref('')
-    const values = ref({
+    const selectedLocation = ref({
       index: null,
       name: '',
-      device_id: '',
-      type: 'Q-Sys',
-      device: null
+      device: {
+        _id: ''
+      },
+      type: 'Q-Sys'
     })
 
     const onSubmit = async () => {
       $q.loading.show()
       try {
-        if (values.value.name === '') {
-          values.value = 'No Name'
+        if (selectedLocation.value.name === '') {
+          selectedLocation.value = 'No Name'
         }
         if (mode.value === 'create') {
-          await $api.post('/locations', values.value)
+          await api.post('/locations', selectedLocation.value)
         } else {
-          await $api.put('/locations', values.value)
+          await api.put('/locations', selectedLocation.value)
         }
         await dispatch('locations/updateLocations')
         $q.loading.hide()
@@ -257,17 +245,24 @@ export default {
       }
     }
 
-    onMounted(() => {
-      if (Object.keys(selected.value).length) {
-        mode.value = 'edit'
-        values.value = { ...selected.value }
+    onMounted(async () => {
+      if (props.id) {
+        const r = await api.get(`/locations/info?id=${props.id}`)
+        if (r) {
+          mode.value = 'edit'
+          selectedLocation.value = r.data.r
+          selectedLocation.value.device = r.data.devi
+          console.log(selectedLocation.value)
+        } else {
+          mode.value = 'create'
+        }
       } else {
         mode.value = 'create'
       }
-      if (!values.value.index) {
+      if (!selectedLocation.value.index) {
         for (let i = 1; i <= indexArr.value.length + 1; i++) {
           if (!indexArr.value.includes(i)) {
-            values.value.index = i
+            selectedLocation.value.index = i
             break
           }
         }
@@ -280,7 +275,7 @@ export default {
       locationNames,
       mode,
       error,
-      values,
+      selectedLocation,
       onSubmit,
       emit
     }

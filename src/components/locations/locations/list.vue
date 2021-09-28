@@ -1,8 +1,8 @@
 <template>
   <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_1.jpg">
-        <div class="card-name-align">
+      <div class="backg-dark">
+        <div class="card-name-align q-px-md">
           <div class="card-name">
             <q-icon name="svguse:icons.svg#map" />
             <div>
@@ -25,7 +25,7 @@
             />
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator />
@@ -104,8 +104,8 @@
     persistent
   >
     <CreateUpdate
-      :selected="selectItem"
-      @close="createUpdateDialogClose"
+      :id="selForEdit._id"
+      @close="mdCuClose"
     />
   </q-dialog>
   <q-dialog
@@ -113,8 +113,8 @@
     persistent
   >
     <Delete
-      :selected="selectItem"
-      @close="deleteDialogClose"
+      :selected="selForEdit"
+      @close="mdDeleteClose"
     />
   </q-dialog>
 </template>
@@ -122,7 +122,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import CreateUpdate from './createUpdate'
+import CreateUpdate from './cu'
 import Delete from './delete.vue'
 
 export default {
@@ -134,15 +134,15 @@ export default {
     const locationErrorCount = computed(() => getters['locations/errorCount'])
     const createUpdateDialog = ref(false)
     const deleteDialog = ref(false)
-    const selectItem = ref({})
+    const selForEdit = ref({})
 
     function editItem (item) {
-      selectItem.value = item
+      selForEdit.value = item
       createUpdateDialog.value = true
     }
 
     function deleteItem (item) {
-      selectItem.value = item
+      selForEdit.value = item
       deleteDialog.value = true
     }
 
@@ -156,12 +156,12 @@ export default {
       }
     }
 
-    function createUpdateDialogClose () {
-      selectItem.value = {}
+    function mdCuClose () {
+      selForEdit.value = {}
       createUpdateDialog.value = false
     }
 
-    function deleteDialogClose () {
+    function mdDeleteClose () {
       selected.value = {}
       deleteDialog.value = false
     }
@@ -172,12 +172,12 @@ export default {
       createUpdateDialog,
       deleteDialog,
       selected,
-      selectItem,
+      selForEdit,
       editItem,
       deleteItem,
       clickItem,
-      createUpdateDialogClose,
-      deleteDialogClose
+      mdCuClose,
+      mdDeleteClose
     }
   }
 }
