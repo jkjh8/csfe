@@ -59,11 +59,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0 1.5rem 0 .5rem;
 }
 
 .card-name > div {
   margin-left: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .card-name-sm > div {
@@ -77,13 +78,13 @@
 }
 
 .card-name-sm > .q-icon {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-left: 1.5rem;
 }
 
 .card-small {
   width: 22rem;
-  border-radius: 2rem;
+  border-radius: 1.2rem;
   overflow: hidden;
   box-shadow: 0 0.2rem 2rem #999;
 }
@@ -98,6 +99,13 @@
 .card-large {
   width: 100%;
   max-width: 30rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 2rem #999;
+}
+
+.card-full {
+  width: 100%;
   border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0 0.2rem 2rem #999;
@@ -145,7 +153,7 @@ q-img .q-img__content > div {
 }
 
 .backg-gr-bl {
-  height: 6rem;
+  height: 5rem;
   color: #fff;
   z-index: 1;
   background: linear-gradient(127deg, rgba(10,160,200,.8), rgba(255,0,0,0) 60.71%),
@@ -154,7 +162,7 @@ q-img .q-img__content > div {
 }
 
 .backg-re-bl {
-  height: 6rem;
+  height: 5rem;
   color: #fff;
   z-index: 1;
   background: linear-gradient(127deg, rgba(255,0,0,.8), rgba(255,0,0,0) 60.71%),
@@ -163,7 +171,7 @@ q-img .q-img__content > div {
               linear-gradient(99deg, rgba(255,255,0,.9), rgba(0,255,0,0) 80.71%);
 }
 .backg-re-gr {
-  height: 6rem;
+  height: 5rem;
   color: #fff;
   z-index: 1;
   background: linear-gradient(127deg, rgba(255,0,0,.8), rgba(255,0,0,0) 60.71%),
@@ -172,10 +180,17 @@ q-img .q-img__content > div {
 }
 
 .backg-dark {
-  height: 6rem;
+  height: 5rem;
   color: #fff;
   z-index: 1;
   background: linear-gradient(127deg, rgba(200,0,0,.8), rgba(255,0,0,0) 60.71%),
               linear-gradient(227deg, rgba(0,100,0,.5), rgba(0,255,0,0) 90.71%),
               linear-gradient(336deg, rgba(0,0,100,.9), rgba(0,0,255,0) 99%);
+}
+
+strong {
+  color: #111;
+  font-family: 나눔고딕;
+  font-weight: 700;
+  font-size: 1.2rem;
 }

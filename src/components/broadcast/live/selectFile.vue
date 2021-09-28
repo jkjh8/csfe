@@ -1,7 +1,7 @@
 <template>
   <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_11.jpg">
+      <div class="backg-dark">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon
@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-card-section>

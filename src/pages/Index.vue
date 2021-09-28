@@ -1,10 +1,15 @@
 <template>
   <div
-    class="fit row wrap justify-center items-center"
-    style="padding: 5% 0"
+    class="fit column wrap"
+    style="padding: 5% 10%"
   >
     <Today />
-    <NeedLogin v-if="!user" />
+    <div class="row justify-center q-pt-lg">
+      <NeedLogin v-if="!user" />
+    </div>
+    <div>
+      <InfoLocations />
+    </div>
   </div>
 </template>
 
@@ -16,8 +21,14 @@ import moment from 'moment'
 import Today from '../components/today.vue'
 import NeedLogin from '../components/needLogin.vue'
 
+import InfoLocations from '@components/info/locations' 
+
 export default {
-  components: { Today, NeedLogin },
+  components: {
+    Today,
+    NeedLogin,
+    InfoLocations
+  },
   setup() {
     const { state, dispatch } = useStore()
     const user = computed(() => state.user.user)

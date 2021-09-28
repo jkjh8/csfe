@@ -39,7 +39,6 @@ export default {
 <style scoped>
 #today {
   height: 10rem;
-  padding: 0 0 0 10%
 }
 .today {
   position: relative;
