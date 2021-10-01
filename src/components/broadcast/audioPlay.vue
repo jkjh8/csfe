@@ -35,23 +35,31 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 
 export default {
-  setup () {
+  setup() {
     const { state, commit } = useStore()
 
     const preview = computed({
-      get () { return state.broadcast.preview },
-      set (value) { return commit('broadcast/setPreview', value)}
-    })
-    const file  = computed(() => state.broadcast.previewFile)
-    const source = computed(() => {
-      let r = `http://${window.location.hostname}:3000/media`
-      // let r = `http://${window.location.hostname}/media`
-      if (file.value.src) {
-        r = r + '/' + file.value.src
+      get() {
+        return state.broadcast.preview
+      },
+      set(value) {
+        return commit('broadcast/setPreview', value)
       }
-      r = r + '/' + file.value.name
-      console.log(r)
-      return r
+    })
+    const file = computed(() => state.broadcast.previewFile)
+    const source = computed(() => {
+      let mediaPath
+      if (process.env.DEV) {
+        mediaPath = `http://${window.location.hostname}:3000/media`
+      } else {
+        mediaPath = `http://${window.location.hostname}/media`
+      }
+      if (file.value.src) {
+        mediaPath = mediaPath + '/' + file.value.src
+      }
+      mediaPath = mediaPath + '/' + file.value.name
+      console.log(mediaPath)
+      return mediaPath
     })
     return {
       preview,
@@ -74,29 +82,33 @@ export default {
 }
 .close-btn {
   position: absolute;
-  font-size: .6rem;
+  font-size: 0.6rem;
   background: red;
   color: white;
-  top: -.5rem;
-  right: -.5rem;
-  border: 4px solid rgba(255, 255, 255, .8);
+  top: -0.5rem;
+  right: -0.5rem;
+  border: 4px solid rgba(255, 255, 255, 0.8);
   z-index: 9999;
 }
 audio {
   width: 100%;
 }
 audio::-webkit-media-controls-enclosure {
-    width: 100%;
-    background-color: #fff;
+  width: 100%;
+  background-color: #fff;
 }
 .backg {
   border-radius: 1rem 1rem 0 0;
   height: 4rem;
   color: #fff;
   z-index: 1;
-  background: linear-gradient(127deg, rgba(255,0,0,.8), rgba(255,0,0,0) 60.71%),
-              linear-gradient(227deg, rgba(0,255,0,.8), rgba(0,255,0,0) 90.71%),
-              linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 99%);
+  background: linear-gradient(
+      127deg,
+      rgba(255, 0, 0, 0.8),
+      rgba(255, 0, 0, 0) 60.71%
+    ),
+    linear-gradient(227deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 90.71%),
+    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 99%);
 }
 .local-name {
   width: 100%;

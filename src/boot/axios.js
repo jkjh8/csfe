@@ -7,8 +7,13 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: `http://${window.location.hostname}:3000` })
-// const api = axios.create({ baseURL: `http://${window.location.hostname}` })
+// const api = axios.create({ baseURL: `http://${window.location.hostname}:3000` })
+let api
+if (process.env.DEV) {
+  api = axios.create({ baseURL: `http://${window.location.hostname}:3000` })
+} else {
+  api = axios.create({ baseURL: `http://${window.location.hostname}` })
+}
 
 api.defaults.withCredentials = true
 

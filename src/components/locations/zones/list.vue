@@ -1,22 +1,13 @@
 <template>
   <!-- devices table -->
-  <q-card class="shadow-15 location_card">
-    <q-card-section
-      class="q-pa-none"
-      style="overflow: hidden;"
-    >
-      <q-img
-        src="/background/cover_26.jpg"
-        style="height: 6rem;"
-      >
-        <div class="fit row justify-between items-center">
-          <div class="q-mx-sm q-gutter-sm row items-center">
-            <q-icon
-              name="svguse:icons.svg#office-building"
-              size="1.5rem"
-            />
+  <q-card class="card-large">
+    <q-card-section class="q-pa-none">
+      <div class="backg-dark-g">
+        <div class="card-name-align q-px-md">
+          <div class="card-name">
+            <q-icon name="svguse:icons.svg#office-building" />
             <div>
-              <div class="name">
+              <div>
                 방송구간설정
               </div>
               <div
@@ -31,7 +22,7 @@
             <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
           </div> -->
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator />

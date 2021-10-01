@@ -7,7 +7,7 @@
     <div class="row justify-center q-pt-lg">
       <NeedLogin v-if="!user" />
     </div>
-    <div>
+    <div v-if="user">
       <InfoLocations />
     </div>
   </div>
