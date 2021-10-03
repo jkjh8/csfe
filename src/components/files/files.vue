@@ -303,7 +303,7 @@
             outlined
             rounded
             dense
-            accept=".mp3, *.mp4, *.wav, audio/*"
+            accept=".mp3, *.mp4, *.wav, audio/*, video/*"
           />
         </div>
       </q-card-section>
@@ -504,16 +504,18 @@ export default {
       console.log(result)
       selectedFile.value = null
       const reqPath = filePath.value.splice(1, 1).join('/')
+      console.log(reqPath)
       await updateDir(reqPath)
     }
 
     async function fnUpload () {
       const formData = new FormData()
+      const reqPath = filePath.value.splice(1, 1).join('/')
       formData.append('files', uploadFile.value)
-      formData.set('path', filePath.value.splice(1, 1).join('/'))
+      formData.set('path', reqPath)
       const r = await api.post('/files/upload', formData)
       console.log(r)
-      const reqPath = filePath.value.splice(1, 1).join('/')
+      uploadFile.value = null
       await updateDir(reqPath)
     }
 

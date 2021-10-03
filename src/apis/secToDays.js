@@ -4,5 +4,5 @@ export default function (seconds) {
   const m = parseInt(((seconds % 86400) / 3600) / 60) < 10 ? '0' + parseInt(((seconds % 86400) / 3600) / 60) : parseInt(((seconds % 86400) / 3600) / 60)
   const s = seconds % 60 < 10 ? '0' + seconds % 60 : seconds % 60
 
-  return d + 'd ' + h + ':' + m + ':' + s
+  return d + '일 ' + h + '시' + m + '분' + s + '초'
 }

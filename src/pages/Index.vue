@@ -7,7 +7,11 @@
     <div class="row justify-center q-pt-lg">
       <NeedLogin v-if="!user" />
     </div>
-    <div v-if="user">
+    <div
+      v-if="user"
+      class="q-gutter-lg row"
+    >
+      <InfoHardware />
       <InfoLocations />
     </div>
   </div>
@@ -21,13 +25,15 @@ import moment from 'moment'
 import Today from '../components/today.vue'
 import NeedLogin from '../components/needLogin.vue'
 
-import InfoLocations from '@components/info/locations' 
+import InfoLocations from '@components/info/locations'
+import InfoHardware from '@components/info/hardware'
 
 export default {
   components: {
     Today,
     NeedLogin,
-    InfoLocations
+    InfoLocations,
+    InfoHardware
   },
   setup() {
     const { state, dispatch } = useStore()

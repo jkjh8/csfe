@@ -69,6 +69,7 @@
                 style="width: 6rem; height: 2rem;"
                 rounded
                 flat
+                @click="ttsPreview"
               >
                 미리듣기
               </q-btn>
@@ -179,6 +180,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { api } from '@/boot/axios'
 
 import FileSelect from '@components/broadcast/live/selectFile'
 import MessageSelect from '@components/broadcast/live/selectMessage'
@@ -221,6 +223,13 @@ export default {
       commit('broadcast/updatePreviewFile', file)
     }
 
+    async function ttsPreview () {
+      const r = await api.post('/tts/preview', {
+        text: tts.value.text
+      })
+      console.log(r)
+    }
+
     return {
       selected,
       group,
@@ -233,7 +242,8 @@ export default {
       fileDialog,
       preview,
       startPreview,
-      startLive
+      startLive,
+      ttsPreview
     }
   }
 }

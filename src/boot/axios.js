@@ -10,9 +10,9 @@ import axios from 'axios'
 // const api = axios.create({ baseURL: `http://${window.location.hostname}:3000` })
 let api
 if (process.env.DEV) {
-  api = axios.create({ baseURL: `http://${window.location.hostname}:3000` })
+  api = axios.create({ baseURL: `http://${window.location.hostname}:3000/api` })
 } else {
-  api = axios.create({ baseURL: `http://${window.location.hostname}` })
+  api = axios.create({ baseURL: `http://${window.location.hostname}/api` })
 }
 
 api.defaults.withCredentials = true

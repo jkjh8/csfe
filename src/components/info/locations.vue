@@ -1,5 +1,8 @@
 <template>
-  <q-card class="card-small">
+  <q-card
+    class="card-small"
+    style="height: 16rem;"
+  >
     <q-card-section>
       <div class="row items-center">
         <q-icon
