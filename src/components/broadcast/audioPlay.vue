@@ -50,14 +50,15 @@ export default {
     const source = computed(() => {
       let mediaPath
       if (process.env.DEV) {
-        mediaPath = `http://${window.location.hostname}:3000/media`
+        mediaPath = `http://${window.location.hostname}:3000`
       } else {
-        mediaPath = `http://${window.location.hostname}/media`
+        mediaPath = `http://${window.location.hostname}`
       }
       if (file.value.src) {
-        mediaPath = mediaPath + '/' + file.value.src
+        mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.src
+      } else {
+        mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.name
       }
-      mediaPath = mediaPath + '/' + file.value.name
       console.log(mediaPath)
       return mediaPath
     })

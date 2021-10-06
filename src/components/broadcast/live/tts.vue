@@ -74,8 +74,20 @@ export default {
       set (v) { commit('broadcast/updateTtsRate', v) }
     })
 
-    function ttsPreview () {
-      console.log('tts preview')
+    async function ttsPreview () {
+      const r = await api.post('/tts/preview', {
+        text: text.value,
+        rate: rate.value
+      })
+      console.log(r)
+      if (r.status === 200) {
+        commit('broadcast/setPreview', true)
+        commit('broadcast/updatePreviewFile', {
+          name: 'TTS Preview',
+          src: r.data.src,
+          base: 'temp'
+        })
+      }
     }
 
     onBeforeMount(async () => {
