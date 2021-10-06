@@ -91,7 +91,7 @@ export default {
     }
 
     onBeforeMount(async () => {
-      const r = api.get('/tts/voices')
+      const r = await api.get('/tts/voices')
       console.log(r)
     })
 
