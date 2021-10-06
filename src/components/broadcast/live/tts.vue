@@ -3,12 +3,27 @@
   <div class="listname">
     Name
   </div>
-  <q-input
-    v-model="name"
-    outlined
-    rounded
-    dense
-  />
+  <div class="q-mx-sm">
+    <q-input
+      v-model="name"
+      dense
+    />
+  </div>
+  <!-- voice -->
+  <div class="listname">
+    Voice
+  </div>
+  <div class="q-mx-sm">
+    <q-select
+      v-model="voice"
+      :options="voices"
+      option-label="name"
+      option-value="id"
+      emit-value
+      map-options
+      dense
+    />
+  </div>
   <!-- rate -->
   <div class="listname">
     Rate
@@ -55,12 +70,16 @@
 <script>
 import { ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 export default {
   setup() {
     const { state, commit } = useStore()
+    const $q = useQuasar()
+
     const voices = ref([])
+    const voice = ref(null)
     const name = computed({
       get () { return state.broadcast.ttsName },
       set (v) { commit('broadcast/updateTtsName', v)}
@@ -91,14 +110,21 @@ export default {
     }
 
     onBeforeMount(async () => {
-      const r = await api.get('/tts/voices')
+
+      $q.loading.show()
+      let r = await api.get('/tts/voices')
+      voices.value = r.data.voices
       console.log(r)
+      // r = await api.get('/tts/rate')
+      // commit('broadcast/ttsRate', r.data.rate)
+      $q.loading.hide()
     })
 
     return {
       name,
       text,
       rate,
+      voice,
       voices,
       ttsPreview
     }
