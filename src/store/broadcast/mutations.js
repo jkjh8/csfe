@@ -25,3 +25,15 @@ export function updateLiveMode (state, payload) {
 export function updateLiveChannel (state, payload) {
   state.liveChannel = payload
 }
+
+export function updateTtsName (state, payload) {
+  state.ttsName = payload
+}
+
+export function updateTtsText (state, payload) {
+  state.ttsText = payload
+}
+
+export function updateTtsRate (state, payload) {
+  state.ttsRate = payload
+}

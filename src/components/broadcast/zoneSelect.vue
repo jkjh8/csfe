@@ -1,7 +1,7 @@
 <template>
   <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_1.jpg">
+      <div class="backg-dark">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon name="svguse:icons.svg#view-grid-add" />
@@ -22,7 +22,7 @@
             @click="mode = !mode"
           />
         </div>
-      </q-img>
+      </div>
     </q-card-section>
     <q-card-section class="q-px-none">
       <q-scroll-area style="height: 24rem">

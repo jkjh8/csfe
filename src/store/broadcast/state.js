@@ -6,6 +6,9 @@ export default function () {
     live: false,
     liveMode: 'Live',
     liveChannel: 1,
+    ttsName: '',
+    ttsText: '',
+    ttsRate:  150,
     tts: {
       type: 'global',
       name: '',

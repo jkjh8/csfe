@@ -1,17 +1,17 @@
 <template>
   <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <q-img src="/background/cover_1.png">
+      <div class="backg-dark-g">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon name="svguse:icons.svg#view-list" />
             <div>실시간 방송</div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
     <q-card-section>
-      <q-scroll-area style="height: 24rem">
+      <q-scroll-area style="height: 26rem">
         <div class="q-px-md q-gutter-md">
           <!-- mode 선택 -->
           <div class="q-gutter-sm">
@@ -47,7 +47,8 @@
             v-if="mode === 'TTS'"
             class="q-gutter-sm"
           >
-            <div class="listname">
+            <TTS />
+            <!-- <div class="listname">
               Name
             </div>
             <q-input
@@ -82,7 +83,7 @@
               >
                 메시지 관리
               </q-btn>
-            </div>
+            </div> -->
           </div>
           <!-- play audio file -->
           <div
@@ -182,11 +183,13 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { api } from '@/boot/axios'
 
+import TTS from '@components/broadcast/live/tts'
 import FileSelect from '@components/broadcast/live/selectFile'
 import MessageSelect from '@components/broadcast/live/selectMessage'
 
 export default {
   components: {
+    TTS,
     FileSelect,
     MessageSelect
   },
