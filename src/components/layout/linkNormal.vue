@@ -73,6 +73,9 @@
         <router-link to="/admin/users">
           사용자관리
         </router-link>
+        <router-link to="/admin/functions">
+          서버관리
+        </router-link>
       </div>
     </q-menu>
   </button>

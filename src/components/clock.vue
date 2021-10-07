@@ -2,7 +2,7 @@
   <div
     id="clock"
   >
-    <div class="line_top" />
+    <!-- <div class="line_top" /> -->
     <div class="clock">
       <div>
         <q-icon
@@ -27,7 +27,7 @@
         {{ clock }} 입니다.
       </div>
     </div>
-    <div class="line_bottom" />
+    <!-- <div class="line_bottom" /> -->
   </div>
 </template>
 

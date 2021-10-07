@@ -23,7 +23,9 @@
       <q-card-section>
         <audio
           controls
+          autoplay
           :src="source"
+          @ended="onEnd"
         />
       </q-card-section>
     </q-card>
@@ -62,10 +64,15 @@ export default {
       console.log(mediaPath)
       return mediaPath
     })
+
+    function onEnd () {
+      commit('broadcast/setPreview', false)
+    }
     return {
       preview,
       file,
-      source
+      source,
+      onEnd
     }
   }
 }

@@ -49,8 +49,22 @@
         </div>
       </div>
     </q-card-section>
+    
+    <q-card-section v-if="user.admin">
+      <div class="q-mx-md row justify-between items-center">
+        <div>tmp 폴더 비우기</div>
+        <q-btn
+          round
+          unelevated
+          size="sm"
+          color="primary"
+          icon="arrow_forward"
+          @click="deleteTmp"
+        />
+      </div>
+    </q-card-section>
 
-    <q-card-section>
+    <!-- <q-card-section>
       <div class="fit row q-px-md q-pb-md">
         <q-space />
         <router-link
@@ -61,18 +75,24 @@
           <q-icon name="arrow_forward" />
         </router-link>
       </div>
-    </q-card-section>
+    </q-card-section> -->
   </q-card>
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 import { format } from 'quasar'
 import secToDays from '@api/secToDays'
 
 export default {
   setup() {
+    const { state } = useStore()
+    const $q = useQuasar()
+
+    const user = computed(() => state.user.user)
     const info = ref({})
     const totalmem = ref('')
     const usemem = ref('')
@@ -83,6 +103,13 @@ export default {
     const useagedisk = ref(0)
 
     const uptime = ref('')
+
+    async function deleteTmp () {
+      $q.dialog({
+        title: 'Tmp 폴더 비우기',
+        message: 'tmp 폴더를 비워서 추가 SSD 용량을 확보합니다.'
+      })
+    }
 
     onBeforeMount(async () => {
       const r = await api.get('/hardware')
@@ -99,6 +126,7 @@ export default {
     })
 
     return {
+      user,
       info,
       useagemem,
       totalmem,
@@ -106,7 +134,8 @@ export default {
       totaldisk,
       usedisk,
       useagedisk,
-      uptime
+      uptime,
+      deleteTmp
     }
   }
 }

@@ -1,47 +1,63 @@
 <template>
   <!-- name -->
-  <div class="listname">
-    Name
-  </div>
   <div class="q-mx-sm">
     <q-input
       v-model="name"
+      label="Name"
       dense
     />
   </div>
   <!-- voice -->
-  <div class="listname">
-    Voice
-  </div>
   <div class="q-mx-sm">
     <q-select
       v-model="voice"
       :options="voices"
       option-label="name"
-      option-value="id"
+      :display-value="voice ? `${voice.name} - ${voice.languages}`: 'None'"
       emit-value
       map-options
       dense
-    />
+      label="Voices"
+    >
+      <template #option="scope">
+        <q-item v-bind="scope.itemProps">
+          <q-item-section avatar>
+            <q-icon
+              name="mic"
+              color="green"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              {{ scope.opt.name }}
+            </q-item-label>
+            <q-item-label caption>
+              {{ scope.opt.languages.toString(',') }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
   </div>
   <!-- rate -->
-  <div class="listname">
+  <div class="text-grey">
     Rate
   </div>
-  <div class="q-mx-md">
+  <div
+    class="q-mx-md"
+  >
     <q-slider
       v-model="rate"
+      style="position: relative; top: -10px; height: 20px;"
       label
       :min="100"
-      :max="200"
+      :max="300"
     />
   <!-- text -->
   </div>
-  <div class="listname">
-    Text
-  </div>
   <q-input
     v-model="text"
+    label="Text"
     filled
     type="textarea"
   />
@@ -77,7 +93,7 @@ export default {
   setup() {
     const { state, commit } = useStore()
     const $q = useQuasar()
-
+    const user = computed(() => state.user.user)
     const voices = ref([])
     const voice = ref(null)
     const name = computed({
@@ -95,7 +111,10 @@ export default {
 
     async function ttsPreview () {
       const r = await api.post('/tts/preview', {
+        user: user.value.email,
+        name: name.value,
         text: text.value,
+        voice: voice.value.id,
         rate: rate.value
       })
       console.log(r)
@@ -116,7 +135,7 @@ export default {
       voices.value = r.data.voices
       console.log(r)
       // r = await api.get('/tts/rate')
-      // commit('broadcast/ttsRate', r.data.rate)
+      commit('broadcast/updateTtsRate', r.data.rate)
       $q.loading.hide()
     })
 

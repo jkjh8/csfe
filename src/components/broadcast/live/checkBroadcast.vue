@@ -1,6 +1,6 @@
 <template>
   <div id="zones">
-    <div class="line_top" />
+    <!-- <div class="line_top" /> -->
     <div class="modeZones">
       <div>
         <q-icon
@@ -45,7 +45,7 @@
         </q-scroll-area>
       </div>
     </div>
-    <div class="line_bottom" />
+    <!-- <div class="line_bottom" /> -->
   </div>
 </template>
 

@@ -11,36 +11,32 @@
       </div>
     </q-card-section>
     <q-card-section>
-      <q-scroll-area style="height: 26rem">
+      <q-scroll-area style="height: 29rem">
         <div class="q-px-md q-gutter-md">
           <!-- mode 선택 -->
           <div class="q-gutter-sm">
-            <div class="listname">
-              Mode
+            <div class="q-mx-sm">
+              <q-select
+                v-model="mode"
+                dense
+                label="Mode"
+                :options="['Live', 'TTS', 'Play Audio']"
+              />
             </div>
-            <q-select
-              v-model="mode"
-              outlined
-              rounded
-              dense
-              :options="['Live', 'TTS', 'Play Audio']"
-            />
           </div>
           <!-- 라이브 -->
           <div
             v-if="mode === 'Live'"
             class="q-gutter-sm"
           >
-            <div class="listname">
-              방송채널선택
+            <div class="q-mx-sm">
+              <q-select
+                v-model="liveChannel"
+                dense
+                label="Live Channel"
+                :options="[1, 2, 3, 4]"
+              />
             </div>
-            <q-select
-              v-model="liveChannel"
-              outlined
-              rounded
-              dense
-              :options="[1, 2, 3, 4]"
-            />
           </div>
           <!-- TTS -->
           <div
@@ -48,42 +44,6 @@
             class="q-gutter-sm"
           >
             <TTS />
-            <!-- <div class="listname">
-              Name
-            </div>
-            <q-input
-              v-model="tts.name"
-              outlined
-              rounded
-              dense
-            />
-            <div class="listname">
-              Text
-            </div>
-            <q-input
-              v-model="tts.text"
-              filled
-              type="textarea"
-            />
-            <div class="row justify-between q-mt-md">
-              <q-btn
-                style="width: 6rem; height: 2rem;"
-                rounded
-                flat
-                @click="ttsPreview"
-              >
-                미리듣기
-              </q-btn>
-              <q-btn
-                style="width: 7rem; height: 2rem;"
-                rounded
-                unelevated
-                color="primary"
-                @click="messageDialog=!messageDialog"
-              >
-                메시지 관리
-              </q-btn>
-            </div> -->
           </div>
           <!-- play audio file -->
           <div

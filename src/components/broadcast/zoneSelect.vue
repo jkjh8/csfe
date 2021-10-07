@@ -25,7 +25,7 @@
       </div>
     </q-card-section>
     <q-card-section class="q-px-none">
-      <q-scroll-area style="height: 24rem">
+      <q-scroll-area style="height: 29rem">
         <q-tab-panels
           v-model="panel"
           animated

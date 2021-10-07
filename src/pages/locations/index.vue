@@ -17,11 +17,11 @@
         <span class="caption">총 {{ locationsCount }}개 지역의 {{ }} 방송구간이 있습니다</span>
       </div>
     </div>
-    <dl class="row wrap justify-between">
-      <dt class="col-6 q-pr-md">
+    <dl class="q-gutter-xl row wrap justify-center">
+      <dt>
         <Locations />
       </dt>
-      <dt class="col-6 q-pl-md">
+      <dt>
         <Zones />
       </dt>
     </dl>

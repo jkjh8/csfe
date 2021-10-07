@@ -36,6 +36,13 @@ const routes = [
     ]
   },
   {
+    path: '/admin/functions',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/functions/functions.vue') }
+    ]
+  },
+  {
     path: '/devices',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
