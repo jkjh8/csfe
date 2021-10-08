@@ -31,7 +31,7 @@ import moment from "moment";
 import { useStore } from "vuex";
 import { api } from '@/boot/axios'
 
-import Hardware from '@components/info/hardware'
+import Hardware from '@components/admin/hardware'
 
 export default {
   components: { Hardware },

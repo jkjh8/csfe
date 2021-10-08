@@ -9,6 +9,8 @@ export default function () {
     ttsName: '',
     ttsText: '',
     ttsRate:  150,
+    ttsVoice: null,
+    ttsVoices: null,
     tts: {
       type: 'global',
       name: '',

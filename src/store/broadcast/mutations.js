@@ -37,3 +37,11 @@ export function updateTtsText (state, payload) {
 export function updateTtsRate (state, payload) {
   state.ttsRate = payload
 }
+
+export function updateTtsVoice (state, payload) {
+  state.ttsVoice = payload
+}
+
+export function updateTtsVoices (state, payload) {
+  state.ttsVoices = payload
+}

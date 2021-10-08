@@ -1,25 +1,27 @@
 <template>
-  <q-card style="width: 24rem; border-radius: 2rem;">
+  <q-card
+    class="card-small"
+    style="border-radius: 1rem;"
+  >
     <q-card-section class="q-pa-none">
-      <q-img
-        src="/background/cover_1.png"
-        style="height: 6rem"
-      >
-        <div class="fit row items-center">
-          <q-icon
-            name="svguse:icons.svg#view-grid-add"
-            size="1.5rem"
-          />
-          <div class="q-ml-sm">
-            <div class="name">
-              프리셋 추가
-            </div>
-            <div class="caption">
-              방송구간 프리셋을 추가 합니다
+      <div class="backg-gr-bl">
+        <div class="card-name-align">
+          <div class="card-name">
+            <q-icon
+              name="svguse:icons.svg#view-grid-add"
+              size="1.5rem"
+            />
+            <div class="q-ml-sm">
+              <div class="name">
+                프리셋 추가
+              </div>
+              <div class="caption">
+                방송구간 프리셋을 추가 합니다
+              </div>
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
     <q-card-section>
       <div class="q-pa-md q-mr-sm q-gutter-md">
@@ -76,8 +78,11 @@
         </div>
       </div>
     </q-card-section>
+
+    <q-separator />
+
     <q-card-actions align="right">
-      <div class="q-mx-sm q-mb-sm q-gutter-sm">
+      <div class="q-mx-sm q-gutter-sm row items-center">
         <q-btn
           v-close-popup
           style="width: 6rem; height: 2rem"

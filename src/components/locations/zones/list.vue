@@ -78,7 +78,7 @@
                   icon="svguse:icons.svg#pencil-fill"
                   size="sm"
                   color="teal-6"
-                  @click.prevent.stop="updateItem(local)"
+                  @click.prevent.stop="fnUpdateItem(local)"
                 />
                 <q-btn
                   flat
@@ -86,7 +86,7 @@
                   icon="svguse:icons.svg#trash-fill"
                   size="sm"
                   color="red-6"
-                  @click.prevent.stop="deleteItem(local)"
+                  @click.prevent.stop="fnDeleteItem(local)"
                 />
               </div>
             </q-item-section>
@@ -119,13 +119,17 @@
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+import { api } from '@/boot/axios'
+
 import Update from './update'
 import Delete from './delete'
 
 export default {
   components: { Update, Delete },
   setup () {
-    const { state, getters } = useStore()
+    const { state, getters, dispatch } = useStore()
+    const $q = useQuasar()
     const devices = computed(() => state.devices.devices)
     const devicesErrorCount = computed(() => getters['devices/errorCount'])
 
@@ -133,14 +137,36 @@ export default {
     const deleteDialog = ref(false)
     const selected = ref({})
 
-    function updateItem (item) {
+    function fnUpdateItem (item) {
       selected.value = item
       updateDialog.value = true
     }
 
-    function deleteItem (item) {
-      selected.value = item
-      deleteDialog.value = true
+    function fnDeleteItem (item) {
+      $q.dialog({
+        title: '<svg class="text-red" style="height: 32px; width: 32px; margin: 0px 10px -12px 0;"><use xlink:href="icons.svg#exclamation"></use></svg><span>지역 삭제</span>',
+        message: `Name: <strong>${item.name}</strong><br>
+          다음 지역을 삭제 하시겠습니까? <br>
+          삭제 후에는 복구가 불가능 합니다. 다시 한번 확인 해주세요.`,
+        html: true,
+        persistent: true,
+        ok: {
+          push: true,
+          rounded: true,
+          unelevated: true,
+          color: 'negative'
+        },
+        cancel: {
+          flat: true,
+          rounded: true,
+          color: 'positive'
+        }
+      }).onOk(async () => {
+        $q.loading.show()
+        await api.get(`/devices/delete?ipaddress=${item.ipaddress}`)
+        await dispatch('devices/updateDevices')
+        $q.loading.hide()
+      })      
     }
 
     function deleteDialogClose () {
@@ -157,8 +183,8 @@ export default {
       devicesErrorCount,
       selected,
       updateDialog,
-      updateItem,
-      deleteItem,
+      fnUpdateItem,
+      fnDeleteItem,
       close,
       deleteDialog,
       deleteDialogClose

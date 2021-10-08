@@ -49,6 +49,15 @@
       </div>
     </q-menu>
   </button>
+
+  <router-link
+    class="menu"
+    :class="{ disabled: !user }"
+    to="/kakaotts"
+  >
+    카카오TTS(test)
+  </router-link>
+
   <router-link
     class="menu"
     :class="{ disabled: !user }"

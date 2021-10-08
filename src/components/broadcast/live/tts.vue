@@ -1,4 +1,29 @@
 <template>
+  <div v-if="error">
+    <div style="position: relative; height: 3rem;">
+      <div
+        class="bg-red text-white row justify-end"
+        style="position: absolute; border-radius: 1.5rem; width:100%; height: 3rem;"
+      >
+        <q-btn
+          style="z-index: 10;"
+          round
+          flat
+          icon="cancel"
+          @click="error=null"
+        />
+      </div>
+      <div
+        style="position: absolute;
+                      width:100%;
+                      text-align: center;
+                      color: white;
+                      line-height: 3rem;"
+      >
+        {{ error }}
+      </div>
+    </div>
+  </div>
   <!-- name -->
   <div class="q-mx-sm">
     <q-input
@@ -40,27 +65,27 @@
     </q-select>
   </div>
   <!-- rate -->
-  <div class="text-grey">
-    Rate
-  </div>
-  <div
-    class="q-mx-md"
-  >
+  <div class="text-grey row nowrap justify-between items-center">
+    <div>
+      Rate
+    </div>
     <q-slider
       v-model="rate"
-      style="position: relative; top: -10px; height: 20px;"
+      style="width: 90%"
       label
       :min="100"
       :max="300"
     />
-  <!-- text -->
   </div>
-  <q-input
-    v-model="text"
-    label="Text"
-    filled
-    type="textarea"
-  />
+  <!-- text -->
+  <div style="height: 200px;">
+    <q-input
+      v-model="text"
+      label="Text"
+      filled
+      type="textarea"
+    />
+  </div>
   <!-- bottons -->
   <div class="row justify-between q-mt-md">
     <q-btn
@@ -76,11 +101,15 @@
       rounded
       unelevated
       color="primary"
-      @click="messageDialog=!messageDialog"
+      @click="mdMessage=!mdMessage"
     >
       메시지 관리
     </q-btn>
   </div>
+
+  <q-dialog v-model="mdMessage">
+    <TtsMessages />
+  </q-dialog>
 </template>
 
 <script>
@@ -89,13 +118,18 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
+import TtsMessages from '@components/broadcast/live/ttsMessages'
+
 export default {
+  components: { TtsMessages },
   setup() {
     const { state, commit } = useStore()
     const $q = useQuasar()
+  
+    const error = ref('')
+    const mdMessage = ref(false)
     const user = computed(() => state.user.user)
-    const voices = ref([])
-    const voice = ref(null)
+    const voices = computed(() => state.broadcast.ttsVoices)
     const name = computed({
       get () { return state.broadcast.ttsName },
       set (v) { commit('broadcast/updateTtsName', v)}
@@ -108,14 +142,22 @@ export default {
       get() { return state.broadcast.ttsRate },
       set (v) { commit('broadcast/updateTtsRate', v) }
     })
+    const voice = computed({
+      get () { return state.broadcast.ttsVoice },
+      set (v) { commit('broadcast/updateTtsVoice', v) }
+    })
 
     async function ttsPreview () {
-      const r = await api.post('/tts/preview', {
+      error.value = ''
+      if (!voice.value) {
+        return error.value = 'Voice를 선택해 주세요.'
+      }
+      const r = await api.post('/broadcast/tts/preview', {
         user: user.value.email,
         name: name.value,
+        rate: rate.value,
+        voice: voice.value,
         text: text.value,
-        voice: voice.value.id,
-        rate: rate.value
       })
       console.log(r)
       if (r.status === 200) {
@@ -131,20 +173,20 @@ export default {
     onBeforeMount(async () => {
 
       $q.loading.show()
-      let r = await api.get('/tts/voices')
-      voices.value = r.data.voices
-      console.log(r)
-      // r = await api.get('/tts/rate')
+      let r = await api.get('/broadcast/tts/voices')
+      commit('broadcast/updateTtsVoices', r.data.voices)
       commit('broadcast/updateTtsRate', r.data.rate)
       $q.loading.hide()
     })
 
     return {
+      error,
       name,
       text,
       rate,
       voice,
       voices,
+      mdMessage,
       ttsPreview
     }
   }

@@ -1,8 +1,11 @@
 <template>
-  <q-card class="card-nomal">
+  <q-card
+    class="card-nomal"
+    style="border-radius: 1rem;"
+  >
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none">
-      <div class="backg-re-bl">
+      <div class="backg-gr-bl">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon
@@ -11,7 +14,7 @@
                   ? 'svguse:icons.svg#plus-circle-fill'
                   : 'svguse:icons.svg#pencil-fill'
               "
-              :color="mode === 'create' ? 'cyan-6' : 'cyan-4'"
+              :color="mode === 'create' ? 'grey' : 'purple'"
             />
             <div>
               <div>
@@ -175,20 +178,23 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn
-          class="q-ma-sm text"
-          padding=".5rem 2rem"
-          flat
-          label="취소"
-          @click="emit('close')"
-        />
-        <q-btn
-          class="q-ma-sm text confirm"
-          padding=".5rem 2rem"
-          unelevated
-          type="submit"
-          label="확인"
-        />
+        <div class="q-mx-sm q-gutter-sm row items-center">
+          <q-btn
+            style="width: 6rem; height: 2rem"
+            flat
+            rounded
+            label="취소"
+            @click="emit('close')"
+          />
+          <q-btn
+            style="width: 6rem; height: 2rem"
+            unelevated
+            rounded
+            color="primary"
+            type="submit"
+            label="확인"
+          />
+        </div>
       </q-card-actions>
     </q-form>
   </q-card>

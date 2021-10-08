@@ -50,6 +50,13 @@ const routes = [
     ]
   },
   {
+    path: '/kakaotts',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/kakaoTts.vue') }
+    ]
+  },
+  {
     path: '/eventlog',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [

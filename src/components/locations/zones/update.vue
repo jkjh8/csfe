@@ -1,34 +1,36 @@
 <template>
   <!-- zone create -->
-  <q-card style="width: 24rem; border-radius: 2rem;">
+  <q-card
+    class="card-nomal"
+    style="border-radius: 1rem;"
+  >
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none">
-      <q-img
-        src="/background/cover_1.png"
-        style="height: 6rem;"
-      >
-        <div class="fit row items-center">
-          <q-avatar
-            class="q-ml-sm"
-            style="border: solid 1px #eee;"
-            size="2rem"
-          >
-            <q-icon
-              color="grey-2"
-              size="1rem"
-              name="svguse:icons.svg#pencil-fill"
-            />
-          </q-avatar>
-          <div class="q-ml-md">
-            <div class="name">
-              방송구역 수정
-            </div>
-            <div class="caption">
-              방송구간 추가 및 설정
+      <div class="backg-gr-bl">
+        <div class="card-name-align">
+          <div class="card-name">
+            <q-avatar
+              class="q-ml-sm"
+              style="border: solid 1px #eee;"
+              size="2rem"
+            >
+              <q-icon
+                color="grey-2"
+                size="1rem"
+                name="svguse:icons.svg#pencil-fill"
+              />
+            </q-avatar>
+            <div class="q-ml-md">
+              <div class="name">
+                방송구역 수정
+              </div>
+              <div class="caption">
+                방송구간 추가 및 설정
+              </div>
             </div>
           </div>
         </div>
-      </q-img>
+      </div>
     </q-card-section>
 
     <q-separator class="q-mb-sm" />
@@ -140,23 +142,23 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn
-          class="q-ma-sm"
-          padding=".5rem 2rem"
-          rounded
-          flat
-          label="취소"
-          @click="$emit('close')"
-        />
-        <q-btn
-          class="q-mr-md"
-          padding=".5rem 2rem"
-          unelevated
-          rounded
-          color="cyan"
-          type="submit"
-          label="확인"
-        />
+        <div class="q-mx-sm q-gutter-sm row items-center">
+          <q-btn
+            style="width: 6rem; height: 2rem"
+            rounded
+            flat
+            label="취소"
+            @click="$emit('close')"
+          />
+          <q-btn
+            style="width: 6rem; height: 2rem"
+            unelevated
+            rounded
+            color="cyan"
+            type="submit"
+            label="확인"
+          />
+        </div>
       </q-card-actions>
     </q-form>
   </q-card>

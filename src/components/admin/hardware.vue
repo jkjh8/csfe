@@ -49,22 +49,47 @@
         </div>
       </div>
     </q-card-section>
-
+    
     <q-card-section>
-      <div
-        v-if="user.admin"
-        class="fit row q-px-md q-pb-md"
-      >
+      <div class="q-gutter-md q-mx-sm">
+        <div class="row justify-between items-center">
+          <div>tmp 폴더 비우기</div>
+          <q-btn
+            round
+            unelevated
+            size="sm"
+            color="primary"
+            icon="arrow_forward"
+            @click="deleteTmp"
+          />
+        </div>
+
+        <div class="row justify-between items-center">
+          <div>서버 리부팅</div>
+          <q-btn
+            round
+            unelevated
+            size="sm"
+            color="primary"
+            icon="arrow_forward"
+            @click="reboot"
+          />
+        </div>
+      </div>
+    </q-card-section>
+
+    <!-- <q-card-section>
+      <div class="fit row q-px-md q-pb-md">
         <q-space />
         <router-link
           class="link row items-center"
-          to="/admin/functions"
+          to="/locations"
         >
-          <span>관리자 기능 바로가기</span>
+          <span>방송구간설정 바로가기</span>
           <q-icon name="arrow_forward" />
         </router-link>
       </div>
-    </q-card-section>
+    </q-card-section> -->
   </q-card>
 </template>
 
@@ -95,8 +120,27 @@ export default {
 
     async function deleteTmp () {
       $q.dialog({
-        title: 'Tmp 폴더 비우기',
-        message: 'tmp 폴더를 비워서 추가 SSD 용량을 확보합니다.'
+        title: '<svg class="text-red" style="height: 32px; width: 32px; margin: 0px 10px -12px 0;"><use xlink:href="icons.svg#exclamation"></use></svg><span>tmp 폴더 비우기</span>',
+        message: 'tmp 폴더를 비워서 추가 SSD 용량을 확보합니다.',
+        html: true,
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        console.log('OK')
+        const r = await api.get('/admin/removeTmp')
+        console.log(r)
+      })
+    }
+
+    async function reboot () {
+      $q.dialog({
+        title: '<svg class="text-red" style="height: 32px; width: 32px; margin: 0px 10px -12px 0;"><use xlink:href="icons.svg#exclamation"></use></svg><span>서버 리부팅</span>',
+        message: '서버를 리부팅 합니다.',
+        html: true,
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        console.log('OK reboot')
       })
     }
 
@@ -124,7 +168,8 @@ export default {
       usedisk,
       useagedisk,
       uptime,
-      deleteTmp
+      deleteTmp,
+      reboot
     }
   }
 }

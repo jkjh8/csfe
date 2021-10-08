@@ -133,9 +133,6 @@
   <q-dialog v-model="fileDialog">
     <FileSelect @close="fileDialog=false" />
   </q-dialog>
-  <q-dialog v-model="messageDialog">
-    <MessageSelect />
-  </q-dialog>
 </template>
 
 <script>
@@ -145,13 +142,11 @@ import { api } from '@/boot/axios'
 
 import TTS from '@components/broadcast/live/tts'
 import FileSelect from '@components/broadcast/live/selectFile'
-import MessageSelect from '@components/broadcast/live/selectMessage'
 
 export default {
   components: {
     TTS,
-    FileSelect,
-    MessageSelect
+    FileSelect
   },
   setup() {
     const { state, getters, commit } = useStore()
