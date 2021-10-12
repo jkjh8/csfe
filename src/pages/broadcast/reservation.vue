@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10% 10% 0 10%;">
+  <div style="margin: 10% 10% 0 10%">
     <div class="q-gutter-sm q-mb-md">
       <span>
         <q-icon
@@ -11,17 +11,18 @@
       <span class="name">Reservation</span>
       <span class="caption">방송구간이 있습니다</span>
     </div>
-    <q-table>
-      //
-    </q-table>
+    <RTable> // </RTable>
   </div>
 </template>
 
 <script>
 import { onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+
+import RTable from '@components/broadcast/reservation/table'
 export default {
-  setup () {
+  components: { RTable },
+  setup() {
     const { dispatch } = useStore()
 
     onBeforeMount(() => {
