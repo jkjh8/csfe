@@ -50,18 +50,6 @@
             v-if="mode === 'Play Audio'"
             class="q-gutter-sm"
           >
-            <div class="listname" />
-            <div class="row justify-center items-center q-mt-md">
-              <q-btn
-                class="full-width"
-                rounded
-                unelevated
-                color="primary"
-                @click="fileDialog = true"
-              >
-                파일선택
-              </q-btn>
-            </div>
             <div
               v-if="file"
               class="q-mt-lg"
@@ -103,11 +91,22 @@
                       flat
                       icon="play_arrow"
                       color="green"
-                      @click="startPreview(file)"
+                      @click="$store.dispatch('broadcast/startPreview', file)"
                     />
                   </q-item-section>
                 </q-item>
               </div>
+            </div>
+            <div class="row justify-center items-center q-mt-md">
+              <q-btn
+                class="full-width"
+                rounded
+                unelevated
+                color="primary"
+                @click="mdFile = true"
+              >
+                파일선택
+              </q-btn>
             </div>
           </div>
         </div>
@@ -130,8 +129,11 @@
   </q-card>
 
   <!-- 다이얼 로그 -->
-  <q-dialog v-model="fileDialog">
-    <FileSelect @close="fileDialog=false" />
+  <q-dialog v-model="mdFile">
+    <FileSelect
+      @close="mdFile=false"
+      @update="updateFile"
+    />
   </q-dialog>
 </template>
 
@@ -141,7 +143,7 @@ import { useStore } from 'vuex'
 import { api } from '@/boot/axios'
 
 import TTS from '@components/broadcast/live/tts'
-import FileSelect from '@components/broadcast/live/selectFile'
+import FileSelect from '@components/broadcast/fileSelect'
 
 export default {
   components: {
@@ -167,7 +169,7 @@ export default {
     })
     // const ttsText = ref('')
     const playAudioFile = ref('')
-    const fileDialog = ref(false)
+    const mdFile = ref(false)
     const messageDialog = ref(false)
     const preview = ref(false)
 
@@ -188,6 +190,11 @@ export default {
       console.log(r)
     }
 
+    function updateFile (file) {
+      commit('broadcast/updatePlayFile', file)
+      mdFile.value = false
+    }
+
     return {
       selected,
       group,
@@ -197,11 +204,12 @@ export default {
       messageDialog,
       playAudioFile,
       file,
-      fileDialog,
+      mdFile,
       preview,
       startPreview,
       startLive,
-      ttsPreview
+      ttsPreview,
+      updateFile,
     }
   }
 }

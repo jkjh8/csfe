@@ -52,7 +52,9 @@
       <!-- 가입 정보 시작 -->
       <q-card-section>
         <div class="q-pa-md">
-          <div class="text-bold">이름</div>
+          <div class="text-bold">
+            이름
+          </div>
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.userName"
@@ -64,7 +66,9 @@
             />
           </div>
 
-          <div class="text-bold">이메일</div>
+          <div class="text-bold">
+            이메일
+          </div>
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.userId"
@@ -139,9 +143,16 @@
               unelevated
             >
               <div v-if="loading">
-                <q-spinner color="teal" size="24px" :thickness="10" />
+                <q-spinner
+                  color="teal"
+                  size="24px"
+                  :thickness="10"
+                />
               </div>
-              <div v-else class="text-subtitle1 text-bold">
+              <div
+                v-else
+                class="text-subtitle1 text-bold"
+              >
                 가입하기
               </div>
             </q-btn>

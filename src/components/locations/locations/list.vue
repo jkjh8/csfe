@@ -122,13 +122,18 @@
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import CreateUpdate from './cu'
 import Delete from './delete.vue'
+
+import deleteItemComponent from '@components/dialog/locationDel'
 
 export default {
   components: { CreateUpdate, Delete },
   setup () {
     const { state, getters, commit, dispatch } = useStore()
+    const $q = useQuasar()
+
     const locations = computed(() => state.locations.locations)
     const selected = computed(() => state.locations.selectedLocation)
     const locationErrorCount = computed(() => getters['locations/errorCount'])
@@ -142,8 +147,14 @@ export default {
     }
 
     function deleteItem (item) {
-      selForEdit.value = item
-      deleteDialog.value = true
+      $q.dialog({
+        component: deleteItemComponent,
+        componentProps: { item: item }
+      }).onOk(async () => {
+        console.log('OK')
+      })
+      // selForEdit.value = item
+      // deleteDialog.value = true
     }
 
     function clickItem (item) {

@@ -2,7 +2,7 @@
   <q-card class="card-nomal">
     <!-- 이름 테그 -->
     <q-card-section class="q-pa-none">
-      <div class="backg-re-bl">
+      <div class="backg-gr-bl">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon

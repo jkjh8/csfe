@@ -145,7 +145,7 @@
                       round
                       color="green"
                       size="sm"
-                      @click.stop.prevent="startPreview(file)"
+                      @click.stop.prevent="$store.dispatch('broadcast/startPreview', file)"
                     />
                     <q-btn
                       icon="delete"
@@ -476,11 +476,6 @@ export default {
       files.value = r.data.files
     }
 
-    function startPreview (file) {
-      commit('broadcast/setPreview', true)
-      commit('broadcast/updatePreviewFile', file)
-    }
-
     async function fnAddFolder () {
       $q.loading.show()
       try {
@@ -535,7 +530,6 @@ export default {
       clickFile,
       getDir,
       updateDir,
-      startPreview,
       fnAddFolder,
       mdDel,
       fnDel

@@ -6,12 +6,10 @@
     방송
     <q-menu
       class="row justify-center items-center text-white bg-black"
-      style="width: 20rem; height: 3rem; border-radius: 2rem;"
-      :offset="[110,5]"
+      style="width: 20rem; height: 3rem; border-radius: 2rem"
+      :offset="[110, 5]"
     >
-      <div
-        class="q-gutter-md row items-center link"
-      >
+      <div class="q-gutter-md row items-center link">
         <router-link to="/status">
           방송상태
         </router-link>
@@ -34,12 +32,10 @@
     방송구간
     <q-menu
       class="row justify-center items-center text-white bg-black"
-      style="width: 15rem; height: 3rem; border-radius: 2rem;"
-      :offset="[75,5]"
+      style="width: 15rem; height: 3rem; border-radius: 2rem"
+      :offset="[75, 5]"
     >
-      <div
-        class="q-gutter-md row items-center link"
-      >
+      <div class="q-gutter-md row items-center link">
         <router-link to="/locations">
           방송구간설정
         </router-link>
@@ -70,15 +66,13 @@
     class="menu"
     :disabled="!user"
   >
-    Admin
+    관리자
     <q-menu
       class="row justify-center items-center text-white bg-black"
-      style="width: 18rem; height: 3rem; border-radius: 2rem;"
-      :offset="[110,5]"
+      style="width: 18rem; height: 3rem; border-radius: 2rem"
+      :offset="[110, 5]"
     >
-      <div
-        class="q-gutter-md row items-center link"
-      >
+      <div class="q-gutter-md row items-center link">
         <router-link to="/admin/users">
           사용자관리
         </router-link>
@@ -106,7 +100,7 @@ export default {
   font-weight: 700;
   border: none;
   color: #676767;
-  background: #FBFBFB;
+  background: #fbfbfb;
 }
 .menu:hover {
   font-size: 1rem;
@@ -118,15 +112,15 @@ export default {
   color: #d0d0d0;
   font-family: 나눔고딕;
   font-weight: 400;
-  font-size: .8rem;
+  font-size: 0.8rem;
   text-decoration: none;
 }
 .link a:hover {
-  font-size: .8rem;
-  color: #FFFFFF
+  font-size: 0.8rem;
+  color: #ffffff;
 }
 .disabled {
-  opacity: .5;
+  opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }

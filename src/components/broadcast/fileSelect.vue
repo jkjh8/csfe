@@ -1,7 +1,7 @@
 <template>
   <q-card class="card-large">
     <q-card-section class="q-pa-none">
-      <div class="backg-dark">
+      <div class="backg-gr-bl">
         <div class="card-name-align">
           <div class="card-name">
             <q-icon
@@ -86,7 +86,7 @@
                   flat
                   round
                   color="green"
-                  @click.stop.prevent="startPreview(file)"
+                  @click.stop.prevent="$store.dispatch('broadcast/startPreview', file)"
                 />
               </q-item-section>
             </q-item>
@@ -116,7 +116,7 @@ import AudioPlayer from '@components/broadcast/audioPlay'
 
 export default {
   components: { AudioPlayer },
-  emits: ['close'],
+  emits: ['close', 'update'],
   // eslint-disable-next-line no-unused-vars
   setup (props, { emit }) {
     const { commit } = useStore()
@@ -137,8 +137,8 @@ export default {
         console.log(reqPath)
         await updateDir(reqPath)
       } else {
-        commit('broadcast/updatePlayFile', file)
-        emit('close')
+        // commit('broadcast/updatePlayFile', file)
+        emit('update', (file))
       }
       $q.loading.hide()
     }

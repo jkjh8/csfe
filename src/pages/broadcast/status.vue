@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10% 10% 0 10%">
+  <div style="margin: 5% 10% 0 10%">
     <div class="q-gutter-sm q-mb-md">
       <span>
         <q-icon

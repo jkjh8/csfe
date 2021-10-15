@@ -1,7 +1,7 @@
 <template>
   <div
     class="colume"
-    style="padding: 5% 8% 0 8%"
+    style="padding: 5% 10% 0 10%"
   >
     <div
       class="row items-start q-px-md"

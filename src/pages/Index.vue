@@ -20,6 +20,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import moment from 'moment'
 
 import Today from '../components/today.vue'
@@ -37,6 +38,7 @@ export default {
   },
   setup() {
     const { state, dispatch } = useStore()
+    const $q = useQuasar()
     const user = computed(() => state.user.user)
     const today = ref('')
     moment.locale('ko')
@@ -44,6 +46,19 @@ export default {
     onMounted(() => {
       dispatch('user/getUser')
       today.value = moment().format('MM월 DD일 dddd')
+      $q.notify({
+        message: '방송이 시작되었습니다.',
+        caption: 'admin@admin.com 사용자가 방송을 시작했습니다.',
+        color: 'primary',
+        position: 'top-right'
+      })
+      $q.notify({
+        message: '본사 장비 오프라인',
+        caption: '2021-10-14 09:15:11 장비가 오프라인되었습니다.',
+        color: 'negative',
+        position: 'top-right'
+      })
+      
     })
     return {
       user,

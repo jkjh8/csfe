@@ -49,3 +49,7 @@ export function updateTtsVoices(state, payload) {
 export function updateSchedules(state, payload) {
   state.schedules = payload
 }
+
+export function updateMdSchedule(state, payload) {
+  state.mdSchedule = payload
+}

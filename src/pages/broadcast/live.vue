@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10%">
+  <div style="margin: 5%">
     <div class="column">
       <div class="q-mb-lg row justify-between">
         <div class="q-gutter-sm row items-center">

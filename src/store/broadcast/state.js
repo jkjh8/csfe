@@ -11,6 +11,7 @@ export default function () {
     ttsRate: 150,
     ttsVoice: null,
     ttsVoices: null,
-    schedules: []
+    schedules: [],
+    mdSchedule: false
   }
 }

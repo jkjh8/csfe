@@ -15,13 +15,28 @@
       <q-card-section class="q-pa-none">
         <div class="backg">
           <div class="local-name row items-center">
-            {{ file.name }}
+            <div v-if="file.nameTag">
+              {{ file.nameTag }}
+            </div>
+            <div v-else>
+              {{ file.name }}
+            </div>
           </div>
         </div>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="file.type === 'audio'">
         <audio
+          controls
+          autoplay
+          :src="source"
+          @ended="onEnd"
+        />
+      </q-card-section>
+
+      <q-card-section v-else>
+        <video
+          width="340"
           controls
           autoplay
           :src="source"
@@ -57,11 +72,12 @@ export default {
         mediaPath = `http://${window.location.hostname}`
       }
       if (file.value.src) {
-        mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.src
+        mediaPath = mediaPath + '/' + file.value.base + file.value.src + '/' + file.value.name
       } else {
         mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.name
       }
       console.log(mediaPath)
+      console.log(file.value)
       return mediaPath
     })
 
@@ -95,8 +111,11 @@ export default {
   color: white;
   top: -0.5rem;
   right: -0.5rem;
-  border: 4px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 9999;
+}
+.close-btn:hover {
+  background: rgba(255, 0, 0, 0.8)
 }
 audio {
   width: 100%;

@@ -122,8 +122,9 @@ import TtsMessages from '@components/broadcast/live/ttsMessages'
 
 export default {
   components: { TtsMessages },
-  setup() {
-    const { state, commit } = useStore()
+  emits: ['close', 'update'],
+  setup(props, { emit }) {
+    const { state, commit, dispatch } = useStore()
     const $q = useQuasar()
   
     const error = ref('')
@@ -163,19 +164,20 @@ export default {
       if (r.status === 200) {
         commit('broadcast/setPreview', true)
         commit('broadcast/updatePreviewFile', {
-          name: 'TTS Preview',
-          src: r.data.src,
-          base: 'temp'
+          nameTag: 'TTS Preview',
+          name: r.data.src,
+          base: 'temp',
+          type: 'audio'
         })
       }
     }
+    function onSubmit(item) { 
+      emit('update', item)
+    }
 
     onBeforeMount(async () => {
-
       $q.loading.show()
-      let r = await api.get('/broadcast/tts/voices')
-      commit('broadcast/updateTtsVoices', r.data.voices)
-      commit('broadcast/updateTtsRate', r.data.rate)
+      await dispatch('broadcast/getTtsInfo')
       $q.loading.hide()
     })
 
@@ -187,7 +189,8 @@ export default {
       voice,
       voices,
       mdMessage,
-      ttsPreview
+      ttsPreview,
+      onSubmit
     }
   }
 }
