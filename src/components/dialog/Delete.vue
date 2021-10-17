@@ -31,13 +31,16 @@
       <q-card-section>
         <div class="q-mx-md q-mt-lg">
           <div>
-            다음 지역을 삭제 하시겠습니까?
+            다음 내용을 삭제 하시겠습니까?
           </div>
           <div>
             인덱스: <strong>{{ item.index }}</strong>
           </div>
           <div>
             이름: <strong>{{ item.name }}</strong>
+          </div>
+          <div v-if="item.ipaddress">
+            아이피: <strong>{{ item.ipaddress }}</strong>
           </div>
           <div>
             삭제 후에는 복구가 불가능 합니다. 다시 한번 확인 해주세요.
@@ -49,14 +52,14 @@
       <q-card-actions align="right">
         <div class="q-mx-sm q-gutter-sm">
           <q-btn
-            label="Cancel"
+            label="취소"
             rounded
             unelevated
             @click="onCancelClick"
           />
           <q-btn
-            color="primary"
-            label="OK"
+            color="negative"
+            label="확인"
             unelevated
             rounded
             @click="onOKClick"

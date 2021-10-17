@@ -105,15 +105,6 @@
       @close="close"
     />
   </q-dialog>
-  <q-dialog
-    v-model="deleteDialog"
-    persistent
-  >
-    <Delete
-      :selected="selected"
-      @close="deleteDialogClose"
-    />
-  </q-dialog>
 </template>
 
 <script>
@@ -123,18 +114,20 @@ import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 import Update from './update'
-import Delete from './delete'
+
+import deleteItemComponent from '@components/dialog/delete'
 
 export default {
-  components: { Update, Delete },
+  components: { Update },
   setup () {
     const { state, getters, dispatch } = useStore()
     const $q = useQuasar()
+
+    const error = ref('')
     const devices = computed(() => state.devices.devices)
     const devicesErrorCount = computed(() => getters['devices/errorCount'])
 
     const updateDialog = ref(false)
-    const deleteDialog = ref(false)
     const selected = ref({})
 
     function fnUpdateItem (item) {
@@ -144,34 +137,18 @@ export default {
 
     function fnDeleteItem (item) {
       $q.dialog({
-        title: '<svg class="text-red" style="height: 32px; width: 32px; margin: 0px 10px -12px 0;"><use xlink:href="icons.svg#exclamation"></use></svg><span>지역 삭제</span>',
-        message: `Name: <strong>${item.name}</strong><br>
-          다음 지역을 삭제 하시겠습니까? <br>
-          삭제 후에는 복구가 불가능 합니다. 다시 한번 확인 해주세요.`,
-        html: true,
-        persistent: true,
-        ok: {
-          push: true,
-          rounded: true,
-          unelevated: true,
-          color: 'negative'
-        },
-        cancel: {
-          flat: true,
-          rounded: true,
-          color: 'positive'
-        }
+        component: deleteItemComponent,
+        componentProps: { item: item }
       }).onOk(async () => {
         $q.loading.show()
-        await api.get(`/devices/delete?ipaddress=${item.ipaddress}`)
-        await dispatch('devices/updateDevices')
+        try {
+          await api.get(`/devices/delete?ipaddress=${item.ipaddress}`)
+          await dispatch('devices/updateDevices')
+        } catch (err) {
+          error.value = err.response.data.message
+        }
         $q.loading.hide()
       })      
-    }
-
-    function deleteDialogClose () {
-      selected.value = {}
-      deleteDialog.value = false
     }
 
     function close () {
@@ -186,8 +163,6 @@ export default {
       fnUpdateItem,
       fnDeleteItem,
       close,
-      deleteDialog,
-      deleteDialogClose
     }
   }
 }

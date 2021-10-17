@@ -107,7 +107,7 @@
               icon="svguse:icons.svg#trash-fill"
               size="sm"
               color="red-6"
-              @click="deleteItem(props.row)"
+              @click="fnDelete(props.row)"
             />
           </div>
         </q-td>
@@ -128,16 +128,6 @@
       @close="mdCu = false"
     />
   </q-dialog>
-
-  <q-dialog
-    v-model="deleteDialog"
-    persistent
-  >
-    <Delete
-      :selected="selected"
-      @close="deleteDialogClose"
-    />
-  </q-dialog>
 </template>
 
 <script>
@@ -152,28 +142,30 @@ const tableColumes = [
 ]
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+
 import { api } from '../../boot/axios'
 import { socket } from '../../boot/socketio'
 import timeFormat from '../../apis/timeFormat'
 import secToDays from '../../apis/secToDays'
 import CreateUpdate from './cu.vue'
-import Delete from './delete.vue'
 
+import deleteItemComponent from '@components/dialog/delete'
 import Info from './info.vue'
 
 export default {
-  components: { CreateUpdate, Delete, Info },
+  components: { CreateUpdate, Info },
   setup () {
     const { state, dispatch } = useStore()
+    const $q = useQuasar()
     // vuex
     const tableData = computed(() => state.devices.devices)
     // variable
+    const error = ref('')
     const mdCu = ref(false)
     const mdInfo = ref(false)
     const selected = ref(null)
     const info = ref(null)
-
-    const deleteDialog = ref(false)
 
     function openInfo (data) {
       selected.value = data
@@ -185,14 +177,20 @@ export default {
       mdCu.value = true
     }
 
-    function deleteDialogClose () {
-      selected.value = {}
-      deleteDialog.value = false
-    }
-
-    function deleteItem (item) {
-      selected.value = item
-      deleteDialog.value = true
+    function fnDelete (item) {
+      $q.dialog({
+        component: deleteItemComponent,
+        componentProps: { item: item }
+      }).onOk(async () => {
+        $q.loading.show()
+        try {
+          await api.get(`/devices/delete?ipaddress=${selected.value.ipaddress} `)
+          await dispatch('devices/updateDevices')
+        } catch (err) {
+          error.value = err.response.data.message
+        }
+        $q.loading.hide()
+      })
     }
 
     async function checkItem (item) {
@@ -218,9 +216,7 @@ export default {
       createUpdateItem,
       selected,
       checkItem,
-      deleteDialog,
-      deleteDialogClose,
-      deleteItem
+      fnDelete
     }
   }
 }

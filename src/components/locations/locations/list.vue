@@ -90,7 +90,7 @@
                   icon="svguse:icons.svg#trash-fill"
                   size="sm"
                   color="red-6"
-                  @click.prevent.stop="deleteItem(local)"
+                  @click.prevent.stop="fnDelete(local)"
                 />
               </div>
             </q-item-section>
@@ -108,31 +108,25 @@
       @close="mdCuClose"
     />
   </q-dialog>
-  <q-dialog
-    v-model="deleteDialog"
-    persistent
-  >
-    <Delete
-      :selected="selForEdit"
-      @close="mdDeleteClose"
-    />
-  </q-dialog>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
-import CreateUpdate from './cu'
-import Delete from './delete.vue'
 
-import deleteItemComponent from '@components/dialog/locationDel'
+import { api } from '@/boot/axios'
+
+import CreateUpdate from './cu'
+import deleteItemComponent from '@components/dialog/delete'
 
 export default {
-  components: { CreateUpdate, Delete },
+  components: { CreateUpdate },
   setup () {
     const { state, getters, commit, dispatch } = useStore()
     const $q = useQuasar()
+
+    const error = ref('')
 
     const locations = computed(() => state.locations.locations)
     const selected = computed(() => state.locations.selectedLocation)
@@ -146,15 +140,20 @@ export default {
       createUpdateDialog.value = true
     }
 
-    function deleteItem (item) {
+    function fnDelete (item) {
       $q.dialog({
         component: deleteItemComponent,
         componentProps: { item: item }
       }).onOk(async () => {
-        console.log('OK')
+        $q.loading.show()
+        try {
+          await api.get(`/locations/delete?_id=${item._id} `)
+          await dispatch('locations/updateLocations')
+        } catch (err) {
+          error.value = err.response.data.message
+        }
+        $q.loading.hide()
       })
-      // selForEdit.value = item
-      // deleteDialog.value = true
     }
 
     function clickItem (item) {
@@ -185,7 +184,7 @@ export default {
       selected,
       selForEdit,
       editItem,
-      deleteItem,
+      fnDelete,
       clickItem,
       mdCuClose,
       mdDeleteClose
