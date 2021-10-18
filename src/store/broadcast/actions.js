@@ -16,3 +16,13 @@ export async function getTtsInfo ({ commit }) {
   commit('updateTtsVoices', r.data.voices)
   commit('updateTtsRate', r.data.rate)
 }
+
+export async function updateSchedules ({ commit }, payload) {
+  let r
+  if (payload) {
+    r = await api.get(`broadcast/schedules?user=${payload}`)
+  } else {
+    r = await api.get('broadcast/schedules')
+  }
+  commit('updateSchedules', r.data)
+}

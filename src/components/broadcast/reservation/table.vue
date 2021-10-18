@@ -4,15 +4,105 @@
       <q-table
         flat
         :columns="[
-          { name: 'start', label: '시작시간', field: 'start', sortable: true },
-          { name: 'name', label: '예약명', field: 'name', sortable: true },
-          { name: 'mode', label: '모드', field: 'mode', sortable: true },
-          { name: 'file', label: '재생파일', field: 'file' },
-          { name: 'description', label: '상세설명', field: 'description' },
-          { name: 'actions', label: '기능' }
+          { name: 'repeat', label: '반복', field: 'repeat', sortable: true, align: 'center' },
+          { name: 'start', label: '시작시간', field: 'start', sortable: true, align: 'center' },
+          { name: 'name', label: '예약명', field: 'name', sortable: true, align: 'center' },
+          { name: 'mode', label: '모드', field: 'mode', sortable: true, align: 'center' },
+          { name: 'file', label: '재생파일', field: 'file', align: 'center' },
+          { name: 'actions', label: '기능', align: 'center'}
         ]"
         :rows="schedules"
-      />
+      >
+        <template #body="props">
+          <q-tr :props="props">
+            <!-- 반복 -->
+            <q-td
+              key="repeat"
+              :props="props"
+            >
+              {{ props.row.repeat }}
+            </q-td>
+
+            <!-- 시작시간 -->
+            <q-td
+              key="start"
+              :props="props"
+            >
+              <div v-if="props.row.start">
+                {{ props.row.start }}
+              </div>
+              <div v-else>
+                <div v-if="props.row.repeat === '한번'">
+                  {{ props.row.date }}
+                </div>
+                <div v-else>
+                  <div>
+                    {{ props.row.time }}
+                  </div>
+                  <div v-if="props.row.repeat === '매주'">
+                    {{ props.row.week.join(',') }}
+                  </div>
+                </div>
+              </div>
+            </q-td>
+
+            <q-td
+              key="name"
+              :props="props"
+            >
+              {{ props.row.name }}
+            </q-td>
+
+            <q-td
+              key="mode"
+              :props="props"
+            >
+              {{ props.row.mode }}
+            </q-td>
+
+            <q-td
+              key="file"
+              :props="props"
+            >
+              {{ props.row.file.name }}
+            </q-td>
+
+            <!-- actions -->
+            <q-td
+              key="actions"
+              :props="props"
+            >
+              <div>
+                <q-btn
+                  round
+                  flat
+                  size="sm"
+                  @click="fnEdit(props.row)"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#pencil-fill"
+                    size="xs"
+                    color="teal"
+                  />
+                </q-btn>
+
+                <q-btn
+                  round
+                  flat
+                  size="sm"
+                  @click="fnDelete(props.row)"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#trash-fill"
+                    size="xs"
+                    color="red"
+                  />
+                </q-btn>
+              </div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </q-card-section>
   </q-card>
 </template>
@@ -20,11 +110,54 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+import { api } from '@/boot/axios'
+import Schedule from '@components/dialog/schedule'
+import Delete from '@components/dialog/deleteSchedule'
+
 export default {
   setup() {
-    const { state } = useStore()
+    const { state, dispatch } = useStore()
+    const $q = useQuasar()
+
     const schedules = computed(() => state.broadcast.schedules)
-    return { schedules }
+
+    function fnEdit(item) {
+      $q.dialog({
+        component: Schedule,
+        componentProps: { item: item }
+      }).onOk(async (rt) => {
+        $q.loading.show()
+        try {
+          await api.put('/broadcast/schedules', rt)
+          await dispatch('broadcast/updateSchedules')
+        } catch (err) {
+          console.error(err)
+        }
+        $q.loading.hide()
+      })
+    }
+
+    function fnDelete(item) {
+      $q.dialog({
+        component: Delete,
+        componentProps: { item: item }
+      }).onOk(async (rt) => {
+        $q.loading.show()
+        try {
+          await api.post('/broadcast/schedules/delete', rt)
+          await dispatch('broadcast/updateSchedules')
+        } catch (err) {
+          console.error(err)
+        }
+        $q.loading.hide()
+      })
+    }
+    return {
+      schedules,
+      fnEdit,
+      fnDelete
+    }
   }
 }
 </script>

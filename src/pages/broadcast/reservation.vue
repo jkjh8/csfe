@@ -16,7 +16,7 @@
         <q-btn
           flat
           round
-          @click="$store.commit('broadcast/updateMdSchedule', true)"
+          @click="fnCreateSchedule"
         >
           <q-icon
             name="svguse:icons.svg#plus-circle"
@@ -36,17 +36,50 @@
 <script>
 import { onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+
+import { api } from '@/boot/axios'
 
 import RTable from '@components/broadcast/reservation/table'
 import CU from '@components/broadcast/reservation/cu'
+import Create from '@components/dialog/schedule'
+
 export default {
   components: { RTable, CU },
   setup() {
     const { dispatch } = useStore()
+    const $q = useQuasar()
+
+    function fnCreateSchedule () {
+      $q.dialog({
+        component: Create
+      }).onOk(async (item) => {
+        $q.loading.show()
+        try {
+          const r = await api.post('/broadcast/schedules', item)
+          console.log(r)
+          await dispatch('broadcast/updateSchedules')
+        } catch (err) {
+          console.error(err)
+        }
+        $q.loading.hide()
+      })
+    }
 
     onBeforeMount(() => {
-      dispatch('user/getUser')
+      $q.loading.show()
+      try {
+        dispatch('user/getUser')
+        dispatch('broadcast/updateSchedules')
+      } catch (err) {
+        console.error(err)
+      }
+      $q.loading.hide()
     })
+    
+    return {
+      fnCreateSchedule
+    }
   }
 }
 </script>
