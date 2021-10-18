@@ -41,9 +41,8 @@
             <!-- 이름 -->
             <div class="row items-center q-pa-sm">
               <q-icon
-                name="save"
+                name="svguse:icons.svg#setup"
                 size="sm"
-                color="red-10"
               />
               <div class="listname q-ml-sm">
                 저장된 메시지
@@ -95,9 +94,8 @@
             <!-- 이름 -->
             <div class="row items-center q-pa-sm">
               <q-icon
-                name="svguse:icons.svg#mic"
-                size="xs"
-                color="green-10"
+                name="svguse:icons.svg#mic-color"
+                size="sm"
               />
               <div class="listname q-ml-sm">
                 TTS
@@ -137,8 +135,7 @@
                     <q-item v-bind="scope.itemProps">
                       <q-item-section avatar>
                         <q-icon
-                          name="mic"
-                          color="green"
+                          name="svguse:icons.svg#mic-color"
                         />
                       </q-item-section>
                       <q-item-section>
@@ -181,26 +178,28 @@
               <q-btn
                 rounded
                 unelevated
+                color="grey-3"
+                text-color="grey-10"
                 @click="fnPreview"
               >
                 <q-icon
-                  name="svguse:icons.svg#mic"
-                  color="teal"
-                  size="xs"
+                  name="svguse:icons.svg#mic-color"
+                  size="sm"
                 />
-                <span>미리듣기</span>
+                <span class="q-ml-sm">미리듣기</span>
               </q-btn>
 
               <q-btn
                 rounded
                 unelevated
+                color="cyan-1"
+                text-color="grey-10"
               >
                 <q-icon
-                  name="save"
-                  color="red"
+                  name="svguse:icons.svg#save-color"
                   size="sm"
                 />
-                <span>저장하기</span>
+                <span class="q-ml-sm">저장하기</span>
               </q-btn>
             </div>
           </div>

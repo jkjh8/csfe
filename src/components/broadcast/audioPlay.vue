@@ -35,13 +35,15 @@
       </q-card-section>
 
       <q-card-section v-else>
-        <video
-          width="340"
-          controls
-          autoplay
-          :src="source"
-          @ended="onEnd"
-        />
+        <div class="fit row justify-center">
+          <video
+            width="340"
+            controls
+            autoplay
+            :src="source"
+            @ended="onEnd"
+          />
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>

@@ -174,16 +174,31 @@
 
           <!-- 지역 선택 -->
           <div>
+            <div v-if="schedule.zones">
+              <div class="listname">
+                선택된 지역은
+              </div>
+              <span
+                v-for="zone in schedule.zones"
+                :key="zone._id"
+              >
+                <q-chip icon="svguse:icons.svg#map">{{ zone.name }}</q-chip>
+              </span>
+              <!-- <div>{{ schedule.zones.map(e => e.name).join(',') }}</div> -->
+            </div>
             <q-btn
               class="full-width"
               rounded
               unelevated
+              color="primary"
+              text-color="grey-10"
               @click="fnZoneSelect"
             >
               <q-icon
                 name="svguse:icons.svg#map"
                 size="xs"
               />
+              <span class="q-ml-sm">지역선택</span>
             </q-btn>
           </div>
 
@@ -251,10 +266,15 @@
                 class="full-width"
                 rounded
                 color="primary"
+                text-color="grey-10"
                 unelevated
                 @click="fnGetFile"
               >
-                파일선택
+                <q-icon
+                  name="svguse:icons.svg#archive"
+                  size="xs"
+                />
+                <span class="q-ml-sm">파일선택</span>
               </q-btn>
             </div>
           </div>
@@ -342,6 +362,8 @@ export default {
       file: null,
       tts: null,
       user_id: '',
+      zones: null,
+      selected: null,
     })
 
     function fnGetFile () {
@@ -366,6 +388,8 @@ export default {
         component: zoneSelect
       }).onOk((rt) => {
         console.log(rt)
+        schedule.value.zones = rt.zones
+        schedule.value.selected = rt.selected
       })
     }
 
