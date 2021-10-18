@@ -172,6 +172,21 @@
             </div>
           </div>
 
+          <!-- 지역 선택 -->
+          <div>
+            <q-btn
+              class="full-width"
+              rounded
+              unelevated
+              @click="fnZoneSelect"
+            >
+              <q-icon
+                name="svguse:icons.svg#map"
+                size="xs"
+              />
+            </q-btn>
+          </div>
+
           <!-- 방송 모드 -->
           <div>
             <q-select
@@ -291,6 +306,7 @@ import moment from 'moment'
 
 import fileSelect from '@components/dialog/fileSelect'
 import ttsCreate from '@components/dialog/ttsCreate'
+import zoneSelect from '@components/dialog/zoneSelect'
 
 export default {
   props: {
@@ -345,6 +361,14 @@ export default {
       })
     }
 
+    function fnZoneSelect () {
+      $q.dialog({
+        component: zoneSelect
+      }).onOk((rt) => {
+        console.log(rt)
+      })
+    }
+
     onMounted(() =>{
       if (!props.item) {
         schedule.value.id = uid()
@@ -365,6 +389,7 @@ export default {
       schedule,
       fnGetFile,
       fnGetTtsAudio,
+      fnZoneSelect,
 
       // other methods that we used in our vue html template;
       // these are part of our example (so not required)
