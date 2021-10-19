@@ -27,10 +27,9 @@
       </div>
     </div>
     <div class="q-mt-md">
-      <RTable />
+      <Table />
     </div>
   </div>
-  <CU />
 </template>
 
 <script>
@@ -40,12 +39,11 @@ import { useQuasar } from 'quasar'
 
 import { api } from '@/boot/axios'
 
-import RTable from '@components/broadcast/reservation/table'
-import CU from '@components/broadcast/reservation/cu'
+import Table from '@components/broadcast/reservation/table'
 import Create from '@components/dialog/schedule'
 
 export default {
-  components: { RTable, CU },
+  components: { Table },
   setup() {
     const { dispatch } = useStore()
     const $q = useQuasar()

@@ -6,7 +6,7 @@
   >
     <q-card
       class="q-dialog-plugin"
-      style="width: 800px; max-width: 1500px;"
+      style="width: 800px; max-width: 1500px"
     >
       <!--
         ...content
@@ -15,8 +15,7 @@
       <q-card-section class="bg-grey-1">
         <div class="row items-center q-gutter-md">
           <q-avatar
-            color="red-1"
-            text-color="red"
+            color="yellow-1"
             size="2.5rem"
           >
             <q-icon
@@ -46,21 +45,61 @@
                   />
                   <span>방송구간 프리셋</span>
                 </div>
+                <div>
+                  {{ presets }}
+                </div>
+                <div>
+                  <q-list>
+                    <q-item
+                      v-for="preset in presets"
+                      :key="preset._id"
+                    >
+                      <q-item-section avatar>
+                        <q-avatar>
+                          <q-icon
+                            :name="preset.mode !== 'Global' ? 'svguse:icons.svg#global-color':'svguse:icons.svg#private-color'"
+                          />
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>{{ preset.name }}</q-item-section>
+                    </q-item>
+                  </q-list>
+                </div>
               </div>
             </div>
 
             <div class="col-6">
               <div class="q-gutter-md column">
-                <div class="q-gutter-sm listname row">
-                  <q-icon
-                    name="svguse:icons.svg#mic-color"
-                    size="sm"
-                  />
-                  <span>방송구간선택</span>
+                <div class="row justify-between items-center">
+                  <div class="q-gutter-sm listname row">
+                    <q-icon
+                      name="svguse:icons.svg#mic-color"
+                      size="sm"
+                    />
+                    <span>방송구간선택</span>
+                  </div>
+                  <div>
+                    <q-btn
+                      round
+                      flat
+                      icon="svguse:icons.svg#plus-circle"
+                      size="sm"
+                      color="green"
+                      @click="fnAddPreset"
+                    >
+                      <q-tooltip
+                        anchor="top middle"
+                        self="bottom middle"
+                        :offset="[0,10]"
+                      >
+                        프리셋 추가
+                      </q-tooltip>
+                    </q-btn>
+                  </div>
                 </div>
 
                 <div>
-                  <q-scroll-area style="height: 320px;">
+                  <q-scroll-area style="height: 320px">
                     <q-tree
                       v-model:seleted="selected"
                       v-model:ticked="ticked"
@@ -105,9 +144,13 @@
 </template>
 
 <script>
-import { useDialogPluginComponent } from 'quasar'
+import { useQuasar, useDialogPluginComponent } from 'quasar'
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+
+import { api } from '@/boot/axios'
+
+import ZonePreset from '@components/dialog/zonePreset'
 
 export default {
   props: {
@@ -115,66 +158,94 @@ export default {
   },
 
   emits: [
-    // REQUIRED; need to specify some events that your
-    // component will emit through useDialogPluginComponent()
     ...useDialogPluginComponent.emits
   ],
 
   setup() {
-    // REQUIRED; must be called inside of setup()
-    const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-      useDialogPluginComponent()
+    const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
     const { state, dispatch } = useStore()
     const selected = ref(null)
     const ticked = ref(null)
-    //const $q = useQuasar()
+    const $q = useQuasar()
 
     const user = computed(() => state.user.user)
     const locations = computed(() => state.locations.locations)
+    const presets = ref(null)
 
-    function fnGetZoneNames (zones) {
-      const selectedZones = []
-      for (let i = 0; i < zones.length; i++) {
-        for (let j = 0; j < locations.value.length; j++) {
-          if (zones[i] === locations.value[j]._id) {
-            selectedZones.push(locations.value[j])
-          }
-        }
-      }
-      return selectedZones
+    function fnAddPreset () {
+      $q.dialog({
+        component: ZonePreset,
+        componentProps: { item: { user: user.value.email, zones: ticked.value } }
+      }).onOk(async (item) => {
+        const r = await api.post('/broadcast/preset', item)
+        console.log(r)
+        getPresets()
+      })
     }
 
-    onMounted(() => {
+    function fnGetZoneNames(zones) {
+      const sel = []
+
+      locations.value.forEach(locate => {
+        // 지역확인
+        if (zones.includes(locate._id)) {
+          sel.push({
+            _id: locate._id,
+            name: locate.name,
+            all: true
+          })
+        } else {
+          // 자식 확인
+          const children = []
+          locate.children.forEach(child => {
+            if (zones.includes(child._id)) {
+              children.push({
+                _id: child._id,
+                name: child.name,
+                channel: child.channel
+              })
+            }
+          })
+          // 자식수 지역수 확인
+          if (children.length) {
+            sel.push({
+              _id: locate._id,
+              name: locate.name,
+              location: locate._id,
+              all: children.length === locate.children.length ?? true,
+              children: children
+            })
+          }
+        }
+      })
+      return sel
+    }
+
+    async function getPresets () {
+      const r = await api.get(`/broadcast/preset?user_id=${user.value.email}`)
+      presets.value = r.data
+    } 
+
+    onMounted(async () => {
       dispatch('locations/updateLocations')
+      await getPresets()      
     })
 
     return {
-      // This is REQUIRED;
-      // Need to inject these (from useDialogPluginComponent() call)
-      // into the vue scope for the vue html template
       user,
       selected,
       ticked,
       locations,
+      presets,
+      fnAddPreset,
       dialogRef,
       onDialogHide,
-
-      // other methods that we used in our vue html template;
-      // these are part of our example (so not required)
       onOKClick(items) {
-        console.log(items)
-        let select = null
-        let all = false
-        if (items) {
-          select = fnGetZoneNames(items)
-          all = items.length === locations.value.length
-        }
         // on OK, it is REQUIRED to
         // call onDialogOK (with optional payload)
         onDialogOK({
           selected: items,
-          zones: select,
-          all: all
+          zones: fnGetZoneNames(items)
         })
         // or with payload: onDialogOK({ ... })
         // ...and it will also hide the dialog automatically
