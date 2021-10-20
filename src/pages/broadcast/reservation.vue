@@ -24,29 +24,52 @@
             color="teal"
           />
         </q-btn>
+        <q-btn
+          flat
+          round
+          @click="fnChangeViewer"
+        >
+          <q-icon
+            :name="mode === 'table' ? 'svguse:icons.svg#calendar':'svguse:icons.svg#view-list'"
+            size="sm"
+            color="blue"
+          />
+        </q-btn>
       </div>
     </div>
-    <div class="q-mt-md">
+    <div
+      v-if="mode === 'table'"
+      class="q-mt-md"
+    >
       <Table />
+    </div>
+    <div
+      v-else
+      class="q-mt-md"
+    >
+      <Calendar />
     </div>
   </div>
 </template>
 
 <script>
-import { onBeforeMount } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
 import { api } from '@/boot/axios'
 
 import Table from '@components/broadcast/reservation/table'
+import Calendar from '@components/broadcast/reservation/calendar'
 import Create from '@components/dialog/schedule'
 
 export default {
-  components: { Table },
+  components: { Table, Calendar },
   setup() {
     const { dispatch } = useStore()
     const $q = useQuasar()
+
+    const mode = ref('table')
 
     function fnCreateSchedule () {
       $q.dialog({
@@ -64,6 +87,14 @@ export default {
       })
     }
 
+    function fnChangeViewer () {
+      if (mode.value === 'table') {
+        mode.value = 'calendar'
+      } else {
+        mode.value = 'table'
+      }
+    }
+
     onBeforeMount(() => {
       $q.loading.show()
       try {
@@ -76,6 +107,8 @@ export default {
     })
     
     return {
+      mode,
+      fnChangeViewer,
       fnCreateSchedule
     }
   }

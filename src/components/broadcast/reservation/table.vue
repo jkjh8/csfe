@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
@@ -134,10 +134,16 @@ import Default from '@components/dialog/default'
 
 export default {
   setup() {
-    const { state, dispatch } = useStore()
+    const { dispatch } = useStore()
     const $q = useQuasar()
 
-    const schedules = computed(() => state.broadcast.schedules)
+    const schedules = ref([])
+
+    async function fnGetSchedules () {
+      const r = await api.get('/broadcast/schedules')
+      console.log(r)
+      schedules.value = r.data
+    }
 
     function fnEdit(item) {
       $q.dialog({
@@ -147,7 +153,7 @@ export default {
         $q.loading.show()
         try {
           await api.put('/broadcast/schedules', rt)
-          await dispatch('broadcast/updateSchedules')
+          await fnGetSchedules()
         } catch (err) {
           console.error(err)
         }
@@ -163,7 +169,7 @@ export default {
         $q.loading.show()
         try {
           await api.post('/broadcast/schedules/delete', rt)
-          await dispatch('broadcast/updateSchedules')
+          await fnGetSchedules()
         } catch (err) {
           console.error(err)
         }
@@ -187,6 +193,12 @@ export default {
         $q.loading.hide()
       })
     }
+
+    onMounted(async () => {
+      $q.loading.show()
+      await fnGetSchedules()
+      $q.loading.hide()
+    })
     return {
       schedules,
       fnEdit,

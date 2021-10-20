@@ -3,7 +3,10 @@
     ref="dialogRef"
     @hide="onDialogHide"
   >
-    <q-card class="q-dialog-plugin">
+    <q-card
+      class="q-dialog-plugin"
+      style="width: 800px; max-width: 1600px;"
+    >
       <q-card-section class="bg-grey-1">
         <div class="row justify-between items-center">
           <div class="row items-center q-gutter-md">
@@ -41,204 +44,119 @@
       </q-card-section>
 
       <q-card-section>
-        <q-scroll-area style="height: 26rem;">
-          <div class="q-mx-md q-mt-lg q-gutter-sm">
-            <div>
-              <q-input
-                v-model="schedule.id"
-                dense
-                filled
-                label="ID"
-              />
-            </div>
-
-            <div>
-              <q-input
-                v-model="schedule.name"
-                dense
-                filled
-                label="예약명"
-              />
-            </div>
-
-            <div>
-              <q-select
-                v-model="schedule.repeat"
-                filled
-                dense
-                label="반복"
-                :options="['한번', '매일', '매주']"
-              />
-            </div>
-            <div>
-              <div v-if="schedule.repeat === '한번'">
+        <div class="row q-mt-md">
+          <div class="col-6 q-px-md">
+            <div class="q-gutter-sm">
+              <div>
                 <q-input
-                  v-model="schedule.date"
-                  filled
+                  v-model="schedule.name"
                   dense
-                  label="날짜 및 시간"
-                >
-                  <template #prepend>
-                    <q-icon
-                      name="event"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-date
-                          v-model="schedule.date"
-                          mask="YYYY-MM-DD HH:mm"
-                        >
-                          <div class="row items-center justify-end">
-                            <q-btn
-                              v-close-popup
-                              label="Close"
-                              color="primary"
-                              flat
-                            />
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-
-                  <template #append>
-                    <q-icon
-                      name="access_time"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-time
-                          v-model="schedule.date"
-                          mask="YYYY-MM-DD HH:mm"
-                          format24h
-                        >
-                          <div class="row items-center justify-end">
-                            <q-btn
-                              v-close-popup
-                              label="Close"
-                              color="primary"
-                              flat
-                            />
-                          </div>
-                        </q-time>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </div>
-              <!-- 매일 -->
-              <div v-if="schedule.repeat === '매일' || schedule.repeat === '매주'">
-                <q-select
-                  v-if="schedule.repeat ==='매주'"
-                  v-model="schedule.week"
-                  class="q-my-md"
                   filled
-                  dense
-                  multiple
-                  use-chips
-                  stack-label
-                  label="요일 선택"
-                  :options="['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일']"
+                  label="예약명"
                 />
-                <q-input
-                  v-model="schedule.time"
-                  filled
-                  dense
-                  mask="time"
-                  label="시간선택"
-                  :rules="['time']"
-                >
-                  <template #append>
-                    <q-icon
-                      name="access_time"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-time v-model="schedule.time">
-                          <div class="row items-center justify-end">
-                            <q-btn
-                              v-close-popup
-                              label="Close"
-                              color="primary"
-                              flat
-                            />
-                          </div>
-                        </q-time>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
               </div>
-            </div>
-
-            <!-- 지역 선택 -->
-            <div>
-              <div v-if="schedule.zones">
-                <div class="listname">
-                  선택된 지역은
-                </div>
-                <div class="zones">
-                  <q-tree
-                    :nodes="schedule.zones"
-                    node-key="_id"
-                  >
-                    <template #default-header="props">
-                      <div>
-                        <q-icon
-                          name="svguse:icons.svg#map1"
-                          size=".8rem"
-                        />
-                        <span class="q-ml-sm">{{ props.node.name }}</span>
-                      </div>
-                    </template>
-                  </q-tree>
-                </div>
-              </div>
-              <q-btn
-                class="full-width"
-                rounded
-                unelevated
-                color="blue-1"
-                text-color="grey-10"
-                @click="fnZoneSelect"
+              <div
+                class="row justify-between q-items-center bg-grey-3"
+                style="border-radius: 4px;"
               >
-                <q-icon
-                  name="svguse:icons.svg#map"
-                  size="xs"
-                />
-                <span class="q-ml-sm">지역선택</span>
-              </q-btn>
-            </div>
+                <div class="q-mx-sm row self-center">
+                  <div class="text-grey-8">
+                    색상선택
+                  </div>
+                  <div
+                    class="q-ml-md"
+                    style="width: 2rem; height: 1.5rem;"
+                    :style="`background: ${schedule.color}`"
+                  />
+                </div>
+                <div>
+                  <q-btn
+                    round
+                    unelevated
+                    text-color="blue-10"
+                    @click="fncolorPicker"
+                  > 
+                    <q-icon
+                      name="colorize"
+                      size="sm"
+                      color="grey-8"
+                    />
+                  </q-btn>
+                </div>
+              </div>
 
-            <!-- 방송 모드 -->
-            <div>
-              <q-select
-                v-model="schedule.mode"
-                filled
-                dense
-                label="방송 모드"
-                :options="['Media', 'TTS']"
+              <Repeat
+                :items="schedule"
+                @updateRepeat="toRepeat"
+                @updateWeek="toWeeks"
+                @updateDate="toDate"
+                @updateTime="toTime"
               />
-            </div>
 
-            <!-- 방송 모드 상세 -->
-            <!-- 오디오 비디오 파일 -->
-            <div v-if="schedule.mode === 'Media'">
-              <div v-if="schedule.file">
+              <q-separator />
+              <!-- 지역 선택 -->
+              <div>
+                <div>
+                  <div class="listname">
+                    선택된 지역은
+                  </div>
+                  <div class="zones">
+                    <q-scroll-area style="height: 100px">
+                      <q-tree
+                        :nodes="schedule.zones"
+                        node-key="_id"
+                      >
+                        <template #default-header="props">
+                          <div>
+                            <q-icon
+                              name="svguse:icons.svg#map1"
+                              size=".8rem"
+                            />
+                            <span class="q-ml-sm">{{ props.node.name }}</span>
+                          </div>
+                        </template>
+                      </q-tree>
+                    </q-scroll-area>
+                  </div>
+                </div>
+                <q-btn
+                  class="full-width"
+                  rounded
+                  unelevated
+                  color="blue-1"
+                  text-color="grey-10"
+                  @click="fnZoneSelect"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#map"
+                    size="xs"
+                  />
+                  <span class="q-ml-sm">지역선택</span>
+                </q-btn>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 q-px-md">
+            <div class="q-gutter-sm">
+              <!-- 방송 모드 -->
+              <div>
+                <q-select
+                  v-model="schedule.mode"
+                  filled
+                  dense
+                  label="방송 모드"
+                  :options="['Media', 'TTS']"
+                />
+              </div>
+
+              <!-- 방송 모드 상세 -->
+              <div>
                 <div class="listname">
                   선택된 파일은
                 </div>
 
-                <div>
+                <div v-if="schedule.file">
                   <q-item>
                     <q-item-section avatar>
                       <div v-if="schedule.file.type === 'directory'">
@@ -277,40 +195,59 @@
                     </q-item-section>
                   </q-item>
                 </div>
-              </div>
-              <div>
-                <q-btn
-                  class="full-width"
-                  rounded
-                  color="blue-1"
-                  text-color="grey-10"
-                  unelevated
-                  @click="fnGetFile"
+                <div
+                  v-else
+                  class="text-grey text-center"
+                  style="margin: 1rem 1rem;"
                 >
-                  <q-icon
-                    name="svguse:icons.svg#archive"
-                    size="xs"
-                  />
-                  <span class="q-ml-sm">파일선택</span>
-                </q-btn>
+                  선택된 파일이 없습니다.
+                </div>
               </div>
-            </div>
+              <!-- 오디오 비디오 파일 -->
+              <div v-if="schedule.mode === 'Media'">
+                <div>
+                  <q-btn
+                    class="full-width"
+                    rounded
+                    color="blue-1"
+                    text-color="grey-10"
+                    unelevated
+                    @click="fnGetFile"
+                  >
+                    <q-icon
+                      name="svguse:icons.svg#archive"
+                      size="xs"
+                    />
+                    <span class="q-ml-sm">파일선택</span>
+                  </q-btn>
+                </div>
+              </div>
 
-            <div v-if="schedule.mode === 'TTS'">
+              <div v-if="schedule.mode === 'TTS'">
+                <div>
+                  <q-btn
+                    class="full-width"
+                    rounded
+                    color="purple-1"
+                    unelevated
+                    @click="fnGetTtsAudio"
+                  >
+                    TTS 생성
+                  </q-btn>
+                </div>
+              </div>
+              <q-separator class="q-my-lg" />
               <div>
-                <q-btn
-                  class="full-width"
-                  rounded
-                  color="purple-1"
-                  unelevated
-                  @click="fnGetTtsAudio"
-                >
-                  TTS 생성
-                </q-btn>
+                <q-input
+                  v-model="schedule.description"
+                  type="textarea"
+                  filled
+                  label="상세설명"
+                />
               </div>
             </div>
           </div>
-        </q-scroll-area>
+        </div>
       </q-card-section>
 
       <!-- buttons example -->
@@ -345,11 +282,15 @@ import { useStore } from 'vuex'
 import { uid } from 'quasar'
 import moment from 'moment'
 
+import Repeat from '@components/repeatSel'
+
 import fileSelect from '@components/dialog/fileSelect'
 import ttsCreate from '@components/dialog/ttsCreate'
 import zoneSelect from '@components/dialog/zoneSelect'
+import colorPicker from '@components/dialog/colorPicker'
 
 export default {
+  components: { Repeat },
   props: {
     item: Object
   },
@@ -374,9 +315,13 @@ export default {
       file: null,
       tts: null,
       user_id: '',
-      zones: null,
+      zones: [],
       selected: null,
-      active: true
+      active: true,
+      days: 1,
+      color: '#00ffff',
+      description: '',
+      dateData: ''
     })
 
     function fnGetFile () {
@@ -406,16 +351,45 @@ export default {
       })
     }
 
+    function fncolorPicker () {
+      $q.dialog({
+        component: colorPicker,
+      }).onOk((color) => {
+        console.log(color)
+        schedule.value.color = color
+      })
+    }
+
+    function toRepeat (value) {
+      schedule.value.repeat = value
+      console.log('repeat', value)
+    }
+    
+    function toWeeks (value) {
+      schedule.value.week = value
+    }
+
+    function toDate (value) {
+      schedule.value.date = value
+      schedule.value.dateData = Date.parse(value)
+      console.log('update date')
+    }
+
+    function toTime (value) {
+      schedule.value.time = value
+    }
+
     onMounted(() =>{
       if (!props.item) {
         schedule.value.id = uid()
         schedule.value.time = moment().format('hh:mm')
-        schedule.value.date = moment().format('YYYY-DD-MM hh:mm')
+        schedule.value.date = moment().format('YYYY-DD-MM')
         schedule.value.user_id = state.user.user.email
       } else {
         schedule.value = { ...props.item }
       }
     })
+
 
     return {
       dialogRef,
@@ -424,8 +398,14 @@ export default {
       fnGetFile,
       fnGetTtsAudio,
       fnZoneSelect,
+      fncolorPicker,
+      toRepeat,
+      toWeeks,
+      toDate,
+      toTime,
 
       onOKClick (item) {
+        console.log(item)
         onDialogOK(item)
       },
       onCancelClick: onDialogCancel

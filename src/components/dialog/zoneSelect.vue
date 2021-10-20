@@ -46,9 +46,6 @@
                   <span>방송구간 프리셋</span>
                 </div>
                 <div>
-                  {{ presets }}
-                </div>
-                <div>
                   <q-list>
                     <q-item
                       v-for="preset in presets"
