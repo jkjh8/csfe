@@ -160,3 +160,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.q-calendar-month__day.q-current-day .q-calendar__button {
+  border: none;
+}
+</style>
