@@ -50,6 +50,12 @@
                     <q-item
                       v-for="preset in presets"
                       :key="preset._id"
+                      v-ripple
+                      dense
+                      clickable
+                      active-class="active-class"
+                      :active="preset === selectedPreset"
+                      @click="fnUpdatePreset(preset)"
                     >
                       <q-item-section avatar>
                         <q-avatar>
@@ -103,6 +109,7 @@
                       :nodes="locations"
                       tick-strategy="leaf"
                       node-key="_id"
+                      @update:ticked="selectedPreset = null"
                     >
                       <template #default-header="props">
                         <div>
@@ -119,7 +126,10 @@
       </q-card-section>
 
       <!-- buttons example -->
-      <q-card-actions align="right">
+      <q-card-actions
+        class="bg-grey-1"
+        align="right"
+      >
         <div class="q-mx-sm q-gutter-sm">
           <q-btn
             label="취소"
@@ -168,6 +178,7 @@ export default {
     const user = computed(() => state.user.user)
     const locations = computed(() => state.locations.locations)
     const presets = ref(null)
+    const selectedPreset = ref(null)
 
     function fnAddPreset () {
       $q.dialog({
@@ -178,6 +189,12 @@ export default {
         console.log(r)
         getPresets()
       })
+    }
+
+    function fnUpdatePreset (preset) {
+      selectedPreset.value = preset
+      ticked.value = preset.zones
+      console.log(preset)
     }
 
     function fnGetZoneNames(zones) {
@@ -234,7 +251,9 @@ export default {
       ticked,
       locations,
       presets,
+      selectedPreset,
       fnAddPreset,
+      fnUpdatePreset,
       dialogRef,
       onDialogHide,
       onOKClick(items) {
@@ -254,3 +273,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.active-class {
+  background: #91ECEC;
+  color: #000;
+  border-radius: .5rem;
+}
+</style>

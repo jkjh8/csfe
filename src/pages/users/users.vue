@@ -182,13 +182,16 @@ const columns = [
   { name: "actions", align: "center", label: "Actions", field: "actions" },
 ];
 
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed } from "vue"
+import { useStore } from "vuex"
+import { useQuasar } from 'quasar'
 import moment from "moment";
-import { useStore } from "vuex";
+moment.locale("ko");
 import { api } from '@/boot/axios'
 
 import EditUser from "./edit";
 import PopupAdmin from "./popupAdmin.vue";
+import DefalutDialog from '@components/dialog/default'
 
 export default {
   components: { EditUser, PopupAdmin },
@@ -196,8 +199,8 @@ export default {
     user: Object,
   },
   setup() {
-    moment.locale("ko");
     const { state, getters, dispatch } = useStore();
+    const $q = useQuasar()
     const users = computed(() => state.user.users);
     const usersCount = computed(() => getters["user/numberOfUsers"]);
     const adminCount = computed(() => getters["user/numberOfAdmin"]);
@@ -213,8 +216,22 @@ export default {
     }
 
     function editAdmin(user) {
-      selectedUser.value = user;
-      popupAdmin.value = true;
+      let message
+      if (user.admin) {
+        message = `${user.email}의 관리자 권한을 회수합니다.`
+      } else {
+        message = `${user.email}에 관리자 권한을 부여합니다.`
+      }
+
+      $q.dialog({
+        component: DefalutDialog,
+        componentProps: { message: message }
+      }).onOk(async (rt) => {
+        console.log(rt)
+      })
+
+      // selectedUser.value = user;
+      // popupAdmin.value = true;
     }
 
     function startDeleteUser(user) {
@@ -241,7 +258,7 @@ export default {
       mdDeleteUser.value = false
     }
     onBeforeMount(async () => {
-      dispatch("user/getUsers");
+      dispatch("user/getUsers")
     });
     return {
       users,

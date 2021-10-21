@@ -57,24 +57,24 @@
               </div>
               <div
                 class="row justify-between q-items-center bg-grey-3"
-                style="border-radius: 4px;"
+                style="border-radius: 4px; height: 2.5rem;"
               >
                 <div class="q-mx-sm row self-center">
-                  <div class="text-grey-8">
+                  <div class="text-grey-8 pickupColor">
                     색상선택
                   </div>
                   <div
                     class="q-ml-md"
-                    style="width: 2rem; height: 1.5rem;"
+                    style="width: 2rem; height: 1.5rem; border-radius: 4px;"
                     :style="`background: ${schedule.color}`"
                   />
                 </div>
-                <div>
+                <div class="row items-center q-mr-sm">
                   <q-btn
                     round
                     unelevated
-                    text-color="blue-10"
-                    @click="fncolorPicker"
+                    size="sm"
+                    @click="fncolorPicker(schedule.color)"
                   > 
                     <q-icon
                       name="colorize"
@@ -228,11 +228,16 @@
                   <q-btn
                     class="full-width"
                     rounded
-                    color="purple-1"
+                    color="teal-1"
+                    text-color="grey-10"
                     unelevated
                     @click="fnGetTtsAudio"
                   >
-                    TTS 생성
+                    <q-icon
+                      name="svguse:icons.svg#mic"
+                      size="xs"
+                    />
+                    <span class="q-ml-sm">TTS 생성</span>
                   </q-btn>
                 </div>
               </div>
@@ -277,7 +282,7 @@
 
 <script>
 import { useQuasar, useDialogPluginComponent } from 'quasar'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { uid } from 'quasar'
 import moment from 'moment'
@@ -304,12 +309,14 @@ export default {
     const { state } = useStore()
     const $q = useQuasar()
 
+    const user = computed(() => state.user.user)
+
     const schedule = ref({
-      id: '',
+      id: uid(),
       name: '',
       repeat: '한번',
-      time: '',
-      date: '',
+      time: moment().format('hh:mm'),
+      date: moment().format('YYYY-MM-DD'),
       week: null,
       mode: 'Media',
       file: null,
@@ -319,7 +326,7 @@ export default {
       selected: null,
       active: true,
       days: 1,
-      color: '#00ffff',
+      color: user.value.color,
       description: '',
       dateData: ''
     })
@@ -351,9 +358,10 @@ export default {
       })
     }
 
-    function fncolorPicker () {
+    function fncolorPicker (color) {
       $q.dialog({
         component: colorPicker,
+        componentProps: { color: color }
       }).onOk((color) => {
         console.log(color)
         schedule.value.color = color
@@ -383,7 +391,6 @@ export default {
       if (!props.item) {
         schedule.value.id = uid()
         schedule.value.time = moment().format('hh:mm')
-        schedule.value.date = moment().format('YYYY-DD-MM')
         schedule.value.user_id = state.user.user.email
       } else {
         schedule.value = { ...props.item }
@@ -420,5 +427,13 @@ export default {
   margin: .5rem 0 .5rem 0;
   border-radius: .5rem;
   background: #f1f1f1;
+}
+.pickupColor {
+  font-size: .5rem;
+  height: 100%;
+  margin: 5px 5px;
+}
+.pickBtn:hover {
+  background: none;
 }
 </style>

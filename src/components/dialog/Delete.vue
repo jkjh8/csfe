@@ -33,11 +33,14 @@
           <div>
             다음 내용을 삭제 하시겠습니까?
           </div>
-          <div>
+          <div v-if="item.index">
             인덱스: <strong>{{ item.index }}</strong>
           </div>
-          <div>
+          <div v-if="item.name">
             이름: <strong>{{ item.name }}</strong>
+          </div>
+          <div v-if="item.email">
+            이메일: <strong>{{ item.email }}</strong>
           </div>
           <div v-if="item.ipaddress">
             아이피: <strong>{{ item.ipaddress }}</strong>

@@ -114,9 +114,10 @@ export default {
       if (r.status === 200) {
         commit('broadcast/setPreview', true)
         commit('broadcast/updatePreviewFile', {
-          name: 'TTS Preview',
-          src: r.data.src,
-          base: 'temp'
+          nameTag: 'TTS Preview',
+          name: r.data.src,
+          base: 'temp',
+          type: 'audio'
         })
       }
     }

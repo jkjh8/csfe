@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 5% 10% 0 10%">
     <div class="row justify-between items-center">
-      <div class="q-gutter-sm q-mb-md">
+      <div>
         <span>
           <q-icon
             name="svguse:icons.svg#view-grid-fill"
@@ -9,10 +9,10 @@
             color="green"
           />
         </span>
-        <span class="name">Reservation</span>
+        <span class="name q-mx-sm">예약방송</span>
         <span class="caption">개의 방송 예약이 있습니다</span>
       </div>
-      <div>
+      <div class="row items-center">
         <q-btn
           flat
           round

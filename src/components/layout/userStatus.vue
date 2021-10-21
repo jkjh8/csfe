@@ -18,10 +18,10 @@
       flat
     >
       <q-avatar
-        text-color="white"
+        :text-color="colorApi.checkColor(user.color)"
         size="md"
+        :style="user.color ? `background: ${user.color}`:'background: #333'"
       >
-        <img src="/patterns/5.png">
         <div class="absolute-center">
           {{ nickname }}
         </div>
@@ -39,17 +39,10 @@
           >
             <q-avatar
               class="row justify-center items-center q-mt-md"
-              size="80px"
-              color="grey-10"
-              text-color="white"
+              size="100px"
+              :text-color="colorApi.checkColor(user.color)"
+              :style="user.color ? `background: ${user.color}`:'background: #333'"
             >
-              <img src="/patterns/12.png">
-              <!-- <q-icon
-                name="fas fa-user-alt"
-                color="white"
-                size="40px"
-              >
-              </q-icon> -->
               <div class="absolute-center">
                 {{ nickname }}
               </div>
@@ -95,8 +88,8 @@
           <q-item-section>
             <q-btn
               class="q-mx-xl q-my-md"
-              style="color: #f2f2f2; background: #0b3b24"
-              flat
+              color="grey-8"
+              unelevated
               rounded
               label="Logout"
               @click="logout"
@@ -121,21 +114,26 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { api } from '../../boot/axios'
+import colorApi from '@/apis/color'
+
 export default {
   props: {
     user: Object
   },
   setup() {
     const { getters, commit } = useStore()
+    const $router = useRouter()
     const nickname = computed(() => getters['user/nickname'])
     async function logout() {
       const r = await api.get('/auth/logout')
       if (r) {
-        commit('user/updateUser', r.data.user)
+        commit('user/updateUser', null)
+        $router.push('/')
       }
     }
-    return { nickname, logout }
+    return { nickname, logout, colorApi }
   }
 }
 </script>

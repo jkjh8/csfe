@@ -43,22 +43,11 @@ export default {
     const today = ref('')
     moment.locale('ko')
 
-    onMounted(() => {
-      dispatch('user/getUser')
+    onMounted(async () => {
+      $q.loading.show()
+      await dispatch('user/getUser')
       today.value = moment().format('MM월 DD일 dddd')
-      $q.notify({
-        message: '방송이 시작되었습니다.',
-        caption: 'admin@admin.com 사용자가 방송을 시작했습니다.',
-        color: 'primary',
-        position: 'top-right'
-      })
-      $q.notify({
-        message: '본사 장비 오프라인',
-        caption: '2021-10-14 09:15:11 장비가 오프라인되었습니다.',
-        color: 'negative',
-        position: 'top-right'
-      })
-      
+      $q.loading.hide()
     })
     return {
       user,

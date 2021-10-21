@@ -11,7 +11,7 @@
       -->
 
       <!-- buttons example -->
-      <q-card-section>
+      <!-- <q-card-section>
         <div class="row justify-between items-center">
           <div>
             <q-icon
@@ -26,24 +26,26 @@
             :style="`background: ${color}`"
           />
         </div>
-      </q-card-section>
-      <q-card-section>
-        <div class="row justify-center">
+      </q-card-section> -->
+      <q-card-section class="q-pa-none">
+        <div style="width: 100%;">
           <q-color
-            v-model="color"
-            style="width: 100%"
-            no-header
-            no-footer
-            default-view="palette"
+            v-model="rfColor"
+            flat
+            style="width: 100%; min-width: 400px;"
             class="my-picker"
           />
         </div>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions
+        class="bg-black"
+        align="right"
+      >
         <q-btn
           label="취소"
           rounded
           flat
+          color="white"
           @click="onCancelClick"
         />
         <q-btn
@@ -51,7 +53,7 @@
           rounded
           unelevated
           label="확인"
-          @click="onOKClick(color)"
+          @click="onOKClick(rfColor)"
         />
       </q-card-actions>
     </q-card>
@@ -59,12 +61,12 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 
 export default {
   props: {
-    message: String,
+    color: String,
   },
 
   emits: [
@@ -73,19 +75,23 @@ export default {
     ...useDialogPluginComponent.emits
   ],
 
-  setup () {
+  setup (props) {
     // REQUIRED; must be called inside of setup()
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-    const color = ref(null)
+    const rfColor = ref(null)
     // dialogRef      - Vue ref to be applied to QDialog
     // onDialogHide   - Function to be used as handler for @hide on QDialog
     // onDialogOK     - Function to call to settle dialog with "ok" outcome
     //                    example: onDialogOK() - no payload
     //                    example: onDialogOK({ /*.../* }) - with payload
     // onDialogCancel - Function to call to settle dialog with "cancel" outcome
-
+    onMounted(() => {
+      if (props.color) {
+        rfColor.value = props.color
+      }
+    })
     return {
-      color,
+      rfColor,
       // This is REQUIRED;
       // Need to inject these (from useDialogPluginComponent() call)
       // into the vue scope for the vue html template

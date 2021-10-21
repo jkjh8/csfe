@@ -7,12 +7,12 @@
       class="card-large"
     >
       <q-card-section class="q-pa-none">
-        <div class="backg-re-gr">
+        <div class="backg-gr-bl">
           <div class="card-name-align">
             <div class="card-name">
               <q-icon
                 name="svguse:icons.svg#user-circle-fill"
-                color="grey-10"
+                color="grey-4"
               />
               <div>사용자 정보</div>
             </div>
@@ -22,7 +22,7 @@
 
       <q-separator inset />
 
-      <q-card-section>
+      <q-card-section v-if="user">
         <q-list class="q-ml-md">
           <q-item>
             <q-item-section>
@@ -64,6 +64,19 @@
               <q-item-label class="text-uppercase">
                 {{ user.admin }}
               </q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-item-label class="text-bold">
+                사용자 고유 색상
+              </q-item-label>
+              <q-btn
+                class="q-my-sm"
+                unelevated
+                :style="user.color ? `background: ${user.color}`:'background: #eee'"
+                @click="pickColor(user.color)"
+              />
             </q-item-section>
           </q-item>
           <!-- <q-item>
@@ -122,29 +135,49 @@
 <script>
 import { defineComponent, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+import { api } from '@/boot/axios'
 import moment from 'moment'
-import getUser from '../../apis/users'
+moment.locale('ko')
+
+import colorPicker from '@components/dialog/colorPicker'
 
 export default defineComponent({
   setup () {
-    moment.locale('ko')
-    const store = useStore()
-    const user = computed(() => store.state.user.user)
+    const $q = useQuasar()
+    const { state, dispatch} = useStore()
+    const user = computed(() => state.user.user)
 
-    onMounted(() => getUser())
+    onMounted(() => dispatch("user/getUser"))
 
     function timeFormat (time) {
       return moment(time).format('YYYY/MM/DD hh:mm:ss a')
     }
 
-    return { user, timeFormat }
+    function pickColor (color) {
+      $q.dialog({
+        component: colorPicker,
+        componentProps: { color: color }
+      }).onOk(async (rt) => {
+        $q.loading.show()
+        try {
+          await api.put('/auth/users/color', {
+            email: user.value.email,
+            color: rt
+          })
+          await dispatch('user/getUser')
+        } catch (err) {
+          console.log(err)
+        }
+        $q.loading.hide()
+      })
+    }
+
+    return {
+      user,
+      timeFormat,
+      pickColor
+    }
   }
 })
 </script>
-
-<style scoped>
-:deep(.q-img__image) {
-  -webkit-filter: blur(4px);
-  filter: blur(4px);
-}
-</style>

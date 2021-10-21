@@ -8,7 +8,7 @@
       <span
         class="listname q-ml-sm"
       >
-        오늘은 {{ year }}년 {{ month }}월 {{ day }}일 입니다.
+        현제 달력은 {{ year }}년 {{ month }}월 입니다.
       </span>
     </div>
     <div>

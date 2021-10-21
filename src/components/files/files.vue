@@ -97,7 +97,7 @@
 
         <!-- 파일 리스트 -->
         <div class="q-mt-md">
-          <q-scroll-area style="height: 26rem">
+          <q-scroll-area style="height: 20rem">
             <q-list>
               <q-item
                 v-for="file in files"
