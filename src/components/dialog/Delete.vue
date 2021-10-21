@@ -65,7 +65,7 @@
             label="확인"
             unelevated
             rounded
-            @click="onOKClick"
+            @click="onOKClick(item)"
           />
         </div>
       </q-card-actions>
@@ -106,10 +106,10 @@ export default {
 
       // other methods that we used in our vue html template;
       // these are part of our example (so not required)
-      onOKClick () {
+      onOKClick (item) {
         // on OK, it is REQUIRED to
         // call onDialogOK (with optional payload)
-        onDialogOK()
+        onDialogOK(item)
         // or with payload: onDialogOK({ ... })
         // ...and it will also hide the dialog automatically
       },

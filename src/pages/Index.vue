@@ -13,6 +13,7 @@
     >
       <InfoHardware />
       <InfoLocations />
+      <InfoLastLogMessage />
     </div>
   </div>
 </template>
@@ -23,18 +24,20 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import moment from 'moment'
 
-import Today from '../components/today.vue'
-import NeedLogin from '../components/needLogin.vue'
+import Today from '../components/widgets/today.vue'
+import NeedLogin from '../components/widgets/needLogin.vue'
 
-import InfoLocations from '@components/info/locations'
-import InfoHardware from '@components/info/hardware'
+import InfoLocations from '@components/widgets/locations'
+import InfoHardware from '@components/widgets/hardware'
+import InfoLastLogMessage from '@components/widgets/lastLogMessage'
 
 export default {
   components: {
     Today,
     NeedLogin,
     InfoLocations,
-    InfoHardware
+    InfoHardware,
+    InfoLastLogMessage,
   },
   setup() {
     const { state, dispatch } = useStore()

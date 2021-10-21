@@ -100,7 +100,7 @@
             icon="svguse:icons.svg#trash-fill"
             size="sm"
             color="red"
-            @click="startDeleteUser(props.row)"
+            @click="fnDeleteUser(props.row)"
           />
         </q-td>
       </template>
@@ -108,57 +108,6 @@
   </div>
   <q-dialog v-model="editDialog">
     <EditUser :user="currentUser" />
-  </q-dialog>
-  <q-dialog v-model="popupAdmin">
-    <PopupAdmin
-      :user="selectedUser"
-      @close="close"
-    />
-  </q-dialog>
-
-  <q-dialog v-model="mdDeleteUser">
-    <q-card style="width: 20rem;">
-      <!-- 이름 테그 -->
-      <q-card-section class="q-pa-none">
-        <div class="backg">
-          <div class="fit row items-center">
-            <q-icon
-              class="q-ml-md"
-              name="svguse:icons.svg#exclamation"
-              color="red"
-              size="md"
-            />
-            <div class="q-ml-sm name">
-              관리자 권한 수정
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section style="height: 14rem">
-        <div class="q-ma-md text-grey">
-          <strong class="listname text-black">{{ selectedUser.email }}</strong> 사용자를 삭제 하시겠습니까?
-        </div>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          padding=".3rem 2rem"
-          flat
-          rounded
-          label="취소"
-        />
-        <q-btn
-          class="q-mx-md"
-          padding=".3rem 2rem"
-          unelevated
-          rounded
-          color="cyan"
-          label="확인"
-          @click="fnDeleteUser"
-        />
-      </q-card-actions>
-    </q-card>
   </q-dialog>
 </template>
 
@@ -190,11 +139,11 @@ moment.locale("ko");
 import { api } from '@/boot/axios'
 
 import EditUser from "./edit";
-import PopupAdmin from "./popupAdmin.vue";
 import DefalutDialog from '@components/dialog/default'
+import Delete from '@components/dialog/delete'
 
 export default {
-  components: { EditUser, PopupAdmin },
+  components: { EditUser },
   props: {
     user: Object,
   },
@@ -225,13 +174,15 @@ export default {
 
       $q.dialog({
         component: DefalutDialog,
-        componentProps: { message: message }
+        componentProps: {
+          title: '사용자 권한 변경',
+          message: message,
+          item: user
+        }
       }).onOk(async (rt) => {
-        console.log(rt)
+        await api.get(`/auth/users/admin?id=${rt._id}&value=${!rt.admin}`)
+        await dispatch('user/getUsers')
       })
-
-      // selectedUser.value = user;
-      // popupAdmin.value = true;
     }
 
     function startDeleteUser(user) {
@@ -252,14 +203,29 @@ export default {
       )}`;
     }
 
-    async function fnDeleteUser () {
-      await api.get(`/auth/users/delete?id=${selectedUser.value._id}`)
-      dispatch('user/getUsers')
-      mdDeleteUser.value = false
+    async function fnDeleteUser (user) {
+
+      $q.dialog({
+        component: Delete,
+        componentProps: { item: user }
+      }).onOk(async (rt) => {
+        console.log(rt)
+        $q.loading.show()
+        try {
+          await api.get(`/auth/users/delete?id=${rt._id}`)
+          dispatch('user/getUsers')
+          
+          } catch (err) {
+            console.error(err)
+        }
+        $q.loading.hide()
+      })
     }
+
     onBeforeMount(async () => {
       dispatch("user/getUsers")
-    });
+    })
+
     return {
       users,
       usersCount,

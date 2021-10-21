@@ -6,9 +6,8 @@
     <q-card-section>
       <div class="row items-center">
         <q-icon
-          name="map"
+          name="svguse:iconsColor.svg#location"
           size="md"
-          color="cyan"
         />
         <div
           class="listname q-ml-sm q-pb-sm"

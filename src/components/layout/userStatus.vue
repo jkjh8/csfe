@@ -18,7 +18,7 @@
       flat
     >
       <q-avatar
-        :text-color="colorApi.checkColor(user.color)"
+        :text-color="user.color ? colorApi.checkColor(user.color):'#000'"
         size="md"
         :style="user.color ? `background: ${user.color}`:'background: #333'"
       >
@@ -40,7 +40,7 @@
             <q-avatar
               class="row justify-center items-center q-mt-md"
               size="100px"
-              :text-color="colorApi.checkColor(user.color)"
+              :text-color="colorApi.checkColor(user.color ? user.color:'grey')"
               :style="user.color ? `background: ${user.color}`:'background: #333'"
             >
               <div class="absolute-center">

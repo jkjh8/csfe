@@ -65,7 +65,7 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import Clock from '@components/clock'
+import Clock from '@components/widgets/clock'
 import Check from '@components/broadcast/live/checkBroadcast'
 
 export default {

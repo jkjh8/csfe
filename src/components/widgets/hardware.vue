@@ -3,9 +3,8 @@
     <q-card-section>
       <div class="row items-center">
         <q-icon
-          name="storage"
+          name="svguse:iconsColor.svg#pc"
           size="md"
-          color="green-8"
         />
         <div
           class="listname q-ml-sm q-pb-sm"
