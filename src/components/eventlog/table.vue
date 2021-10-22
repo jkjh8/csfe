@@ -32,7 +32,7 @@
           :props="props"
         >
           <div v-if="col.name === 'date'">
-            {{ timeFormat(col.value) }}
+            {{ time.timeFormat(col.value) }}
           </div>
           <div v-else-if="col.name === 'zones'">
             {{ col.value.join(',') }}
@@ -79,7 +79,7 @@
 import { ref, computed, onMounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
-import timeFormat from '../../apis/timeFormat'
+import time from '@/apis/time'
 
 const columes = [
   {
@@ -163,7 +163,7 @@ export default {
     })
     return {
       columes,
-      timeFormat,
+      time,
       logs,
       rowsPerPage,
       page,

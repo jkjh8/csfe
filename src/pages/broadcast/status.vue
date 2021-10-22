@@ -45,12 +45,20 @@
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label class="name">
+                <q-item-label class="name fit row items-center">
                   {{ location.name }}
                 </q-item-label>
-                <q-item-label caption>
-                  {{ location.ipaddress }}
-                </q-item-label>
+              </q-item-section>
+
+              <!-- 셋업 버튼 -->
+              <q-item-section side>
+                <q-btn
+                  round
+                  flat
+                  @click.stop.prevent="fnSetupLocation(location)"
+                >
+                  <q-icon name="svguse:icons.svg#cog" />
+                </q-btn>
               </q-item-section>
             </template>
 
@@ -79,19 +87,33 @@
 <script>
 import { computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 
 import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
+
+import SetupLocate from '@components/dialog/setLocation'
 
 export default {
   components: { ZoneStatus },
   setup() {
     const { state, getters, dispatch } = useStore()
+    const $q = useQuasar()
     const locations = computed(() => state.locations.locations)
     const locationErrorCount = computed(() => getters['locations/errorCount'])
     const zoneErrorCount = computed(() => getters['devices/errorCount'])
 
     function getIp(obj) {
       return obj.ipaddress
+    }
+
+    function fnSetupLocation(locate) {
+      console.log(locate)
+      $q.dialog({
+        component: SetupLocate,
+        componentProps: { item: locate }
+      }).onOk(async (rt) => {
+        console.log(rt)
+      })
     }
 
     onBeforeMount(async () => {
@@ -104,7 +126,8 @@ export default {
       locations,
       locationErrorCount,
       zoneErrorCount,
-      getIp
+      getIp,
+      fnSetupLocation,
     }
   }
 }

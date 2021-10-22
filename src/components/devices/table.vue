@@ -70,7 +70,7 @@
           key="createdAt"
           :props="props"
         >
-          <div>{{ timeFormat(props.row.createdAt) }}</div>
+          <div>{{ time.timeFormat(props.row.createdAt) }}</div>
         </q-td>
         <q-td
           key="actions"
@@ -144,10 +144,9 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
-import { api } from '../../boot/axios'
-import { socket } from '../../boot/socketio'
-import timeFormat from '../../apis/timeFormat'
-import secToDays from '../../apis/secToDays'
+import { api } from '@/boot/axios'
+import { socket } from '@/boot/socketio'
+import time from '@/apis/time'
 import CreateUpdate from './cu.vue'
 
 import deleteItemComponent from '@components/dialog/delete'
@@ -206,8 +205,7 @@ export default {
     })
     return {
       tableColumes,
-      timeFormat,
-      secToDays,
+      time,
       tableData,
       mdCu,
       mdInfo,

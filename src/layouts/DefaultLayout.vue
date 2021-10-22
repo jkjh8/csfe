@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, provide } from 'vue'
 import { useStore } from 'vuex'
-// import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 // import { socket } from '../boot/socketio'
 import LinkNormal from '../components/layout/linkNormal'
 import UserStatus from '../components/layout/userStatus.vue'
@@ -52,6 +52,11 @@ export default {
     },
   setup () {
     const { state } = useStore()
+    const $router = useRouter()
+    const $route = useRoute()
+    provide('$router', $router)
+    provide('$route', $route)
+    
     const brocastMenu = ref(false)
     const user = computed(() => state.user.user)
     // onBeforeMount(() => {

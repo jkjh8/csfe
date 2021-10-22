@@ -51,14 +51,6 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-bold">
-                사용자 등급
-              </q-item-label>
-              <q-item-label>{{ user.userLevel }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label class="text-bold">
                 관리자
               </q-item-label>
               <q-item-label class="text-uppercase">
@@ -75,7 +67,7 @@
                 class="q-my-sm"
                 unelevated
                 :style="user.color ? `background: ${user.color}`:'background: #eee'"
-                @click="pickColor(user.color)"
+                @click="fnPickColor(user.color)"
               />
             </q-item-section>
           </q-item>
@@ -101,7 +93,7 @@
                 가입일
               </q-item-label>
               <q-item-label class="text-uppercase">
-                {{ timeFormat(user.createdAt) }}
+                {{ time.timeFormat(user.createdAt) }}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -111,11 +103,21 @@
                 마지막 로그인 시간
               </q-item-label>
               <q-item-label class="text-uppercase">
-                {{ timeFormat(user.loginAt) }}
+                {{ time.timeFormat(user.loginAt) }}
               </q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
+        <div class="q-ma-sm row justify-end">
+          <button @click="fnCancelMembership">
+            로그아웃
+          </button>
+        </div>
+        <div class="q-ma-sm row justify-end">
+          <button @click="fnCancelMembership">
+            탈퇴하기
+          </button>
+        </div>
       </q-card-section>
       <q-separator inset />
       <q-card-actions align="right">
@@ -140,7 +142,10 @@ import { api } from '@/boot/axios'
 import moment from 'moment'
 moment.locale('ko')
 
+import time from '@/apis/time'
+
 import colorPicker from '@components/dialog/colorPicker'
+import DefaultDialog from '@components/dialog/default'
 
 export default defineComponent({
   setup () {
@@ -150,11 +155,28 @@ export default defineComponent({
 
     onMounted(() => dispatch("user/getUser"))
 
-    function timeFormat (time) {
-      return moment(time).format('YYYY/MM/DD hh:mm:ss a')
+    function fnCancelMembership () {
+      $q.dialog({
+        component: DefaultDialog,
+        componentProps: {
+          title: '회원 탈퇴',
+          message: '회원 탈퇴합니다. 회원 탈퇴시 다시 복구할 수 없으니 다시 한변 확인 부탁드립니다.'
+        }
+      }).onOk(async() => {
+        console.log(user.value)
+        $q.loading.show()
+        try {
+          await api.get(`/auth/users/delete?id=${user.value._id}`)
+          
+          
+          } catch (err) {
+            console.error(err)
+        }
+        $q.loading.hide()
+      })
     }
 
-    function pickColor (color) {
+    function fnPickColor (color) {
       $q.dialog({
         component: colorPicker,
         componentProps: { color: color }
@@ -175,9 +197,19 @@ export default defineComponent({
 
     return {
       user,
-      timeFormat,
-      pickColor
+      time,
+      fnPickColor,
+      fnCancelMembership
     }
   }
 })
 </script>
+
+<style scoped>
+button {
+  border: none;
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+</style>

@@ -41,3 +41,10 @@ export async function getUsers({ commit }) {
   const r = await api.get('/auth/users')
   commit('updateUsers', r.data.users)
 }
+
+export async function logout({commit}) {
+  const r = await api.get('/auth/logout')
+  if (r) {
+    commit('updateUser', null)
+  }
+}

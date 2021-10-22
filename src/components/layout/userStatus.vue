@@ -112,10 +112,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { api } from '../../boot/axios'
+// import { useRouter } from 'vue-router'
+// import { api } from '../../boot/axios'
 import colorApi from '@/apis/color'
 
 export default {
@@ -123,15 +123,14 @@ export default {
     user: Object
   },
   setup() {
-    const { getters, commit } = useStore()
-    const $router = useRouter()
+    const { getters, dispatch } = useStore()
+    const $router = inject('$router')
+
     const nickname = computed(() => getters['user/nickname'])
+
     async function logout() {
-      const r = await api.get('/auth/logout')
-      if (r) {
-        commit('user/updateUser', null)
-        $router.push('/')
-      }
+      await dispatch('user/logout')
+      $router.push('/')
     }
     return { nickname, logout, colorApi }
   }

@@ -99,15 +99,6 @@
       </q-scroll-area>
     </q-card-section>
   </q-card>
-  <q-dialog
-    v-model="createUpdateDialog"
-    persistent
-  >
-    <CreateUpdate
-      :id="selForEdit._id"
-      @close="mdCuClose"
-    />
-  </q-dialog>
 </template>
 
 <script>
@@ -117,11 +108,11 @@ import { useQuasar } from 'quasar'
 
 import { api } from '@/boot/axios'
 
-import CreateUpdate from './cu'
+// import CreateUpdate from './cu'
+import createUpdate from '@components/dialog/locationCreate'
 import deleteItemComponent from '@components/dialog/delete'
 
 export default {
-  components: { CreateUpdate },
   setup () {
     const { state, getters, commit, dispatch } = useStore()
     const $q = useQuasar()
@@ -136,8 +127,21 @@ export default {
     const selForEdit = ref({})
 
     function editItem (item) {
-      selForEdit.value = item
-      createUpdateDialog.value = true
+      $q.dialog({
+        component: createUpdate,
+        componentProps: { item: item }
+      }).onOk(async () => {
+        $q.loading.show()
+        try {
+          await api.get(`/locations/delete?_id=${item._id} `)
+          await dispatch('locations/updateLocations')
+        } catch (err) {
+          error.value = err.response.data.message
+        }
+        $q.loading.hide()
+      })
+      // selForEdit.value = item
+      // createUpdateDialog.value = true
     }
 
     function fnDelete (item) {
@@ -171,11 +175,6 @@ export default {
       createUpdateDialog.value = false
     }
 
-    function mdDeleteClose () {
-      selected.value = {}
-      deleteDialog.value = false
-    }
-
     return {
       locations,
       locationErrorCount,
@@ -186,8 +185,7 @@ export default {
       editItem,
       fnDelete,
       clickItem,
-      mdCuClose,
-      mdDeleteClose
+      mdCuClose
     }
   }
 }

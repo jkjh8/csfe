@@ -60,8 +60,7 @@
 </template>
 
 <script>
-import timeFormat from '../../apis/timeFormat'
-import secToDays from '../../apis/secToDays'
+import time from '@/apis/time'
 import { useQuasar } from 'quasar'
 import { ref, onBeforeMount } from 'vue'
 import { api } from '../../boot/axios'
@@ -90,8 +89,7 @@ export default {
 
     return {
       info,
-      timeFormat,
-      secToDays
+      time
     }
   }
 }

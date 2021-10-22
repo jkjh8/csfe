@@ -41,23 +41,22 @@
 
   <div class="item">
     <span>Created At</span>
-    <span>{{ timeFormat(info.createdAt) }}</span>
+    <span>{{ time.timeFormat(info.createdAt) }}</span>
   </div>
   <div class="item">
     <span>Updated At</span>
-    <span>{{ timeFormat(info.updatedAt) }}</span>
+    <span>{{ time.timeFormat(info.updatedAt) }}</span>
   </div>
 </template>
 
 <script>
-import timeFormat from '../../../apis/timeFormat'
-import secToDays from '../../../apis/secToDays'
+import time from '@/apis/time'
 export default {
   props: {
     info: Object
   },
   setup() {
-    return { timeFormat, secToDays }
+    return { time }
   }
 }
 </script>

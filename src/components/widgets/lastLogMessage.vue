@@ -27,7 +27,7 @@
         </div>
         <div v-if="logs && logs.docs.length">
           <div>
-            시간: {{ logs.docs[0].createdAt }}
+            시간: {{ time.timeFormat(logs.docs[0].createdAt) }}
           </div>
           <div>
             지역: {{ logs.docs[0].zones.join(',') }}
@@ -55,9 +55,9 @@
         <q-space />
         <router-link
           class="link row items-center"
-          to="/locations"
+          to="/eventlog"
         >
-          <span>방송구간설정 바로가기</span>
+          <span>이벤트로그 바로가기</span>
           <q-icon name="arrow_forward" />
         </router-link>
       </div>
@@ -69,6 +69,8 @@
 import { computed, onBeforeMount } from 'vue'
 import { useStore } from  'vuex'
 
+import time from '@/apis/time'
+
 export default {
   setup() {
     const { state } = useStore()
@@ -79,7 +81,8 @@ export default {
     })
 
     return {
-      logs
+      logs,
+      time
     }
   }
 }

@@ -48,7 +48,7 @@
               color="green-8"
               round
               flat
-              @click="editAdmin(props.row)"
+              @click="fnEditAdmin(props.row)"
             />
           </div>
           <div v-else>
@@ -58,7 +58,7 @@
               color="red"
               round
               flat
-              @click="editAdmin(props.row)"
+              @click="fnEditAdmin(props.row)"
             />
           </div>
         </q-td>
@@ -86,14 +86,6 @@
       </template>
       <template #body-cell-actions="props">
         <q-td :props="props">
-          <q-btn
-            flat
-            round
-            size="sm"
-            color="cyan-8"
-            icon="svguse:icons.svg#pencil-fill"
-            @click="editUser(props.row)"
-          />
           <q-btn
             flat
             round
@@ -131,19 +123,17 @@ const columns = [
   { name: "actions", align: "center", label: "Actions", field: "actions" },
 ];
 
-import { ref, onBeforeMount, computed } from "vue"
+import { onBeforeMount, computed } from "vue"
 import { useStore } from "vuex"
 import { useQuasar } from 'quasar'
 import moment from "moment";
 moment.locale("ko");
 import { api } from '@/boot/axios'
 
-import EditUser from "./edit";
 import DefalutDialog from '@components/dialog/default'
 import Delete from '@components/dialog/delete'
 
 export default {
-  components: { EditUser },
   props: {
     user: Object,
   },
@@ -153,18 +143,8 @@ export default {
     const users = computed(() => state.user.users);
     const usersCount = computed(() => getters["user/numberOfUsers"]);
     const adminCount = computed(() => getters["user/numberOfAdmin"]);
-    const currentUser = ref(null);
-    const editDialog = ref(false);
-    const selectedUser = ref(null);
-    const popupAdmin = ref(false);
-    const mdDeleteUser = ref(false)
 
-    function editUser(user) {
-      currentUser.value = user;
-      editDialog.value = true;
-    }
-
-    function editAdmin(user) {
+    function fnEditAdmin(user) {
       let message
       if (user.admin) {
         message = `${user.email}의 관리자 권한을 회수합니다.`
@@ -185,18 +165,6 @@ export default {
       })
     }
 
-    function startDeleteUser(user) {
-      selectedUser.value = user
-      mdDeleteUser.value = true
-    }
-
-    function close() {
-      editDialog.value = false;
-      popupAdmin.value = false;
-      currentUser.value = null;
-      selectedUser.value = null;
-    }
-
     function timeFormat2line(time) {
       return `${moment(time).format("YYYY/MM/DD")} \n ${moment(time).format(
         "hh:mm:ss a"
@@ -214,7 +182,6 @@ export default {
         try {
           await api.get(`/auth/users/delete?id=${rt._id}`)
           dispatch('user/getUsers')
-          
           } catch (err) {
             console.error(err)
         }
@@ -230,17 +197,10 @@ export default {
       users,
       usersCount,
       adminCount,
-      currentUser,
       columns,
-      editDialog,
-      editUser,
-      selectedUser,
-      popupAdmin,
-      editAdmin,
+      fnEditAdmin,
       timeFormat2line,
       close,
-      startDeleteUser,
-      mdDeleteUser,
       fnDeleteUser
     };
   },
