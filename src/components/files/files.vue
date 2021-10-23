@@ -12,10 +12,10 @@
             />
             <div class="q-ml-md">
               <div class="name">
-                파일 관리
+                미디어 파일 관리
               </div>
               <div class="caption">
-                파일을 업로드하거나 삭제할 수 있습니다
+                미디어 파일을 업로드하거나 삭제할 수 있습니다
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@
                       round
                       color="red"
                       size="sm"
-                      @click.stop.prevent="selectedFile = file;mdDel = true"
+                      @click.stop.prevent="fnDel(file)"
                     />
                   </div>
                 </q-item-section>
@@ -420,6 +420,8 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
+import Delete from '@components/dialog/delete'
+
 export default {
   emits: ['close'],
   // eslint-disable-next-line no-unused-vars
@@ -494,13 +496,20 @@ export default {
       $q.loading.hide()
     }
 
-    async function fnDel () {
-      const result = await api.post('/files/del', selectedFile.value)
-      console.log(result)
-      selectedFile.value = null
-      const reqPath = filePath.value.splice(1, 1).join('/')
-      console.log(reqPath)
-      await updateDir(reqPath)
+    async function fnDel (file) {
+      console.log(file)
+      $q.dialog({
+        component: Delete,
+        componentProps: { file: file }
+      }).onOk(async (rt) => {
+        console.log(rt)
+      })
+      // const result = await api.post('/files/del', selectedFile.value)
+      // console.log(result)
+      // selectedFile.value = null
+      // const reqPath = filePath.value.splice(1, 1).join('/')
+      // console.log(reqPath)
+      // await updateDir(reqPath)
     }
 
     async function fnUpload () {

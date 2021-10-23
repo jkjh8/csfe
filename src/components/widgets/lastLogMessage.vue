@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="card-small"
-    style="height: 16rem;"
+    style="height: 22rem;"
   >
     <q-card-section>
       <div
@@ -25,15 +25,26 @@
         <div>
           마지막 로그메시지는
         </div>
+        <br>
         <div v-if="logs && logs.docs.length">
           <div>
-            시간: {{ time.timeFormat(logs.docs[0].createdAt) }}
+            <b>시간</b>: {{ time.timeFormat(logs.docs[0].createdAt) }}
           </div>
           <div>
-            지역: {{ logs.docs[0].zones.join(',') }}
+            <b>Category</b>: {{ logs.docs[0].category }}
           </div>
           <div>
-            내용: {{ logs.docs[0].message }}
+            <b>지역</b>: {{ logs.docs[0].zones.join(',') }}
+          </div>
+          <div class="hiddenText">
+            <b>내용</b>: {{ logs.docs[0].message }}
+            <q-popup-proxy>
+              <q-card style="max-width: 20rem;">
+                <q-card-section class="bg-yellow-1 q-pa-md">
+                  {{ logs.docs[0].message }}
+                </q-card-section>
+              </q-card>
+            </q-popup-proxy>
           </div>
         </div>
         <div
@@ -91,5 +102,14 @@ export default {
 <style scoped>
 .link {
   text-decoration: none;
+}
+.hiddenText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2rem;
+  max-height: 4rem;
+  height: 6rem;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 </style>

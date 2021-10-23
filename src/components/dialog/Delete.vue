@@ -78,6 +78,43 @@
           >
             <strong>{{ message }}</strong>
           </div>
+          <!-- file -->
+          <div v-if="file">
+            <q-item>
+              <q-item-section avatar>
+                <div v-if="file.type === 'directory'">
+                  <q-icon
+                    name="svguse:icons.svg#folder-fill"
+                    color="yellow"
+                    size="md"
+                  />
+                </div>
+                <div v-else-if="file.type === 'audio'">
+                  <q-icon
+                    name="svguse:icons.svg#music-note-fill"
+                    color="grey"
+                    size="sm"
+                  />
+                </div>
+                <div v-else-if="file.type === 'video'">
+                  <q-icon
+                    name="svguse:icons.svg#video-camera-fill"
+                    color="blue-grey"
+                    size="sm"
+                  />
+                </div>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  {{ file.name }}
+                </q-item-label>
+                <q-item-label caption>
+                  {{ file.type.toUpperCase() }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
+          <div v-else />
         </div>
       </q-card-section>
 
@@ -95,7 +132,7 @@
             label="확인"
             unelevated
             rounded
-            @click="onOKClick(item)"
+            @click="onOKClick(item ? item:file)"
           />
         </div>
       </q-card-actions>
@@ -110,6 +147,7 @@ export default {
   props: {
     item: Object,
     message: String,
+    file: Object
   },
 
   emits: [
@@ -118,34 +156,19 @@ export default {
     ...useDialogPluginComponent.emits
   ],
 
-  setup () {
-    // REQUIRED; must be called inside of setup()
+  setup (props) {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-    // dialogRef      - Vue ref to be applied to QDialog
-    // onDialogHide   - Function to be used as handler for @hide on QDialog
-    // onDialogOK     - Function to call to settle dialog with "ok" outcome
-    //                    example: onDialogOK() - no payload
-    //                    example: onDialogOK({ /*.../* }) - with payload
-    // onDialogCancel - Function to call to settle dialog with "cancel" outcome
+
+    console.log(props.file)
 
     return {
-      // This is REQUIRED;
-      // Need to inject these (from useDialogPluginComponent() call)
-      // into the vue scope for the vue html template
       dialogRef,
       onDialogHide,
 
-      // other methods that we used in our vue html template;
-      // these are part of our example (so not required)
       onOKClick (item) {
-        // on OK, it is REQUIRED to
-        // call onDialogOK (with optional payload)
         onDialogOK(item)
-        // or with payload: onDialogOK({ ... })
-        // ...and it will also hide the dialog automatically
       },
 
-      // we can passthrough onDialogCancel directly
       onCancelClick: onDialogCancel
     }
   }
