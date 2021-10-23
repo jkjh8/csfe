@@ -96,10 +96,11 @@
 <script>
 import { ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
+import { useQuasar, format } from 'quasar'
 import { api } from '@/boot/axios'
-import { format } from 'quasar'
 import secToDays from '@api/secToDays'
+
+import Delete from '@components/dialog/delete'
 
 export default {
   setup() {
@@ -120,15 +121,25 @@ export default {
 
     async function deleteTmp () {
       $q.dialog({
-        title: '<svg class="text-red" style="height: 32px; width: 32px; margin: 0px 10px -12px 0;"><use xlink:href="icons.svg#exclamation"></use></svg><span>tmp 폴더 비우기</span>',
-        message: 'tmp 폴더를 비워서 추가 SSD 용량을 확보합니다.',
-        html: true,
-        cancel: true,
-        persistent: true
+        component: Delete,
+        componentProps: { message: '임시 파일을 삭제하여 추가 디스크 공간을 확보합니다.'}
       }).onOk(async () => {
         console.log('OK')
-        const r = await api.get('/admin/removeTmp')
-        console.log(r)
+        try {
+          await api.get('/admin/removeTmp')
+          await api.post('/eventlog', {
+            source: user.value.email,
+            message: '임시 폴더를 삭제 했습니다.'
+          })
+        } catch (err) {
+          await api.post('/eventlog', {
+            source: user.value.email,
+            category: 'warning',
+            priority: 'mid',
+            message: '임시 폴더를 삭제시 문제가 발생 했습니다.'
+          })
+          console.error(err)
+        }
       })
     }
 
@@ -140,7 +151,18 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(async () => {
-        console.log('OK reboot')
+        try {
+          await api.get('/admin/reboot')
+          await api.post('/eventlog', {
+            source: user.value.email,
+            message: '서버를 리부팅 합니다.'
+          })
+        } catch (err) {
+          await api.post('/eventlog', {
+            source: user.value.email,
+            message: `서버 리부팅 동작시 에러가 발생하였습니다. ${err.message}`
+          })
+        }
       })
     }
 

@@ -30,12 +30,26 @@
           :key="col.name"
           class="text-black"
           :props="props"
+          :style="col.name === 'message' ? 'max-width: 18rem;':''"
         >
           <div v-if="col.name === 'date'">
             {{ time.timeFormat(col.value) }}
           </div>
           <div v-else-if="col.name === 'zones'">
             {{ col.value.join(',') }}
+          </div>
+          <div
+            v-else-if="col.name ==='message'"
+            class="hiddenText"
+          >
+            {{ col.value }}
+            <q-popup-proxy :offset="[0, 10]">
+              <q-card style="width: 18rem;">
+                <q-card-section class="bg-yellow-1">
+                  {{ col.value }}
+                </q-card-section>
+              </q-card>
+            </q-popup-proxy>
           </div>
           <div v-else>
             {{ col.value }}
@@ -173,3 +187,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.hiddenText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1rem;
+  max-height: 2rem;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+</style>

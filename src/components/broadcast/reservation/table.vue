@@ -129,7 +129,7 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 import Schedule from '@components/dialog/schedule'
-import Delete from '@components/dialog/deleteSchedule'
+import Delete from '@components/dialog/delete'
 import Default from '@components/dialog/default'
 
 export default {

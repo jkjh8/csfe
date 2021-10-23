@@ -1,4 +1,5 @@
 import moment from 'moment'
+moment.locale('ko')
 
 function secToDays (seconds) {
   const d = parseInt(seconds / 86400)

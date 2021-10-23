@@ -1,6 +1,7 @@
 <template>
   <q-dialog
     ref="dialogRef"
+    persistent
     @hide="onDialogHide"
   >
     <q-card
@@ -29,6 +30,14 @@
                 지역단위 혹은 본부 DSP 추가 및 설정
               </div>
             </div>
+          </div>
+        </div>
+      </q-card-section>
+      
+      <q-card-section v-if="error">
+        <div class="q-mx-md">
+          <div class="error">
+            {{ error }}
           </div>
         </div>
       </q-card-section>
@@ -72,10 +81,36 @@
               map-options
               label="device"
             >
+              <!-- seleted -->
+              <template #selected-item="scope">
+                <q-item
+                  v-if="scope.opt.name"
+                  dense
+                >
+                  <q-item-section avatar>
+                    <q-icon
+                      name="svguse:iconsColor.svg#pc"
+                      size="xs"
+                    />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>{{ scope.opt.name }} - {{ scope.opt.ipaddress }}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <span :class="scope.opt.type === 'Q-Sys'? 'qsys':'barix'">
+                      {{ scope.opt.type }}
+                    </span>
+                  </q-item-section>
+                </q-item>
+              </template>
+              <!-- options -->
               <template #option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section avatar>
-                    <q-icon name="svguse:iconsColor.svg#pc" />
+                    <q-icon
+                      name="svguse:iconsColor.svg#pc"
+                      size="xs"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>{{ scope.opt.name }}</q-item-label>
@@ -121,9 +156,10 @@
 </template>
 
 <script>
-import { useDialogPluginComponent } from 'quasar'
+import { useQuasar, useDialogPluginComponent } from 'quasar'
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { api } from '@/boot/axios'
 
 export default {
   props: {
@@ -136,14 +172,17 @@ export default {
 
   setup (props) {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
+    const $q = useQuasar()
     const { getters } = useStore()
 
     const indexArr = computed(() => getters['locations/getLocationsIndexArr'])
     const qsysList = computed(() => getters['devices/QsysList'])
     const barixList = computed(() => getters['devices/BarixList'])
 
+    const error = ref('')
+
     const locate = ref({
-      index: null,
+      index: 1,
       name: '',
       ipaddress: '',
       type: 'Q-Sys'
@@ -151,7 +190,7 @@ export default {
 
     function getIndex () {
       let index
-      for (let i = 0; i <= indexArr.value.length + 1; i++) {
+      for (let i = 1; i <= indexArr.value.length + 1; i++) {
         if (!indexArr.value.includes(i)) {
           index = i
           break
@@ -168,17 +207,30 @@ export default {
       }
     })
 
+    async function onOKClick (item) {
+      $q.loading.show()
+        try {
+          if (item._id) {
+            await api.put('/locations', item)
+          } else {
+            await api.post('/locations', item)
+          }
+           onDialogOK(item)
+        } catch (err) {
+          error.value = err.response.data.message
+        }
+        $q.loading.hide()
+    }
+
 
     return {
       dialogRef,
       onDialogHide,
+      error,
       locate,
       qsysList,
       barixList,
-      onOKClick (item) {
-        console.log(item)
-        onDialogOK(item)
-      },
+      onOKClick,
       onCancelClick: onDialogCancel
     }
   }
@@ -199,5 +251,13 @@ export default {
 }
 .pickBtn:hover {
   background: none;
+}
+.error {
+  background: red;
+  color: #fff;
+  border-radius: 1rem;
+  width: 100%;
+  padding: .5rem .5rem;
+  text-align: center;
 }
 </style>

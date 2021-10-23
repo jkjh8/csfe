@@ -1,3 +1,4 @@
+// 캘린더 데이터 vuex로 변경 필요
 <template>
   <div class="subcontent">
     <navigation-bar
@@ -73,6 +74,18 @@
                               color="grey"
                             />
                           </q-btn>
+                          <q-btn
+                            round
+                            flat
+                            size="xs"
+                            @click="fnDelete(event)"
+                          >
+                            <q-icon
+                              name="svguse:icons.svg#trash"
+                              size="xs"
+                              color="red"
+                            />
+                          </q-btn>
                         </div>
                       </q-card-section>
 
@@ -103,6 +116,7 @@ import moment from 'moment'
 moment.locale('ko')
 
 import Schedule from '@components/dialog/schedule'
+import Delete from '@components/dialog/delete'
 import fnColor from '@/apis/color'
 
 import { QCalendarMonth, today, addToDate, parseTimestamp } from '@quasar/quasar-ui-qcalendar/src/index.js'
@@ -234,6 +248,22 @@ export default {
       })
     }
 
+    function fnDelete(item) {
+      $q.dialog({
+        component: Delete,
+        componentProps: { item: item }
+      }).onOk(async (rt) => {
+        $q.loading.show()
+        try {
+          await api.post('/broadcast/schedules/delete', rt)
+          await fnGetSchedules()
+        } catch (err) {
+          console.error(err)
+        }
+        $q.loading.hide()
+      })
+    }
+
     onMounted(async () => {
       $q.loading.show()
       try {
@@ -292,7 +322,8 @@ export default {
         console.log('onClickHeadWorkweek', data)
       },
       fnColor,
-      fnClickEvent
+      fnClickEvent,
+      fnDelete
     }
   }
 }

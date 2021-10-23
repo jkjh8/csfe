@@ -21,7 +21,7 @@
               round
               color="cyan-7"
               icon="svguse:icons.svg#plus-circle-fill"
-              @click="createUpdateDialog=!createUpdateDialog"
+              @click="fnCreate"
             />
           </div>
         </div>
@@ -82,7 +82,7 @@
                   icon="svguse:icons.svg#pencil-fill"
                   size="sm"
                   color="teal-6"
-                  @click.prevent.stop="editItem(local)"
+                  @click.prevent.stop="fnEdit(local)"
                 />
                 <q-btn
                   flat
@@ -126,14 +126,29 @@ export default {
     const deleteDialog = ref(false)
     const selForEdit = ref({})
 
-    function editItem (item) {
+    function fnCreate () {
+      $q.dialog({
+        component: createUpdate
+      }).onOk(async (rt) => {
+        $q.loading.show()
+        try {
+          await api.post('/locations', rt)
+          await dispatch('locations/updateLocations')
+        } catch (err) {
+          error.value = err.response.data.message
+        }
+        $q.loading.hide()
+      })
+    }
+
+    function fnEdit (item) {
       $q.dialog({
         component: createUpdate,
         componentProps: { item: item }
-      }).onOk(async () => {
+      }).onOk(async (rt) => {
         $q.loading.show()
         try {
-          await api.get(`/locations/delete?_id=${item._id} `)
+          await api.put('/locations', rt)
           await dispatch('locations/updateLocations')
         } catch (err) {
           error.value = err.response.data.message
@@ -182,7 +197,8 @@ export default {
       deleteDialog,
       selected,
       selForEdit,
-      editItem,
+      fnCreate,
+      fnEdit,
       fnDelete,
       clickItem,
       mdCuClose

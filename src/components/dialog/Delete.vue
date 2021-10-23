@@ -30,23 +30,53 @@
 
       <q-card-section>
         <div class="q-mx-md q-mt-lg">
-          <div>
-            다음 내용을 삭제 하시겠습니까?
+          <div v-if="item">
+            <div>
+              다음 내용을 삭제 하시겠습니까?
+            </div>
+            <br>
+            <div v-if="item.index">
+              인덱스: <strong>{{ item.index }}</strong>
+            </div>
+            <div v-if="item.id">
+              ID: {{ item.id }}
+            </div>
+            <div v-if="item.name">
+              이름: <strong>{{ item.name }}</strong>
+            </div>
+            <div v-if="item.email">
+              이메일: <strong>{{ item.email }}</strong>
+            </div>
+            <div v-if="item.ipaddress">
+              아이피: <strong>{{ item.ipaddress }}</strong>
+            </div>
+            <!-- schedule -->
+            <div v-if="item.repeat">
+              <div>
+                반복: <strong>{{ item.repeat }}</strong>
+              </div>
+              <div>
+                <div v-if="item.repeat === '한번'">
+                  시간: <strong>{{ item.date }}</strong>
+                </div>
+                <div v-else>
+                  <div>시간:<strong>{{ item.time }}</strong></div>
+                  <div v-if="item.repeat === 'week'">
+                    요일: {{ item.week.join(',') }}
+                  </div>
+                </div>
+              </div>
+              <div>
+                삭제 후에는 복구가 불가능 합니다. 다시 한번 확인 해주세요.
+              </div>
+            </div>
           </div>
-          <div v-if="item.index">
-            인덱스: <strong>{{ item.index }}</strong>
-          </div>
-          <div v-if="item.name">
-            이름: <strong>{{ item.name }}</strong>
-          </div>
-          <div v-if="item.email">
-            이메일: <strong>{{ item.email }}</strong>
-          </div>
-          <div v-if="item.ipaddress">
-            아이피: <strong>{{ item.ipaddress }}</strong>
-          </div>
-          <div>
-            삭제 후에는 복구가 불가능 합니다. 다시 한번 확인 해주세요.
+          <!-- message -->
+          <div
+            v-if="message"
+            class="text-center"
+          >
+            <strong>{{ message }}</strong>
           </div>
         </div>
       </q-card-section>
@@ -78,7 +108,8 @@ import { useDialogPluginComponent } from 'quasar'
 
 export default {
   props: {
-    item: Object
+    item: Object,
+    message: String,
   },
 
   emits: [
