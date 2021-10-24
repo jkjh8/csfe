@@ -74,7 +74,7 @@ export default {
         mediaPath = `http://${window.location.hostname}`
       }
       if (file.value.src) {
-        mediaPath = mediaPath + '/' + file.value.base + file.value.src + '/' + file.value.name
+        mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.src + '/' + file.value.name
       } else {
         mediaPath = mediaPath + '/' + file.value.base + '/' + file.value.name
       }

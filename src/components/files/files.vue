@@ -49,7 +49,7 @@
               round
               flat
               color="grey"
-              @click="mdAddFolder=!mdAddFolder"
+              @click="fnAddFolder"
             >
               <q-icon name="svguse:icons.svg#plus-circle" />
             </q-btn>
@@ -88,7 +88,7 @@
               round
               flat
               color="grey"
-              @click="mdAddFile=!mdAddFile"
+              @click="fnUpload"
             >
               <q-icon name="svguse:icons.svg#plus-circle" />
             </q-btn>
@@ -164,254 +164,6 @@
       </div>
     </q-card-section>
   </q-card>
-
-  <!-- 폴더 추가 -->
-  <q-dialog v-model="mdAddFolder">
-    <q-card class="card-small">
-      <q-card-section class="q-pa-none">
-        <div
-          class="backg-re-gr"
-          style="height: 4rem"
-        >
-          <div class="card-name-align">
-            <div class="card-name-sm">
-              <q-icon
-                name="svguse:icons.svg#folder-fill"
-                color="yellow"
-              />
-              <div>폴더 추가</div>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="q-px-md">
-          <div class="listname row">
-            <q-icon
-              name="svguse:icons.svg#folder-fill"
-              color="yellow"
-              size="sm"
-            />
-            <div class="q-ml-sm">
-              현재 폴더
-            </div>
-          </div>
-          <div class="q-mt-sm">
-            {{ filePath.join(' / ') }}
-          </div>
-        </div>
-      </q-card-section>
-      <q-card-section>
-        <div class="q-px-md">
-          <div class="listname row items-center">
-            <q-icon
-              name="svguse:icons.svg#folder-fill"
-              size="sm"
-              color="yellow-8"
-            />
-            <div class="q-ml-sm">
-              폴더 이름
-            </div>
-          </div>
-          <q-input
-            v-model="addFolderName"
-            class="q-my-sm"
-            outlined
-            rounded
-            dense
-          />
-        </div>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          style="width: 6rem; height: 2rem;"
-          rounded
-          flat
-          no-caps
-          label="닫기"
-        />
-        <q-btn
-          v-close-popup
-          :disable="!addFolderName"
-          class="q-mx-sm"
-          style="width: 6rem; height: 2rem;"
-          rounded
-          unelevated
-          color="grey-10"
-          no-caps
-          label="업로드"
-          @click="fnAddFolder"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <!-- 파일 추가 -->
-  <q-dialog v-model="mdAddFile">
-    <q-card class="card-small">
-      <q-card-section class="q-pa-none">
-        <div
-          class="backg-re-gr"
-          style="height: 4rem"
-        >
-          <div class="card-name-align">
-            <div class="card-name-sm">
-              <q-icon
-                name="svguse:icons.svg#folder-fill"
-                color="yellow"
-              />
-              <div>폴더 추가</div>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="q-px-md">
-          <div class="listname row">
-            <q-icon
-              name="svguse:icons.svg#folder-fill"
-              color="yellow"
-              size="sm"
-            />
-            <div class="q-ml-sm">
-              현재 폴더
-            </div>
-          </div>
-          <div class="q-mt-sm">
-            {{ filePath.join(' / ') }}
-          </div>
-        </div>
-      </q-card-section>
-      <q-card-section>
-        <div class="q-px-md">
-          <div class="listname row items-center">
-            <q-icon
-              name="svguse:icons.svg#folder-fill"
-              size="sm"
-              color="yellow-8"
-            />
-            <div class="q-ml-sm">
-              파일
-            </div>
-          </div>
-          <q-file
-            v-model="uploadFile"
-            class="q-my-sm"
-            outlined
-            rounded
-            dense
-            accept=".mp3, *.mp4, *.wav, audio/*, video/*"
-          />
-        </div>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          style="width: 6rem; height: 2rem;"
-          rounded
-          flat
-          no-caps
-          label="닫기"
-        />
-        <q-btn
-          v-close-popup
-          :disable="!uploadFile"
-          class="q-mx-sm"
-          style="width: 6rem; height: 2rem;"
-          rounded
-          unelevated
-          color="grey-10"
-          no-caps
-          label="업로드"
-          @click="fnUpload"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <!-- 삭제 -->
-  <q-dialog v-model="mdDel">
-    <q-card class="card-small">
-      <q-card-section class="q-pa-none">
-        <div
-          class="backg-re-gr"
-          style="height: 4rem"
-        >
-          <div class="card-name-align">
-            <div class="card-name-sm">
-              <q-icon
-                name="svguse:icons.svg#folder-fill"
-                color="yellow"
-              />
-              <div>삭제</div>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="q-px-md">
-          <div class="listname row">
-            <q-icon
-              name="svguse:icons.svg#exclamation"
-              color="red"
-              size="sm"
-            />
-            <div class="q-ml-sm">
-              삭제 대상
-            </div>
-          </div>
-          <div class="q-mt-sm">
-            <div v-if="selectedFile.type === 'directory'">
-              <q-icon
-                name="svguse:icons.svg#folder-fill"
-                color="yellow"
-                size="sm"
-              />
-              <span class="q-ml-sm">
-                {{ filePath.join(' / ') }}/{{ selectedFile.name }}
-              </span>
-            </div>
-            <div v-else>
-              <q-icon
-                name="save"
-                color="blue-grey"
-                size="sm"
-              />
-              <span class="q-ml-sm">
-                {{ selectedFile.name }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          style="width: 6rem; height: 2rem;"
-          rounded
-          flat
-          no-caps
-          label="닫기"
-        />
-        <q-btn
-          v-close-popup
-          class="q-mx-sm"
-          style="width: 6rem; height: 2rem;"
-          rounded
-          unelevated
-          color="grey-10"
-          no-caps
-          label="삭제"
-          @click="fnDel"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script>
@@ -421,6 +173,7 @@ import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 import Delete from '@components/dialog/delete'
+import uploader from '@components/dialog/files'
 
 export default {
   emits: ['close'],
@@ -429,24 +182,14 @@ export default {
     const { commit } = useStore()
     const $q = useQuasar()
 
-    const selectedFile = ref(null)
     const files = ref([])
-    const filePath = ref([''])
-    const selectForPlay = ref(null)
-
-    const mdAddFolder = ref(false)
-    const addFolderName = ref(null)
-
-    const mdAddFile = ref(false)
-    const uploadFile = ref(null)
-    const mdDel = ref(false)
+    const filePath = ref(['home'])
 
     async function clickFile (file) {
       $q.loading.show()
       if (file.type === 'directory') {
-        const reqPath = filePath.value.splice(1, 1).join('/') + '/' + file.name
-        console.log(reqPath)
-        await updateDir(reqPath)
+        filePath.value.push(file.name)
+        await updateDir(filePath.value)
       } else {
         commit('broadcast/updatePlayFile', file)
         emit('close')
@@ -456,44 +199,42 @@ export default {
 
     async function getDir (index) {
       $q.loading.show()
-      let reqPath = ''
-      if (index) {
+      let reqPath = []
+        index = index + 1
         for (let i = 0; i < index; i++) {
-          reqPath = reqPath + '/' + filePath.value[i + 1]
+          reqPath.push(filePath.value[i])
         }
-      } else {
-        reqPath = '/'
-      }
+        filePath.value = reqPath
       await updateDir(reqPath)
       $q.loading.hide()
     }
 
-    async function updateDir (reqPath) {
-      console.log(reqPath)
-      const r = await api.get(`/files?link=${reqPath}`)
+    async function updateDir () {
+      const r = await api.post('/files', { path: filePath.value })
+      console.log(r)
       filePath.value = r.data.path
-      if (filePath.value[filePath.value.length] === '') {
-        filePath.value.splice(-1, 1)
-      }
       files.value = r.data.files
     }
 
     async function fnAddFolder () {
-      $q.loading.show()
-      try {
-        console.log(filePath.value, addFolderName.value)
-        const r = await api.post('/files/makeFolder', {
-          currentPath: filePath.value,
-          folder : addFolderName.value
-        })
-        console.log(r)
-        addFolderName.value = ''
-      } catch (err) {
-        console.log('make folder error ', err)
-      }
-      const reqPath = filePath.value.splice(1, 1).join('/')
-      await updateDir(reqPath)
-      $q.loading.hide()
+      $q.dialog({
+        component: uploader,
+        componentProps: {
+          title: '폴더생성',
+          currentPath: filePath.value
+        }
+      }).onOk(async (rt) => {
+        console.log(rt)
+        $q.loading.show()
+        try {
+          const r = await api.post('/files/makeFolder', rt.path)
+          console.log(r)
+        } catch (err) {
+          console.log('make folder error ', err)
+        }
+        await updateDir()
+        $q.loading.hide()
+      })
     }
 
     async function fnDel (file) {
@@ -503,44 +244,49 @@ export default {
         componentProps: { file: file }
       }).onOk(async (rt) => {
         console.log(rt)
+        const result = await api.post('/files/del', rt)
+        console.log(result)
+        const reqPath = filePath.value.splice(1, 1).join('/')
+        console.log(reqPath)
+        await updateDir(reqPath)
       })
-      // const result = await api.post('/files/del', selectedFile.value)
-      // console.log(result)
-      // selectedFile.value = null
-      // const reqPath = filePath.value.splice(1, 1).join('/')
-      // console.log(reqPath)
-      // await updateDir(reqPath)
     }
 
     async function fnUpload () {
-      const formData = new FormData()
-      const reqPath = filePath.value.splice(1, 1).join('/')
-      formData.append('files', uploadFile.value)
-      formData.set('path', reqPath)
-      const r = await api.post('/files/upload', formData)
-      console.log(r)
-      uploadFile.value = null
-      await updateDir(reqPath)
+      $q.dialog({
+        component: uploader,
+        componentProps: {
+          title: '파일업로드',
+          currentPath: filePath.value
+        }
+      }).onOk(async (rt) => {
+        console.log(rt)
+        $q.loading.show()
+        try {
+          const formData = new FormData()
+          formData.append('files', rt.file)
+          formData.set('path', rt.path.join('/'))
+          const r = await api.post('/files/upload', formData)
+          console.log(r)
+          await updateDir()
+        } catch (err) {
+          console.error(err)
+        }
+        $q.loading.hide()
+      })
     }
 
     onMounted(() => {
-      getDir('/')
+      getDir(0)
     })
     return {
-      selectedFile,
       files,
       filePath,
-      mdAddFolder,
-      addFolderName,
-      mdAddFile,
-      uploadFile,
       fnUpload,
-      selectForPlay,
       clickFile,
       getDir,
       updateDir,
       fnAddFolder,
-      mdDel,
       fnDel
     }
   }

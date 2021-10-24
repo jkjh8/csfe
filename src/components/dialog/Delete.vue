@@ -119,7 +119,10 @@
       </q-card-section>
 
       <!-- buttons example -->
-      <q-card-actions align="right">
+      <q-card-actions
+        class="bg-grey-1"
+        align="right"
+      >
         <div class="q-mx-sm q-gutter-sm">
           <q-btn
             label="취소"
