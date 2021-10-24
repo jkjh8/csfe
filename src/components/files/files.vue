@@ -95,6 +95,18 @@
           </div>
         </div>
 
+        <div>
+          <q-table
+            :columns="[
+              { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
+              { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
+              { name: 'size', align: 'center', label: 'Size', field: 'size', sortable: true },
+              { name: 'actions', align: 'center', label: 'Actions' },
+            ]"
+            :rows="files"
+          />
+        </div>
+
         <!-- 파일 리스트 -->
         <div class="q-mt-md">
           <q-scroll-area style="height: 20rem">

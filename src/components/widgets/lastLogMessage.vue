@@ -50,6 +50,7 @@
         <div
           v-else
           class="q-my-md q-ml-lg"
+          style="height: 7rem;"
         >
           <q-icon
             name="svguse:icons.svg#exclamation"
