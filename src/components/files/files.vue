@@ -97,6 +97,7 @@
 
         <div>
           <q-table
+            flat
             :columns="[
               { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
               { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
@@ -104,74 +105,79 @@
               { name: 'actions', align: 'center', label: 'Actions' },
             ]"
             :rows="files"
-          />
-        </div>
-
-        <!-- 파일 리스트 -->
-        <div class="q-mt-md">
-          <q-scroll-area style="height: 20rem">
-            <q-list>
-              <q-item
-                v-for="file in files"
-                :key="file.idx"
-                class="q-px-sm radius"
-                dense
-                clickable
-                @click="clickFile(file)"
+            :pagination="{ rowsPerPage: 15 }"
+          >
+            <template #body="props">
+              <q-tr
+                :props="props"
+                @click="clickFile(props.row)"
               >
-                <!-- 아이콘 -->
-                <q-item-section avatar>
-                  <div v-if="file.type === 'directory'">
+                <q-td
+                  key="type"
+                  :props="props"
+                >
+                  <div class="row justify-start items-center q-px-md">
                     <q-icon
+                      v-if="props.row.type === 'directory'"
                       name="svguse:icons.svg#folder-fill"
+                      size="sm"
                       color="yellow"
-                      size="md"
                     />
-                  </div>
-                  <div v-else-if="file.type === 'audio'">
                     <q-icon
+                      v-else-if="props.row.type === 'audio'"
                       name="svguse:icons.svg#music-note-fill"
-                      color="grey"
                       size="sm"
+                      color="yellow"
                     />
-                  </div>
-                  <div v-else-if="file.type === 'video'">
                     <q-icon
-                      name="svguse:icons.svg#video-camera-fill"
-                      color="blue-grey"
+                      v-else-if="props.row.type === 'video'"
+                      name="svguse:icons.svg#video-came-fill"
                       size="sm"
+                      color="yellow"
                     />
+                    <span class="q-ml-sm">{{ props.row.type.toUpperCase() }}</span>
                   </div>
-                </q-item-section>
-                <!-- 파일 이름 -->
-                <q-item-section>
-                  {{ file.name }}
-                </q-item-section>
-                <!-- 기능 -->
-                <q-item-section side>
-                  <div>
-                    <q-btn
-                      v-if="file.type !== 'directory'"
-                      icon="play_arrow"
-                      flat
-                      round
-                      color="green"
-                      size="sm"
-                      @click.stop.prevent="$store.dispatch('broadcast/startPreview', file)"
-                    />
-                    <q-btn
-                      icon="delete"
-                      flat
-                      round
-                      color="red"
-                      size="sm"
-                      @click.stop.prevent="fnDel(file)"
-                    />
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-scroll-area>
+                </q-td>
+
+                <q-td
+                  key="name"
+                  :props="props"
+                >
+                  {{ props.row.name }}
+                </q-td>
+
+                <q-td
+                  key="size"
+                  :props="props"
+                >
+                  {{ humanSize(props.row.size) }}
+                </q-td>
+
+                <q-td
+                  key="actions"
+                  :props="props"
+                >
+                  <q-btn
+                    v-if="props.row.type !== 'directory'"
+                    icon="play_arrow"
+                    flat
+                    round
+                    color="green"
+                    size="sm"
+                    @click.stop.prevent="$store.dispatch('broadcast/startPreview', props.row)"
+                  />
+                  <q-btn
+                    icon="delete"
+                    flat
+                    round
+                    color="red"
+                    size="sm"
+                    @click.stop.prevent="fnDel(props.row)"
+                  />
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
         </div>
       </div>
     </q-card-section>
@@ -181,7 +187,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
+import { useQuasar, format } from 'quasar'
 import { api } from '@/boot/axios'
 
 import Delete from '@components/dialog/delete'
@@ -193,6 +199,7 @@ export default {
   setup (props, { emit }) {
     const { commit } = useStore()
     const $q = useQuasar()
+    const { humanStorageSize } = format
 
     const files = ref([])
     const filePath = ref(['home'])
@@ -288,6 +295,14 @@ export default {
       })
     }
 
+    function humanSize (bits) {
+      if (bits) {
+        return humanStorageSize(bits)
+
+      } else {
+        return ''
+      }
+    }
     onMounted(() => {
       getDir(0)
     })
@@ -299,7 +314,8 @@ export default {
       getDir,
       updateDir,
       fnAddFolder,
-      fnDel
+      fnDel,
+      humanSize
     }
   }
 }
