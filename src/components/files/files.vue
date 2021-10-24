@@ -105,7 +105,7 @@
               { name: 'actions', align: 'center', label: 'Actions' },
             ]"
             :rows="files"
-            :pagination="{ rowsPerPage: 15 }"
+            :pagination="{ rowsPerPage: 0 }"
           >
             <template #body="props">
               <q-tr
@@ -116,7 +116,7 @@
                   key="type"
                   :props="props"
                 >
-                  <div class="row justify-start items-center q-px-md">
+                  <div>
                     <q-icon
                       v-if="props.row.type === 'directory'"
                       name="svguse:icons.svg#folder-fill"
@@ -127,7 +127,7 @@
                       v-else-if="props.row.type === 'audio'"
                       name="svguse:icons.svg#music-note-fill"
                       size="sm"
-                      color="yellow"
+                      color="purple"
                     />
                     <q-icon
                       v-else-if="props.row.type === 'video'"
