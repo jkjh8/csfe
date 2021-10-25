@@ -115,6 +115,7 @@ import { api } from '@/boot/axios'
 
 import Update from './update'
 
+import updater from '@components/dialog/locations/zoneCreate'
 import deleteItemComponent from '@components/dialog/delete'
 
 export default {
@@ -131,8 +132,14 @@ export default {
     const selected = ref({})
 
     function fnUpdateItem (item) {
-      selected.value = item
-      updateDialog.value = true
+      $q.dialog({
+        component: updater,
+        componentProps: { item: item }
+      }).onOk(async () => {
+        $q.loading.show()
+        await dispatch('devices/updateDevices')
+        $q.loading.hide()
+      })
     }
 
     function fnDeleteItem (item) {

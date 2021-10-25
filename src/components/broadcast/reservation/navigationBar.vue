@@ -2,7 +2,7 @@
   <div class="fit row justify-between">
     <div>
       <q-icon
-        name="svguse:icons.svg#calendar-color"
+        name="svguse:icons.svg#calendar"
         size="1.2rem"
       />
       <span

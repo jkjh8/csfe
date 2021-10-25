@@ -62,45 +62,24 @@
                   @click="fnClickItem(file)"
                 >
                   <q-item-section avatar>
-                    <div v-if="file.type === 'directory'">
-                      <q-avatar
-                        color="yellow-2"
-                        size="1.8rem"
-                      >
-                        <q-icon
-                          name="svguse:icons.svg#folder-fill"
-                          color="yellow-8"
-                          size="1.2rem"
-                        />
-                      </q-avatar>
-                    </div>
-                    <div v-if="file.type === 'audio'">
-                      <q-avatar
-                        color="cyan-1"
-                        size="1.8rem"
-                      >
-                        <q-icon
-                          name="svguse:icons.svg#music-note-fill"
-                          color="cyan-8"
-                          size="1rem"
-                        />
-                      </q-avatar>
-                    </div>
-                    <div v-if="file.type === 'video'">
-                      <q-avatar
-                        color="blue-grey-1"
-                        size="1.8rem"
-                      >
-                        <q-icon
-                          name="svguse:icons.svg#video-camera-fill"
-                          color="blue-grey-8"
-                          size="1rem"
-                        />
-                      </q-avatar>
-                    </div>
+                    <FileIcon :file="file" />
                   </q-item-section>
                   <q-item-section>
                     {{ file.name }}
+                  </q-item-section>
+
+                  <q-item-section
+                    v-if="file.type !== 'directory'"
+                    side
+                  >
+                    <q-btn
+                      flat
+                      round
+                      icon="play_arrow"
+                      color="green"
+                      size="sm"
+                      @click.prevent.stop="$store.dispatch('broadcast/startPreview', file)"
+                    />
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -136,7 +115,10 @@ import { useQuasar, useDialogPluginComponent } from 'quasar'
 import { ref, onMounted } from 'vue'
 import { api } from '@/boot/axios'
 
+import FileIcon from '@components/files/fileIcon'
+
 export default {
+  components: { FileIcon },
   props: {
     item: Object
   },
@@ -159,18 +141,18 @@ export default {
     // onDialogCancel - Function to call to settle dialog with "cancel" outcome
     const error = ref('')
     const files = ref([])
-    const filePath = ref([])
+    const filePath = ref(['home'])
     const selected = ref(null)
 
     async function fnClickItem (file) {
       $q.loading.show()
       try {
         if (file.type === 'directory') {
-          const reqPath = filePath.value.splice(1, 1).join('/') + '/' + file.name
-          await fnUpdate(reqPath)
+          filePath.value.push(file.name)
+          await fnUpdatePath(filePath.value)
         } else {
-          $q.loading.hide()
           selected.value = file
+          console.log(file)
         }
       } catch (err) {
         error.value = err
@@ -178,38 +160,30 @@ export default {
       $q.loading.hide()
     }
 
-    async function fnGetPath (idx) {
+    async function fnGetPath (index) {
       $q.loading.show()
       try {
-        let reqPath = ''
-        if (idx) {
-          for (let i = 0; i < idx; i ++) {
-            reqPath = reqPath + '/' + filePath.value[i + 1]
+        let reqPath = []
+          index = index + 1
+          for (let i = 0; i < index; i++) {
+            reqPath.push(filePath.value[i])
           }
-        } else {
-          reqPath = '/'
-        }
-        console.log(reqPath)
-        await fnUpdate(reqPath)
+          filePath.value = reqPath
+        await fnUpdatePath(reqPath)
       } catch (err) {
-        error.value = err
+        console.error(err)
       }
       $q.loading.hide()
     }
 
-    async function fnUpdate (reqPath) {
-      const r = await api.get(`/files?link=${reqPath}`)
+    async function fnUpdatePath () {
+      const r = await api.post('/files', { path: filePath.value })
       filePath.value = r.data.path
-      console.log(r.data.path)
-      if (filePath.value[filePath.value.length] === '') {
-        filePath.value.splice(-1, 1)
-      }
       files.value = r.data.files
-      console.log(files.value)
     }
 
     onMounted(() => {
-      fnGetPath()
+      fnGetPath(0)
     })
 
     return {
@@ -223,7 +197,7 @@ export default {
       selected,
       fnClickItem,
       fnGetPath,
-      fnUpdate,
+      fnUpdatePath,
 
       // other methods that we used in our vue html template;
       // these are part of our example (so not required)
@@ -258,8 +232,8 @@ export default {
   cursor: pointer;
 }
 .selected-item {
-  color: white;
-  background: #708A7E;
+  color: #111;
+  background: #BEFFFF;
   border-radius: .5rem;
 }
 </style>

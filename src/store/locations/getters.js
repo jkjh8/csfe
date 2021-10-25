@@ -14,6 +14,27 @@ export function errorCount (state) {
   return state.locations.filter(e => e.status !== true).length
 }
 
+export function locationsCount (state) {
+  let locations = 0
+  let zones = 0
+  let broadcastZones = 0
+
+  state.locations.forEach(e => {
+    locations = locations + 1
+    if (e.children.length) {
+      zones = zones + e.children.length
+      broadcastZones = broadcastZones + e.children.length
+    } else {
+      broadcastZones = broadcastZones + 1
+    }
+  })
+  return {
+    locations,
+    zones,
+    broadcastZones,
+  }
+}
+
 export function selectedGroup (state) {
   const selected = state.selectedId
   const locations = state.locations

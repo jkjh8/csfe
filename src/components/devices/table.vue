@@ -83,7 +83,7 @@
               icon="svguse:icons.svg#dot3-h"
               size="sm"
               color="grey-8"
-              @click="openInfo(props.row)"
+              @click="fnOpenInfoWindow(props.row)"
             />
             <q-btn
               flat
@@ -99,7 +99,7 @@
               icon="svguse:icons.svg#pencil-fill"
               size="sm"
               color="teal-6"
-              @click="createUpdateItem(props.row)"
+              @click="fnCreateUpdateItem(props.row)"
             />
             <q-btn
               flat
@@ -114,20 +114,6 @@
       </q-tr>
     </template>
   </q-table>
-
-  <q-dialog v-model="mdInfo">
-    <Info :id="selected._id" />
-  </q-dialog>
-
-  <q-dialog
-    v-model="mdCu"
-    persistent
-  >
-    <CreateUpdate
-      :id="selected._id"
-      @close="mdCu = false"
-    />
-  </q-dialog>
 </template>
 
 <script>
@@ -147,13 +133,12 @@ import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 import { socket } from '@/boot/socketio'
 import time from '@/apis/time'
-import CreateUpdate from './cu.vue'
 
+import addEditCompoenet from '@components/dialog/devices/deviceAdd'
+import infoWindow from '@components/dialog/devices/info'
 import deleteItemComponent from '@components/dialog/delete'
-import Info from './info.vue'
 
 export default {
-  components: { CreateUpdate, Info },
   setup () {
     const { state, dispatch } = useStore()
     const $q = useQuasar()
@@ -161,19 +146,26 @@ export default {
     const tableData = computed(() => state.devices.devices)
     // variable
     const error = ref('')
-    const mdCu = ref(false)
-    const mdInfo = ref(false)
     const selected = ref(null)
-    const info = ref(null)
 
-    function openInfo (data) {
-      selected.value = data
-      mdInfo.value = true
+    function fnOpenInfoWindow (item) {
+      $q.dialog({
+        component: infoWindow,
+        componentProps: { item: item }
+      }).onOk(() => {
+        console.log('close info window')
+      })
     }
 
-    function createUpdateItem (item) {
-      selected.value = item
-      mdCu.value = true
+    function fnCreateUpdateItem (item) {
+      $q.dialog({
+        component: addEditCompoenet,
+        componentProps: { item: item }
+      }).onOk(async () => {
+        $q.loading.show()
+        await dispatch('devices/updateDevices')
+        $q.loading.hide()
+      })
     }
 
     function fnDelete (item) {
@@ -202,16 +194,14 @@ export default {
         dispatch('devices/updateListAsWebsoket', r)
       })
       dispatch('devices/updateDevices')
+      dispatch('locations/updateLocations')
     })
     return {
       tableColumes,
       time,
       tableData,
-      mdCu,
-      mdInfo,
-      info,
-      openInfo,
-      createUpdateItem,
+      fnCreateUpdateItem,
+      fnOpenInfoWindow,
       selected,
       checkItem,
       fnDelete

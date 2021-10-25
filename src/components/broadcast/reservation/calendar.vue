@@ -110,6 +110,7 @@
 
 <script>
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 import moment from 'moment'
@@ -128,16 +129,88 @@ import NavigationBar from './navigationBar.vue'
 export default {
   components: { NavigationBar, QCalendarMonth },
   setup () {
+    const { state, dispatch } = useStore()
     const $q = useQuasar()
     const calendar = ref(null)
+
+    const events = computed(() => {
+      const mapSchedules = []
+      const map = {}
+      const schedules = state.broadcast.schedules
+
+      selectedMonth.forEach(day => {
+        let temp
+        if (day.month === month.value) {
+          map[day.date] = []
+          schedules.forEach(schedule => {
+            if (schedule.repeat === '매일') {
+              temp = { ...schedule }
+              temp.date = day.date
+              mapSchedules.push(temp)
+              map[day.date].push({ ...schedule })
+            }
+            if (schedule.repeat === '매주') {
+              schedule.week.forEach(week => {
+                if (day.week === week) {
+                  temp = { ...schedule }
+                  temp.date = day.date
+                  mapSchedules.push(temp)
+                  map[day.date].push({ ...schedule })
+                }
+              })
+            }
+            if (schedule.repeat === '한번' && day.date === schedule.date) {
+              temp = { ...schedule }
+              temp.date = day.date
+              temp.days = 6
+              mapSchedules.push(temp)
+              map[day.date].push({ ...schedule })
+            }
+          })
+        }
+      })
+      // return map
+      return mapSchedules
+    })
+
+    //     const events = computed(() => {
+    //   const map = {}
+    //   const schedules = state.broadcast.schedules
+
+    //   selectedMonth.forEach(day => {
+    //     if (day.month === month.value) {
+    //       map[day.date] = []
+    //       schedules.forEach(schedule => {
+    //         if (schedule.repeat === '매일') {
+    //           map[day.date].push({ ...schedule })
+    //         }
+    //         if (schedule.repeat === '매주') {
+    //           schedule.week.forEach(week => {
+    //             if (moment(day.date).format('dddd') === week) {
+    //               map[day.date].push({ ...schedule })
+    //             }
+    //           })
+    //         }
+    //         if (schedule.repeat === '한번' && day.date === schedule.date) {
+    //           let temp = { ...schedule }
+    //           temp.days = 6
+    //           map[day.date].push(temp)
+    //         }
+    //       })
+    //     }
+    //   })
+    //   return map
+    // })
+
+
     const selectedDate = ref(today()),
       selectedMonth = reactive([]),
       month = ref(1),
       year = ref(new Date().getFullYear()),
-      locale = ref('ko-KR'),
-      events = ref([])
+      locale = ref('ko-KR')
 
     const eventsMap = computed(() => {
+      $q.loading.show()
       const map = {}
       if (events.value.length > 0) {
         events.value.forEach(event => {
@@ -159,6 +232,8 @@ export default {
           }
         })
       }
+      $q.loading.hide()
+      console.log('map', map)
       return map
     })
 
@@ -173,6 +248,7 @@ export default {
     }
 
     function onChange (data) {
+      $q.loading.show()
       console.log('onChange', data)
       selectedMonth.splice(0, selectedMonth.length, ...data.days)
       for (let index = 0; index < selectedMonth.length; index++) {
@@ -187,49 +263,7 @@ export default {
       for (let index = 0; index < selectedMonth.length; index++) {
         selectedMonth[index].week = moment(selectedMonth[index].date).format('dddd')
       }
-      fnGetSchedules()
-    }
-
-    function fnScheduleParcing (schedules) {
-      const mapSchedules = []
-      schedules.forEach((schedule) => {
-        let temp
-        switch (schedule.repeat) {
-          case '매일':
-            selectedMonth.forEach(day => {
-              if (day.month === month.value) {
-                temp = { ...schedule }
-                temp.date = day.date
-                mapSchedules.push(temp)
-              }
-            })
-            break
-          case '매주':
-            // const weekday = []
-            schedule.week.forEach(week => {
-              selectedMonth.forEach(day => {
-                if (day.month === month.value) {
-                  if (day.week === week) {
-                    temp = { ...schedule }
-                    temp.date = day.date
-                    mapSchedules.push(temp)
-                  }
-                }
-              })
-            })
-            break
-          default:
-            mapSchedules.push(schedule)
-        }
-      })
-      return mapSchedules
-    }
-
-    async function fnGetSchedules () {
-      const start = Date.parse(selectedMonth[0].date)
-      const end = Date.parse(selectedMonth[selectedMonth.length - 1].date)
-      const r = await api.get(`/broadcast/schedules?start=${start}&end=${end}`)
-      events.value = fnScheduleParcing(r.data)
+      $q.loading.hide()
     }
 
     function fnClickEvent (item) {
@@ -240,7 +274,7 @@ export default {
         $q.loading.show()
         try {
           await api.put('/broadcast/schedules', rt)
-          await fnGetSchedules()
+          await dispatch('broadcast/updateSchedules')
         } catch (err) {
           console.error(err)
         }
@@ -256,7 +290,7 @@ export default {
         $q.loading.show()
         try {
           await api.post('/broadcast/schedules/delete', rt)
-          await fnGetSchedules()
+          await dispatch('broadcast/updateSchedules')
         } catch (err) {
           console.error(err)
         }
@@ -267,9 +301,7 @@ export default {
     onMounted(async () => {
       $q.loading.show()
       try {
-        console.log('mounted', selectedMonth, Date.parse(selectedMonth[0].date), Date.parse(selectedMonth[selectedMonth.length - 1].date))
-        await fnGetSchedules()
-
+        await dispatch('broadcast/updateSchedules')
       } catch (err) {
         console.log(err)
       }
@@ -299,6 +331,7 @@ export default {
       selectedDate,
       locale,
       eventsMap,
+      events,
       onToday,
       onPrev,
       onNext,

@@ -24,10 +24,10 @@
             </q-avatar>
             <div>
               <div style="font-size: 1.2rem;">
-                지역 추가 및 수정
+                지역 채널 등록
               </div>
               <div class="caption">
-                지역단위 혹은 본부 DSP 추가 및 설정
+                디바이스를 지역 채널에 등록
               </div>
             </div>
           </div>
@@ -62,8 +62,18 @@
             />
           </div>
           <div>
+            <q-input
+              v-model="locate.ipaddress"
+              disabled
+              dense
+              filled
+              label="Ipaddress"
+            />
+          </div>
+          <div>
             <q-select
               v-model="locate.type"
+              disabled
               dense
               filled
               label="Device Type"
@@ -72,14 +82,15 @@
           </div>
           <div>
             <q-select
-              v-model="locate.ipaddress"
+              v-model="locate.parent_id"
               dense
               filled
-              :options="locate.type === 'Q-Sys' ? qsysList:barixList"
-              option-value="ipaddress"
+              clearable
+              :options="locations"
+              option-value="_id"
               emit-value
               map-options
-              label="device"
+              label="Parent"
             >
               <!-- seleted -->
               <template #selected-item="scope">
@@ -97,8 +108,8 @@
                     <q-item-label>{{ scope.opt.name }} - {{ scope.opt.ipaddress }}</q-item-label>
                   </q-item-section>
                   <q-item-section side>
-                    <span :class="scope.opt.type === 'Q-Sys'? 'qsys':'barix'">
-                      {{ scope.opt.type }}
+                    <span :class="scope.opt.devicetype === 'Q-Sys'? 'qsys':'barix'">
+                      {{ scope.opt.devicetype }}
                     </span>
                   </q-item-section>
                 </q-item>
@@ -119,13 +130,22 @@
                     </q-item-label>
                   </q-item-section>
                   <q-item-section side>
-                    <span :class="scope.opt.type === 'Q-Sys'? 'qsys':'barix'">
-                      {{ scope.opt.type }}
+                    <span :class="scope.opt.devicetype === 'Q-Sys'? 'qsys':'barix'">
+                      {{ scope.opt.devicetype }}
                     </span>
                   </q-item-section>
                 </q-item>
               </template>
             </q-select>
+          </div>
+          <div>
+            <q-input
+              v-model="locate.channel"
+              dense
+              filled
+              type="number"
+              label="Channel"
+            />
           </div>
         </div>
       </q-card-section>
@@ -173,11 +193,10 @@ export default {
   setup (props) {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
     const $q = useQuasar()
-    const { getters } = useStore()
+    const { state, getters } = useStore()
 
     const indexArr = computed(() => getters['locations/getLocationsIndexArr'])
-    const qsysList = computed(() => getters['devices/QsysList'])
-    const barixList = computed(() => getters['devices/BarixList'])
+    const locations = computed(() => state.locations.locations)
 
     const error = ref('')
 
@@ -185,7 +204,12 @@ export default {
       index: 1,
       name: '',
       ipaddress: '',
-      type: 'Q-Sys'
+      device: null,
+      parent_id: null,
+      locations_name: '',
+      channel: null,
+      check: true,
+      status: false
     })
 
     function getIndex () {
@@ -209,17 +233,13 @@ export default {
 
     async function onOKClick (item) {
       $q.loading.show()
-        try {
-          if (item._id) {
-            await api.put('/locations', item)
-          } else {
-            await api.post('/locations', item)
-          }
-           onDialogOK(item)
-        } catch (err) {
-          error.value = err.response.data.message
-        }
-        $q.loading.hide()
+      try {
+        await api.put('/devices', item)
+        onDialogOK(item)
+      } catch (err) {
+        error.value = err.response.data.message
+      }
+      $q.loading.hide()
     }
 
 
@@ -228,8 +248,7 @@ export default {
       onDialogHide,
       error,
       locate,
-      qsysList,
-      barixList,
+      locations,
       onOKClick,
       onCancelClick: onDialogCancel
     }

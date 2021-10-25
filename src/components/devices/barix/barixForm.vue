@@ -40,51 +40,61 @@
       <span>Status</span>
       <span class="text-uppercase q-pa-none">{{ info.detail.status }}</span>
     </div>
-    <div class="item">
-      <span>Audio Out L</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.audio.outputleft
-      }}</span>
+
+    <div v-if="info.detail.audio">
+      <div class="item">
+        <span>Audio Out L</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.audio.outputleft
+        }}</span>
+      </div>
+      <div class="item">
+        <span>Audio Out R</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.audio.outputright
+        }}</span>
+      </div>
     </div>
-    <div class="item">
-      <span>Audio Out R</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.audio.outputright
-      }}</span>
+
+    <div v-if="info.detail.io">
+      <div class="item">
+        <span>Relay</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.io.relay1 === '0' ? 'OFF' : 'ON'
+        }}</span>
+      </div>
     </div>
-    <div class="item">
-      <span>Relay</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.io.relay1 === '0' ? 'OFF' : 'ON'
-      }}</span>
-    </div>
+
     <q-separator
       class="q-my-sm"
       color="grey-3"
     />
-    <div class="item">
-      <span>Priority Port</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.priorityrtpport
-      }}</span>
-    </div>
-    <div class="item">
-      <span>URL 1</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream1
-      }}</span>
-    </div>
-    <div class="item">
-      <span>URL 2</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream2
-      }}</span>
-    </div>
-    <div class="item">
-      <span>URL 3</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream3
-      }}</span>
+
+    <div v-if="info.detail.streaming">
+      <div class="item">
+        <span>Priority Port</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.priorityrtpport
+        }}</span>
+      </div>
+      <div class="item">
+        <span>URL 1</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream1
+        }}</span>
+      </div>
+      <div class="item">
+        <span>URL 2</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream2
+        }}</span>
+      </div>
+      <div class="item">
+        <span>URL 3</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream3
+        }}</span>
+      </div>
     </div>
   </div>
 
@@ -93,48 +103,55 @@
       <span>Status</span>
       <span class="text-uppercase q-pa-none">{{ info.detail.status }}</span>
     </div>
+    
+    <div v-if="info.detail.audio">
+      <div class="item">
+        <span>Audio Input L</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.audio.inputleft
+        }}</span>
+      </div>
+      <div class="item">
+        <span>Audio Input R</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.audio.inputright
+        }}</span>
+      </div>
+    </div>
+    <div v-if="info.detail.streming">
+      <div class="item">
+        <span>stream 1</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream1
+        }}</span>
+      </div>
+      <div class="item">
+        <span>stream 2</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream2
+        }}</span>
+      </div>
+      <div class="item">
+        <span>stream 3</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream3
+        }}</span>
+      </div>
+      <div class="item">
+        <span>stream 4</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.streaming.stream4
+        }}</span>
+      </div>
+    </div>
 
-    <div class="item">
-      <span>Audio Input L</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.audio.inputleft
-      }}</span>
-    </div>
-    <div class="item">
-      <span>Audio Input R</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.audio.inputright
-      }}</span>
-    </div>
-    <div class="item">
-      <span>stream 1</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream1
-      }}</span>
-    </div>
-    <div class="item">
-      <span>stream 2</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream2
-      }}</span>
-    </div>
-    <div class="item">
-      <span>stream 3</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream3
-      }}</span>
-    </div>
-    <div class="item">
-      <span>stream 4</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.streaming.stream4
-      }}</span>
-    </div>
-    <div class="item">
-      <span>Relay 1</span>
-      <span class="text-uppercase q-pa-none">{{
-        info.detail.io.relay1 === '0' ? 'OFF' : 'ON'
-      }}</span>
+    <div v-if="info.detail.io">
+      <div class="item">
+        <span>Relay 1</span>
+        <span class="text-uppercase q-pa-none">{{
+          info.detail.io.relay1 === '0' ? 'OFF' : 'ON'
+        }}</span>
+      </div>
     </div>
   </div>
 

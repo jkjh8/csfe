@@ -24,9 +24,10 @@
 <script>
 import { ref, onMounted } from 'vue'
 import moment from 'moment'
+moment.locale('ko')
+
 export default {
   setup () {
-    moment.locale('ko')
     const today = ref('')
     onMounted(() => {
       today.value = moment().format('MM월 DD일 dddd')

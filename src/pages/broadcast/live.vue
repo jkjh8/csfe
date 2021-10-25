@@ -18,12 +18,12 @@
           </div>
         </div>
       </div>
-      <div class="q-gutter-xl row wrap justify-center">
+      <div
+        class="q-gutter-xl row wrap justify-center"
+        style="margin-top: 1%;"
+      >
         <div>
-          <SelectBroadcastZones />
-        </div>
-        <div>
-          <Live />
+          <Live2 />
         </div>
       </div>
     </div>
@@ -33,13 +33,13 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import SelectBroadcastZones from '@components/broadcast/zoneSelect'
-import Live from '@components/broadcast/live'
+// import SelectBroadcastZones from '@components/broadcast/zoneSelect'
+// import Live from '@components/broadcast/live'
+import Live2 from '@components/broadcast/live2'
 
 export default {
   components: {
-    SelectBroadcastZones,
-    Live
+    Live2
   },
   setup() {
     const { state, getters, dispatch } = useStore()

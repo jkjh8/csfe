@@ -109,7 +109,7 @@ import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
 // import CreateUpdate from './cu'
-import createUpdate from '@components/dialog/locationCreate'
+import createUpdate from '@components/dialog/locations/locationCreate'
 import deleteItemComponent from '@components/dialog/delete'
 
 export default {

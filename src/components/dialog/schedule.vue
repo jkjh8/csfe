@@ -96,160 +96,82 @@
               <q-separator />
               <!-- 지역 선택 -->
               <div>
-                <div>
-                  <div class="listname">
-                    선택된 지역은
-                  </div>
-                  <div class="zones">
-                    <q-scroll-area style="height: 100px">
-                      <q-tree
-                        :nodes="schedule.zones"
-                        node-key="_id"
-                      >
-                        <template #default-header="props">
-                          <div>
-                            <q-icon
-                              name="svguse:icons.svg#map1"
-                              size=".8rem"
-                            />
-                            <span class="q-ml-sm">{{ props.node.name }}</span>
-                          </div>
-                        </template>
-                      </q-tree>
-                    </q-scroll-area>
-                  </div>
-                </div>
-                <q-btn
-                  class="full-width"
-                  rounded
-                  unelevated
-                  color="blue-1"
-                  text-color="grey-10"
-                  @click="fnZoneSelect"
-                >
-                  <q-icon
-                    name="svguse:icons.svg#map"
-                    size="xs"
+                <div class="q-my-sm">
+                  <SelectedZones
+                    :nodes="schedule.zones"
+                    :selected="schedule.selected"
                   />
-                  <span class="q-ml-sm">지역선택</span>
-                </q-btn>
+                </div>
+                <div>
+                  <q-btn
+                    class="full-width"
+                    rounded
+                    unelevated
+                    color="blue-1"
+                    text-color="grey-10"
+                    @click="fnZoneSelect"
+                  >
+                    <q-icon
+                      name="svguse:icons.svg#map"
+                      size="xs"
+                    />
+                    <span class="q-ml-sm">지역선택</span>
+                  </q-btn>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="col-6 q-px-md">
-            <div class="q-gutter-sm">
-              <!-- 방송 모드 -->
+            <SelectedFile :file="schedule.file" />
+            <div
+              v-if="schedule.mode === 'Media'"
+              class="q-mt-sm"
+            >
               <div>
-                <q-select
-                  v-model="schedule.mode"
-                  filled
-                  dense
-                  label="방송 모드"
-                  :options="['Media', 'TTS']"
-                />
-              </div>
-
-              <!-- 방송 모드 상세 -->
-              <div>
-                <div class="listname">
-                  선택된 파일은
-                </div>
-
-                <div v-if="schedule.file">
-                  <q-item>
-                    <q-item-section avatar>
-                      <div v-if="schedule.file.type === 'directory'">
-                        <q-icon
-                          name="svguse:icons.svg#folder-fill"
-                          color="yellow"
-                          size="md"
-                        />
-                      </div>
-                      <div v-else-if="schedule.file.type === 'audio'">
-                        <q-icon
-                          name="svguse:icons.svg#music-note-fill"
-                          color="grey"
-                          size="sm"
-                        />
-                      </div>
-                      <div v-else-if="schedule.file.type === 'video'">
-                        <q-icon
-                          name="svguse:icons.svg#video-camera-fill"
-                          color="blue-grey"
-                          size="sm"
-                        />
-                      </div>
-                    </q-item-section>
-                    <q-item-section>
-                      {{ schedule.file.name }}
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-btn
-                        round
-                        flat
-                        icon="play_arrow"
-                        color="green"
-                        @click="$store.dispatch('broadcast/startPreview',schedule.file)"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </div>
-                <div
-                  v-else
-                  class="text-grey text-center"
-                  style="margin: 1rem 1rem;"
+                <q-btn
+                  class="full-width"
+                  rounded
+                  color="blue-1"
+                  text-color="grey-10"
+                  unelevated
+                  @click="fnGetFile"
                 >
-                  선택된 파일이 없습니다.
-                </div>
+                  <q-icon
+                    name="svguse:icons.svg#archive"
+                    size="xs"
+                  />
+                  <span class="q-ml-sm">파일선택</span>
+                </q-btn>
               </div>
-              <!-- 오디오 비디오 파일 -->
-              <div v-if="schedule.mode === 'Media'">
-                <div>
-                  <q-btn
-                    class="full-width"
-                    rounded
-                    color="blue-1"
-                    text-color="grey-10"
-                    unelevated
-                    @click="fnGetFile"
-                  >
-                    <q-icon
-                      name="svguse:icons.svg#archive"
-                      size="xs"
-                    />
-                    <span class="q-ml-sm">파일선택</span>
-                  </q-btn>
-                </div>
-              </div>
+            </div>
 
-              <div v-if="schedule.mode === 'TTS'">
-                <div>
-                  <q-btn
-                    class="full-width"
-                    rounded
-                    color="teal-1"
-                    text-color="grey-10"
-                    unelevated
-                    @click="fnGetTtsAudio"
-                  >
-                    <q-icon
-                      name="svguse:icons.svg#mic"
-                      size="xs"
-                    />
-                    <span class="q-ml-sm">TTS 생성</span>
-                  </q-btn>
-                </div>
-              </div>
-              <q-separator class="q-my-lg" />
+            <div v-if="schedule.mode === 'TTS'">
               <div>
-                <q-input
-                  v-model="schedule.description"
-                  type="textarea"
-                  filled
-                  label="상세설명"
-                />
+                <q-btn
+                  class="full-width"
+                  rounded
+                  color="teal-1"
+                  text-color="grey-10"
+                  unelevated
+                  @click="fnGetTtsAudio"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#mic"
+                    size="xs"
+                  />
+                  <span class="q-ml-sm">TTS 생성</span>
+                </q-btn>
               </div>
+            </div>
+            <q-separator class="q-my-lg" />
+            <div>
+              <q-input
+                v-model="schedule.description"
+                type="textarea"
+                filled
+                label="상세설명"
+              />
             </div>
           </div>
         </div>
@@ -294,8 +216,11 @@ import ttsCreate from '@components/dialog/ttsCreate'
 import zoneSelect from '@components/dialog/zoneSelect'
 import colorPicker from '@components/dialog/colorPicker'
 
+import SelectedZones from '@components/broadcast/components/selectedZones'
+import SelectedFile from '@components/broadcast/components/selectedFile'
+
 export default {
-  components: { Repeat },
+  components: { Repeat, SelectedZones, SelectedFile },
   props: {
     item: Object
   },

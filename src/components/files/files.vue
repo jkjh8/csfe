@@ -32,152 +32,148 @@
 
     <!-- 폴더 관리 -->
     <q-card-section>
-      <div class="q-pa-md">
-        <div class="listname row justify-between items-center">
-          <div class="row">
-            <q-icon
-              name="svguse:icons.svg#folder-fill"
-              color="yellow"
-              size="sm"
-            />
-            <div class="q-ml-sm">
-              폴더관리
+      <div class="fit row">
+        <div
+          class="q-px-md"
+          style="width:30%;"
+        >
+          <div class="listname row justify-between items-center">
+            <div class="row">
+              <q-icon
+                name="svguse:icons.svg#folder-fill"
+                color="yellow"
+                size="sm"
+              />
+              <div class="q-ml-sm">
+                폴더관리
+              </div>
             </div>
-          </div>
-          <div>
-            <q-btn
-              round
-              flat
-              color="grey"
-              @click="fnAddFolder"
-            >
-              <q-icon name="svguse:icons.svg#plus-circle" />
-            </q-btn>
-          </div>
-        </div>
-        <div class="q-mt-sm">
-          <span
-            v-for="(path, index) in filePath"
-            :key="index"
-          >
-            <button
-              class="dir"
-              @click="getDir(index)"
-            >
-              {{ path }}
-            </button>
-          </span>
-        </div>
-
-        <q-separator class="q-my-md" />
-
-        <!-- 파일 탭 시작 -->
-        <div class="listname row justify-between items-center">
-          <div class="row">
-            <q-icon
-              name="save"
-              size="sm"
-              color="blue"
-            />
-            <div class="q-ml-sm">
-              파일시스템
-            </div>
-          </div>
-          <div>
-            <q-btn
-              round
-              flat
-              color="grey"
-              @click="fnUpload"
-            >
-              <q-icon name="svguse:icons.svg#plus-circle" />
-            </q-btn>
-          </div>
-        </div>
-
-        <div>
-          <q-table
-            flat
-            :columns="[
-              { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
-              { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
-              { name: 'size', align: 'center', label: 'Size', field: 'size', sortable: true },
-              { name: 'actions', align: 'center', label: 'Actions' },
-            ]"
-            :rows="files"
-            :pagination="{ rowsPerPage: 0 }"
-          >
-            <template #body="props">
-              <q-tr
-                :props="props"
-                @click="clickFile(props.row)"
+            <div>
+              <q-btn
+                round
+                flat
+                color="grey"
+                @click="fnAddFolder"
               >
-                <q-td
-                  key="type"
-                  :props="props"
-                >
-                  <div>
-                    <q-icon
-                      v-if="props.row.type === 'directory'"
-                      name="svguse:icons.svg#folder-fill"
-                      size="sm"
-                      color="yellow"
-                    />
-                    <q-icon
-                      v-else-if="props.row.type === 'audio'"
-                      name="svguse:icons.svg#music-note-fill"
-                      size="sm"
-                      color="purple"
-                    />
-                    <q-icon
-                      v-else-if="props.row.type === 'video'"
-                      name="svguse:icons.svg#video-came-fill"
-                      size="sm"
-                      color="yellow"
-                    />
-                    <span class="q-ml-sm">{{ props.row.type.toUpperCase() }}</span>
-                  </div>
-                </q-td>
+                <q-icon name="svguse:icons.svg#plus-circle" />
+              </q-btn>
+            </div>
+          </div>
+          <div class="q-mt-sm">
+            <span
+              v-for="(path, index) in filePath"
+              :key="index"
+            >
+              <button
+                class="dir"
+                @click="fnGetPath(index)"
+              >
+                {{ path }}
+              </button>
+            </span>
+          </div>
+        </div>
 
-                <q-td
-                  key="name"
-                  :props="props"
-                >
-                  {{ props.row.name }}
-                </q-td>
+        <q-separator
+          style="width: 1px;"
+          vertical
+        />
 
-                <q-td
-                  key="size"
-                  :props="props"
-                >
-                  {{ humanSize(props.row.size) }}
-                </q-td>
+        <div
+          class="q-px-md"
+          style="width: 69%"
+        >
+          <!-- 파일 탭 시작 -->
+          <div class="listname row justify-between items-center">
+            <div class="row">
+              <q-icon
+                name="save"
+                size="sm"
+                color="blue"
+              />
+              <div class="q-ml-sm">
+                파일시스템
+              </div>
+            </div>
+            <div>
+              <q-btn
+                round
+                flat
+                color="grey"
+                @click="fnUpload"
+              >
+                <q-icon name="svguse:icons.svg#plus-circle" />
+              </q-btn>
+            </div>
+          </div>
 
-                <q-td
-                  key="actions"
+          <div>
+            <q-table
+              flat
+              :columns="[
+                { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
+                { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
+                { name: 'size', align: 'center', label: 'Size', field: 'size', sortable: true },
+                { name: 'actions', align: 'center', label: 'Actions' },
+              ]"
+              :rows="files"
+              :pagination="{ rowsPerPage: 0 }"
+            >
+              <template #body="props">
+                <q-tr
                   :props="props"
+                  @click="clickFile(props.row)"
                 >
-                  <q-btn
-                    v-if="props.row.type !== 'directory'"
-                    icon="play_arrow"
-                    flat
-                    round
-                    color="green"
-                    size="sm"
-                    @click.stop.prevent="$store.dispatch('broadcast/startPreview', props.row)"
-                  />
-                  <q-btn
-                    icon="delete"
-                    flat
-                    round
-                    color="red"
-                    size="sm"
-                    @click.stop.prevent="fnDel(props.row)"
-                  />
-                </q-td>
-              </q-tr>
-            </template>
-          </q-table>
+                  <q-td
+                    key="type"
+                    :props="props"
+                  >
+                    <div class="row justify-center">
+                      <FileIcon :file="props.row" />
+                      <span class="q-ml-sm">{{ props.row.type.toUpperCase() }}</span>
+                    </div>
+                  </q-td>
+
+                  <q-td
+                    key="name"
+                    :props="props"
+                  >
+                    {{ props.row.name }}
+                  </q-td>
+
+                  <q-td
+                    key="size"
+                    :props="props"
+                  >
+                    {{ humanSize(props.row.size) }}
+                  </q-td>
+
+                  <q-td
+                    key="actions"
+                    :props="props"
+                  >
+                    <q-btn
+                      v-if="props.row.type !== 'directory'"
+                      icon="play_arrow"
+                      flat
+                      round
+                      color="green"
+                      size="sm"
+                      @click.stop.prevent="$store.dispatch('broadcast/startPreview', props.row)"
+                    />
+                    <q-btn
+                      icon="delete"
+                      flat
+                      round
+                      color="red"
+                      size="sm"
+                      @click.stop.prevent="fnDel(props.row)"
+                    />
+                  </q-td>
+                </q-tr>
+              </template>
+            </q-table>
+          </div>
         </div>
       </div>
     </q-card-section>
@@ -190,13 +186,15 @@ import { useStore } from 'vuex'
 import { useQuasar, format } from 'quasar'
 import { api } from '@/boot/axios'
 
+import FileIcon from '@components/files/fileIcon'
+
 import Delete from '@components/dialog/delete'
 import uploader from '@components/dialog/files'
 
 export default {
-  emits: ['close'],
   // eslint-disable-next-line no-unused-vars
-  setup (props, { emit }) {
+  components: { FileIcon },
+  setup () {
     const { commit } = useStore()
     const $q = useQuasar()
     const { humanStorageSize } = format
@@ -206,31 +204,38 @@ export default {
 
     async function clickFile (file) {
       $q.loading.show()
-      if (file.type === 'directory') {
-        filePath.value.push(file.name)
-        await updateDir(filePath.value)
-      } else {
-        commit('broadcast/updatePlayFile', file)
-        emit('close')
+      try {
+        if (file.type === 'directory') {
+          filePath.value.push(file.name)
+          await fnUpdatePath(filePath.value)
+        } else {
+          commit('broadcast/updatePlayFile', file)
+        }
+      } catch (err) {
+        console.error(err)
       }
       $q.loading.hide()
     }
 
-    async function getDir (index) {
+    async function fnGetPath (index) {
       $q.loading.show()
-      let reqPath = []
-        index = index + 1
-        for (let i = 0; i < index; i++) {
-          reqPath.push(filePath.value[i])
-        }
-        filePath.value = reqPath
-      await updateDir(reqPath)
+      try {
+        let reqPath = []
+          index = index + 1
+          for (let i = 0; i < index; i++) {
+            reqPath.push(filePath.value[i])
+          }
+          filePath.value = reqPath
+        await fnUpdatePath(reqPath)
+      } catch (err) {
+        console.error(err)
+      }
       $q.loading.hide()
     }
 
-    async function updateDir () {
+    async function fnUpdatePath () {
       const r = await api.post('/files', { path: filePath.value })
-      console.log(r)
+
       filePath.value = r.data.path
       files.value = r.data.files
     }
@@ -251,7 +256,7 @@ export default {
         } catch (err) {
           console.log('make folder error ', err)
         }
-        await updateDir()
+        await fnUpdatePath()
         $q.loading.hide()
       })
     }
@@ -267,7 +272,7 @@ export default {
         console.log(result)
         const reqPath = filePath.value.splice(1, 1).join('/')
         console.log(reqPath)
-        await updateDir(reqPath)
+        await fnUpdatePath(reqPath)
       })
     }
 
@@ -287,7 +292,7 @@ export default {
           formData.set('path', rt.path.join('/'))
           const r = await api.post('/files/upload', formData)
           console.log(r)
-          await updateDir()
+          await fnUpdatePath()
         } catch (err) {
           console.error(err)
         }
@@ -304,15 +309,15 @@ export default {
       }
     }
     onMounted(() => {
-      getDir(0)
+      fnGetPath(0)
     })
     return {
       files,
       filePath,
       fnUpload,
       clickFile,
-      getDir,
-      updateDir,
+      fnGetPath,
+      fnUpdatePath,
       fnAddFolder,
       fnDel,
       humanSize

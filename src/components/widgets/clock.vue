@@ -34,10 +34,10 @@
 <script>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import moment from 'moment'
+moment.locale('ko')
 
 export default {
   setup () {
-    moment.locale('ko')
     const date = ref(moment().format('MM월 DD일 dddd'))
     const clock = ref(moment().format('hh시 mm분 ss초 a'))
     const clockid = ref(null)

@@ -22,7 +22,7 @@
           icon="svguse:icons.svg#pencil-fill"
           size="sm"
           color="teal-6"
-          @click="dialog = !dialog"
+          @click="fnCreateUpdateItem"
         >
           <q-tooltip
             class="bg-white text-black"
@@ -35,35 +35,37 @@
     </div>
     <Table />
   </div>
-  <q-dialog
-    v-model="dialog"
-    persistent
-  >
-    <CreateUpdate @close="dialog = false" />
-  </q-dialog>
 </template>
 
 <script>
-import { defineComponent, ref, computed, onBeforeMount } from "vue";
-import { useStore } from "vuex";
-import Table from "../../components/devices/table.vue";
-import CreateUpdate from "../../components/devices/cu.vue";
+import { defineComponent, ref, computed, onBeforeMount } from "vue"
+import { useStore } from "vuex"
+import { useQuasar } from 'quasar'
+import Table from "../../components/devices/table.vue"
+
+import addEditCompoenet from '@components/dialog/devices/deviceAdd'
 
 export default defineComponent({
-  components: { Table, CreateUpdate },
+  components: { Table },
   setup() {
-    const { state, getters, dispatch } = useStore();
+    const { state, getters, dispatch } = useStore()
+    const $q = useQuasar()
     const user = computed(() => state.user.user)
 
-    const count = computed(() => getters["devices/getDeviceCount"]);
-    const newConunt = computed(() => getters["devices/newDeviceCount"]);
-    const errorConunt = computed(() => getters["devices/errorCount"]);
-    const connected = computed(() => state.socket.connect);
-    const message = ref("");
-    const dialog = ref(false);
+    const count = computed(() => getters["devices/getDeviceCount"])
+    const newConunt = computed(() => getters["devices/newDeviceCount"])
+    const errorConunt = computed(() => getters["devices/errorCount"])
+    const connected = computed(() => state.socket.connect)
+    const message = ref('');
 
-    function addDevice() {
-      dialog.value = true;
+    function fnCreateUpdateItem () {
+      $q.dialog({
+        component: addEditCompoenet,
+      }).onOk(async () => {
+        $q.loading.show()
+        await dispatch('devices/updateDevices')
+        $q.loading.hide()
+      })
     }
 
     onBeforeMount(() => {
@@ -74,11 +76,10 @@ export default defineComponent({
       user,
       count,
       connected,
-      dialog,
       message,
       newConunt,
       errorConunt,
-      addDevice,
+      fnCreateUpdateItem
     };
   },
 });

@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header class="text-black">
+    <q-header
+      class="text-black"
+      style="background: #fbfbfb"
+    >
       <div
         class="row items-center"
         style="padding-top: 12px; text-align: center;"
@@ -25,7 +28,7 @@
     </q-page-container>
 
     <!-- Global Dialog -->
-    <AudioPlay />
+    <Preview />
     <Live />
   </q-layout>
 </template>
@@ -40,14 +43,14 @@ import UserStatus from '../components/layout/userStatus.vue'
 // import RouterAddress from '../components/layout/routeLink'
 // import Notice from '../components/layout/notice.vue'
 // import UserMenu from '../components/layout/user.vue'
-import AudioPlay from '@components/broadcast/audioPlay'
+import Preview from '@components/preview'
 import Live from '@components/broadcast/live/broadcast'
 
 export default {
   components: {
     LinkNormal,
     UserStatus,
-    AudioPlay,
+    Preview,
     Live
     },
   setup () {

@@ -194,6 +194,7 @@
                 unelevated
                 color="cyan-1"
                 text-color="grey-10"
+                @click="fnTtsCreate"
               >
                 <q-icon
                   name="svguse:icons.svg#save-color"
@@ -216,12 +217,12 @@
             @click="onCancelClick"
           />
           <q-btn
-            :disabled="!tts.file"
+            :disabled="!file"
             color="primary"
             label="확인"
             unelevated
             rounded
-            @click="onOKClick(schedule)"
+            @click="onOKClick(file)"
           />
         </div>
       </q-card-actions>
@@ -246,7 +247,7 @@ export default {
     ...useDialogPluginComponent.emits
   ],
 
-  setup (props) {
+  setup () {
     // REQUIRED; must be called inside of setup()
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
     const { state, dispatch } = useStore()
@@ -255,6 +256,7 @@ export default {
     const error = ref('')
     const user = computed(() => state.user.user)
     const voices = computed(() => state.broadcast.ttsVoices)
+    const file = ref(null)
     const tts = ref({
       name: '',
       voice: null,
@@ -273,23 +275,48 @@ export default {
 
     async function fnPreview () {
       error.value = ''
-      if (!tts.value.voice) return error.value = '음성을 선택해주세요.'
-      if (!tts.value.text) return error.value = '메시지를 입력해주세요.'
-      const r = await api.post('/broadcast/tts/preview', tts.value)
-      console.log(r)
-      dispatch('broadcast/startPreview',{
-        nameTag: 'TTS Preview',
-        name: r.data.src,
-        fsrc: r.data.file,
-        base: 'temp',
-        type: 'audio'
-      })
+      $q.loading.show()
+      try {
+        if (!tts.value.voice) return error.value = '음성을 선택해주세요.'
+        if (!tts.value.text) return error.value = '메시지를 입력해주세요.'
+        const r = await api.post('/broadcast/tts/preview', tts.value)
+        file.value = {
+          nameTag: 'TTS',
+          name: r.data.name,
+          base: 'temp',
+          type: 'audio'
+        }
+        await dispatch('broadcast/startPreview', file.value)
+      } catch (err) {
+        console.error(err)
+        error.value = '알 수 없는 오류가 발생하였습니다'
+      }
+      $q.loading.hide()
+    }
 
+    async function fnTtsCreate () {
+      error.value = ''
+      $q.loading.show()
+      try {
+        if (!tts.value.voice) return error.value = '음성을 선택해주세요.'
+        if (!tts.value.text) return error.value = '메시지를 입력해주세요.'
+        const r = await api.post('/broadcast/tts/preview', tts.value)
+        file.value = {
+          nameTag: 'TTS',
+          name: r.data.name,
+          base: 'temp',
+          type: 'audio'
+        }
+      } catch (err) {
+        console.error(err)
+        error.value = '알 수 없는 오류가 발생하였습니다'
+      }
+      $q.loading.hide()
     }
 
     onMounted(async () => {
       $q.loading.show();
-      tts.value.name = props.item.id
+      // tts.value.name = props.item.id
       dispatch('broadcast/getTtsInfo')
       try {
         const r = await api.get(`/broadcast/tts/list?user_id=${user.value.email}`)
@@ -310,9 +337,11 @@ export default {
       tts,
       voices,
       presets,
+      file,
       selected,
       fnClick,
       fnPreview,
+      fnTtsCreate,
 
       // other methods that we used in our vue html template;
       // these are part of our example (so not required)
