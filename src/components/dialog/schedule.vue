@@ -43,6 +43,16 @@
         </div>
       </q-card-section>
 
+      <q-card-section
+        v-if="error"
+        class="bg-red"
+        style="border-radius: .5rem"
+      >
+        <div>
+          {{ error }}
+        </div>
+      </q-card-section>
+
       <q-card-section>
         <div class="row q-mt-md">
           <div class="col-6 q-px-md">
@@ -235,6 +245,7 @@ export default {
     const $q = useQuasar()
 
     const user = computed(() => state.user.user)
+    const error = ref('')
 
     const schedule = ref({
       id: uid(),
@@ -312,6 +323,13 @@ export default {
       schedule.value.time = value
     }
 
+    function onOKClick(item) {
+      if (!item.name) return error.value = '이름을 입력해주세요'
+      if (!item.file) return error.value = '재생할 파일을 선택해주세요'
+      if (!item.zones.length) return error.value = '방송구간을 선택해주세요'
+      onDialogOK(item)
+    }
+
     onMounted(() =>{
       if (!props.item) {
         schedule.value.id = uid()
@@ -324,6 +342,7 @@ export default {
 
 
     return {
+      error,
       dialogRef,
       onDialogHide,
       schedule,
@@ -335,11 +354,7 @@ export default {
       toWeeks,
       toDate,
       toTime,
-
-      onOKClick (item) {
-        console.log(item)
-        onDialogOK(item)
-      },
+      onOKClick,
       onCancelClick: onDialogCancel
     }
   }
