@@ -58,7 +58,7 @@
           key="type"
           :props="props"
         >
-          {{ props.row.type }}
+          {{ props.row.devicetype }}
         </q-td>
         <q-td
           key="mode"
@@ -121,7 +121,7 @@ const tableColumes = [
   { name: 'index', align: 'center', label: 'Index', field: 'index', sortable: true },
   { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
   { name: 'ipaddress', align: 'center', label: '주소', field: 'ipaddress', sortable: true },
-  { name: 'type', align: 'center', label: 'Type', field: 'type', sortable: true },
+  { name: 'type', align: 'center', label: 'Type', field: 'devicetype', sortable: true },
   { name: 'mode', align: 'center', label: 'Mode', field: 'mode', sortable: true },
   { name: 'createdAt', align: 'center', label: '등록', field: 'createdAt', sortable: true },
   { name: 'actions', align: 'center', label: 'Actions' }

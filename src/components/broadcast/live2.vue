@@ -10,11 +10,30 @@
                 실시간 방송
               </div>
               <div class="caption">
-                방송구간은 {{ brStatus.locations }}개의 지역, {{ brStatus.zones }}개의 구역 총 {{ brStatus.broadcastZones }}개의 방송 구간이 있습니다
+                총 {{ brStatus.broadcastZones }}개의 방송 구간중 {{ brStatus.actives }}개의 구간 방송중입니다
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </q-card-section>
+    
+    <q-card-section
+      v-if="error"
+    >
+      <div
+        class="fit bg-red q-pa-sm text-white text-center"
+        style="border-radius: .5rem;"
+      >
+        {{ error }}
+        <q-btn
+          round
+          flat
+          style="position: absolute; right: 20px; top: 20px;"
+          size="sm"
+          icon="close"
+          @click="error=''"
+        />
       </div>
     </q-card-section>
 
@@ -114,6 +133,7 @@
           rounded
           unelevated
           color="cyan-6"
+          @click="fnStartLive"
         >
           <q-icon name="svguse:icons.svg#mic" />
           <span class="q-ml-sm listname">방송시작</span>
@@ -128,6 +148,8 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
+import { socket } from '@/boot/socketio'
+
 import zoneSelect from '@components/dialog/zoneSelect'
 import fileSelect from '@components/dialog/fileSelect'
 import ttsCreate from '@components/dialog/ttsCreate'
@@ -138,8 +160,9 @@ import SelectedFile from '@components/broadcast/components/selectedFile'
 export default {
   components: { SelectedZones, SelectedFile },
   setup () {
-    const { getters } = useStore()
+    const { dispatch, getters } = useStore()
     const $q = useQuasar()
+    const error = ref('')
 
     const brStatus = computed(() => getters['locations/locationsCount'])
     const live = ref({
@@ -177,11 +200,23 @@ export default {
       })
     }
 
+    function fnStartLive () {
+      if (!live.value.nodes.length) return error.value = '방송구간을 선택해 주세요'
+      if (!live.value.file) return error.value = '재생할 파일을 선택해 주세요'
+      socket.connect()
+      socket.on('connection', (msg) => {
+        console.log(msg)
+      })
+      dispatch('broadcast/startLive', live.value)
+    }
+
     return {
+      error,
       live,
       nodes,
       selected,
       brStatus,
+      fnStartLive,
       fnZoneSelect,
       fnGetFile,
       fnGetTtsAudio,

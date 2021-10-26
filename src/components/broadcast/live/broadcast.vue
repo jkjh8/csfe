@@ -1,6 +1,6 @@
 <template>
   <q-dialog
-    v-model="live"
+    v-model="mdLive"
     maximized
     transition-hide="slide-down"
     transition-show="slide-up"
@@ -50,6 +50,7 @@
               unelevated
               rounded
               color="primary"
+              @click="fnStart"
             >
               <span class="text-h6 text-white">
                 방송 시작
@@ -63,26 +64,56 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
+
+import { socket } from '@/boot/socketio'
+
 import Clock from '@components/widgets/clock'
 import Check from '@components/broadcast/live/checkBroadcast'
 
 export default {
   components: { Clock, Check },
   setup () {
-    const { state, getters, commit } = useStore()
-    const live = computed({
-      get () { return state.broadcast.live },
-      set (v) { return commit('broadcast/setLive', v) }
+    const { state, commit } = useStore()
+    const mdLive = computed({
+      get () { return state.broadcast.mdLive },
+      set (v) { 
+        if (!v) {
+          socket.disconnect()
+        }
+        return commit('broadcast/setMdLive', v)
+      }
     })
-    const mode = computed(() => state.broadcast.liveMode)
-    const zones = computed(() => getters['locations/selectedGroup'])
+    const live = computed(() => state.broadcast.live)
+
+    function fnStart () {
+      const channels = []
+      console.log(live.value)
+      live.value.nodes.forEach(locate => {
+        channels.push({
+          ipaddress: locate.ipaddress,
+          channels: locate.children.map(e => e.channel)
+        })
+      })
+      socket.emit('broadcastStart', {
+        ...live.value,
+        channels
+      })
+    }
+
+    onMounted(() => {
+      console.log('live', live.value)
+    })
     
+    onBeforeUnmount(() => {
+      socket.disconnect()
+    })
+
     return {
       live,
-      mode,
-      zones
+      mdLive,
+      fnStart
     }
   }
 }

@@ -18,12 +18,18 @@ export function locationsCount (state) {
   let locations = 0
   let zones = 0
   let broadcastZones = 0
+  let actives = 0
 
   state.locations.forEach(e => {
     locations = locations + 1
     if (e.children.length) {
       zones = zones + e.children.length
       broadcastZones = broadcastZones + e.children.length
+      e.device.active.forEach(act => {
+        if (act) {
+          actives += 1
+        }
+      })
     } else {
       broadcastZones = broadcastZones + 1
     }
@@ -32,6 +38,7 @@ export function locationsCount (state) {
     locations,
     zones,
     broadcastZones,
+    actives
   }
 }
 

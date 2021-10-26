@@ -3,15 +3,8 @@ export default function () {
     playFile: null,
     preview: false,
     previewFile: null,
-    live: false,
-    liveMode: 'Live',
-    liveChannel: 1,
-    ttsName: '',
-    ttsText: '',
-    ttsRate: 150,
-    ttsVoice: null,
-    ttsVoices: null,
+    live: {},
+    mdLive: false,
     schedules: [],
-    mdSchedule: false
   }
 }

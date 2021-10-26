@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="card-small"
-    style="height: 16rem;"
+    style="height: 18rem;"
   >
     <q-card-section>
       <div class="row items-center">
@@ -20,8 +20,13 @@
 
     <q-card-section>
       <div class="text-grey-8 q-px-md q-mb-md">
-        현재 방송 구간은 <strong>{{ locationsCount }}</strong> 개의 지역,
-        <strong>{{ deviceCount }}</strong> 개의 방송구간이 있습니다
+        <div>
+          현재 방송 구간은 <strong>{{ brStatus.locations }}</strong> 개의 지역, <strong>{{ brStatus.zones }}</strong>개의 구역, 총 <strong>{{ brStatus.broadcastZones }}</strong> 개의 방송구간이 있습니다.
+        </div>
+        <br>
+        <div>
+          현재 <strong>{{ brStatus.actives }}</strong>개의 방송구간이 방송중입니다.
+        </div>
       </div>
     </q-card-section>
 
@@ -47,8 +52,7 @@ import { useStore } from  'vuex'
 export default {
   setup() {
     const { getters, dispatch } = useStore()
-    const locationsCount = computed(() => getters['locations/getCount'])
-    const deviceCount = computed(() => getters['devices/getDeviceCount'])
+    const brStatus = computed(() => getters['locations/locationsCount'])
 
     onBeforeMount(() => {
       dispatch('locations/updateLocations')
@@ -56,8 +60,7 @@ export default {
     })
 
     return {
-      locationsCount,
-      deviceCount
+      brStatus,
     }
   }
 }

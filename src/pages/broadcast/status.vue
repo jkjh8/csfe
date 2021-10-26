@@ -37,7 +37,7 @@
                 >
                   <q-icon name="svguse:icons.svg#map" />
                   <q-badge
-                    v-if="!location.status"
+                    v-if="!location.device.status"
                     rounded
                     floating
                     color="red"
@@ -85,9 +85,11 @@
 </template>
 
 <script>
-import { computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
+
+import { socket } from '@/boot/socketio'
 
 import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
 
@@ -96,11 +98,13 @@ import SetupLocate from '@components/dialog/setLocation'
 export default {
   components: { ZoneStatus },
   setup() {
-    const { state, getters, dispatch } = useStore()
+    const { state, commit, getters, dispatch } = useStore()
     const $q = useQuasar()
     const locations = computed(() => state.locations.locations)
     const locationErrorCount = computed(() => getters['locations/errorCount'])
     const zoneErrorCount = computed(() => getters['devices/errorCount'])
+
+    const timer = ref(null)
 
     function getIp(obj) {
       return obj.ipaddress
@@ -116,10 +120,29 @@ export default {
       })
     }
 
+    function getLocationInfoFromIO () {
+      console.log('time!!!')
+      socket.emit('getLocations')
+    }
+
     onBeforeMount(async () => {
+      socket.connect()
+      socket.on('connection', (message) => {
+        console.log(message)
+      })
+      socket.on('rtLocations', (locations) => {
+        console.log(locations)
+        commit('locations/updateLocations', locations)
+      })
+      timer.value = setInterval(getLocationInfoFromIO, 5000)
       dispatch('user/getUser')
       dispatch('locations/updateLocations')
       dispatch('devices/updateDevices')
+    })
+
+    onBeforeUnmount(() => {
+      clearInterval(timer.value)
+      socket.disconnect()
     })
 
     return {

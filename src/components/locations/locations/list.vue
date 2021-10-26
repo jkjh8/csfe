@@ -53,7 +53,7 @@
               >
                 {{ local.index }}
                 <q-badge
-                  v-if="!local.status"
+                  v-if="!local.device.status"
                   color="red"
                   rounded
                   floating

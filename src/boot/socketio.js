@@ -7,7 +7,14 @@ import io from 'socket.io-client'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const socket = io(`http://${window.location.hostname}:3000`, {
+
+let address =''
+if (process.env.DEV) {
+  address = `http://${window.location.hostname}:3000`
+} else {
+  address =`http://${window.location.hostname}`
+}
+const socket = io(address, {
   autoConnect: false
 })
 

@@ -29,7 +29,7 @@
         >
           <template #day="{ scope: { timestamp } }">
             <template
-              v-for="event in eventsMap[timestamp.date]"
+              v-for="event in events[timestamp.date]"
               :key="event.id"
             >
               <div
@@ -120,7 +120,7 @@ import Schedule from '@components/dialog/schedule'
 import Delete from '@components/dialog/delete'
 import fnColor from '@/apis/color'
 
-import { QCalendarMonth, today, addToDate, parseTimestamp } from '@quasar/quasar-ui-qcalendar/src/index.js'
+import { QCalendarMonth, today } from '@quasar/quasar-ui-qcalendar/src/index.js'
 import '@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass'
 import '@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass'
 import '@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass'
@@ -151,7 +151,7 @@ export default {
             }
             if (schedule.repeat === '매주') {
               schedule.week.forEach(week => {
-                if (day.week === week) {
+                if (new Date(day.date).getDay() === week.value) {
                   temp = { ...schedule }
                   temp.date = day.date
                   mapSchedules.push(temp)
@@ -162,80 +162,20 @@ export default {
             if (schedule.repeat === '한번' && day.date === schedule.date) {
               temp = { ...schedule }
               temp.date = day.date
-              temp.days = 6
               mapSchedules.push(temp)
               map[day.date].push({ ...schedule })
             }
           })
         }
       })
-      // return map
-      return mapSchedules
+      return map
     })
-
-    //     const events = computed(() => {
-    //   const map = {}
-    //   const schedules = state.broadcast.schedules
-
-    //   selectedMonth.forEach(day => {
-    //     if (day.month === month.value) {
-    //       map[day.date] = []
-    //       schedules.forEach(schedule => {
-    //         if (schedule.repeat === '매일') {
-    //           map[day.date].push({ ...schedule })
-    //         }
-    //         if (schedule.repeat === '매주') {
-    //           schedule.week.forEach(week => {
-    //             if (moment(day.date).format('dddd') === week) {
-    //               map[day.date].push({ ...schedule })
-    //             }
-    //           })
-    //         }
-    //         if (schedule.repeat === '한번' && day.date === schedule.date) {
-    //           let temp = { ...schedule }
-    //           temp.days = 6
-    //           map[day.date].push(temp)
-    //         }
-    //       })
-    //     }
-    //   })
-    //   return map
-    // })
-
 
     const selectedDate = ref(today()),
       selectedMonth = reactive([]),
       month = ref(1),
       year = ref(new Date().getFullYear()),
       locale = ref('ko-KR')
-
-    const eventsMap = computed(() => {
-      $q.loading.show()
-      const map = {}
-      if (events.value.length > 0) {
-        events.value.forEach(event => {
-          (map[ event.date ] = (map[ event.date ] || [])).push(event)
-          if (event.days !== undefined) {
-            console.log('not days')
-            let timestamp = parseTimestamp(event.date)
-            let days = event.days
-            // add a new event for each day
-            // skip 1st one which would have been done above
-            do {
-              timestamp = addToDate(timestamp, { day: 1 })
-              if (!map[ timestamp.date ]) {
-                map[ timestamp.date ] = []
-              }
-              map[ timestamp.date ].push(event)
-              // already accounted for 1st day
-            } while (--days > 1)
-          }
-        })
-      }
-      $q.loading.hide()
-      console.log('map', map)
-      return map
-    })
 
     function onToday () {
       calendar.value.moveToToday()
@@ -248,22 +188,15 @@ export default {
     }
 
     function onChange (data) {
-      $q.loading.show()
       console.log('onChange', data)
       selectedMonth.splice(0, selectedMonth.length, ...data.days)
       for (let index = 0; index < selectedMonth.length; index++) {
-        selectedMonth[index].week = moment(selectedMonth[index].date).format('dddd')
         if (selectedMonth[index].day === 1) {
           year.value = selectedMonth[index].year
           month.value = selectedMonth[index].month
           break
         }
       }
-
-      for (let index = 0; index < selectedMonth.length; index++) {
-        selectedMonth[index].week = moment(selectedMonth[index].date).format('dddd')
-      }
-      $q.loading.hide()
     }
 
     function fnClickEvent (item) {
@@ -324,13 +257,26 @@ export default {
       return s
     }
 
+    function onClickDate (data) {
+      console.log('onClickDate', data)
+      console.log(data.scope.timestamp)
+      $q.dialog({
+        component: Schedule,
+        componentProps: {
+          date: data.scope.timestamp.date,
+        }
+      }).onOk(async(rt) =>{
+        console.log(rt)
+      })
+    }
+
     return {
       badgeStyles,
       badgeClasses,
       calendar,
       selectedDate,
       locale,
-      eventsMap,
+      // eventsMap,
       events,
       onToday,
       onPrev,
@@ -339,12 +285,10 @@ export default {
       console.log('onMoved', data)
       },
       onChange,
-      onClickDate (data) {
-        console.log('onClickDate', data)
-      },
       onClickDay (data) {
         console.log('onClickDay', data)
       },
+      onClickDate,
       onClickWorkweek (data) {
         console.log('onClickWorkweek', data)
       },

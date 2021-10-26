@@ -206,6 +206,7 @@ export default {
           sel.push({
             _id: locate._id,
             name: locate.name,
+            ipaddress: locate.ipaddress,
             all: true
           })
         } else {
@@ -226,6 +227,7 @@ export default {
               _id: locate._id,
               name: locate.name,
               location: locate._id,
+              ipaddress: locate.ipaddress,
               all: children.length === locate.children.length ?? true,
               children: children
             })

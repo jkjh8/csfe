@@ -21,3 +21,8 @@ export async function updateSchedules ({ commit }) {
   const r = await api.get('broadcast/schedules')
   commit('updateSchedules', r.data)
 }
+
+export async function startLive ({ commit }, payload) {
+  commit('updateLive', payload)
+  commit('setMdLive', true)
+}

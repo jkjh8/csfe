@@ -10,12 +10,12 @@ export function updatePreviewFile(state, payload) {
   state.previewFile = payload
 }
 
-export function setLive(state, payload) {
-  state.live = payload
+export function updateLive(state, payload) {
+  state.live = { ...payload }
 }
 
-export function updateTts(state, payload) {
-  state.tts = payload
+export function setMdLive(state, payload) {
+  state.mdLive = payload
 }
 
 export function updateLiveMode(state, payload) {
@@ -48,8 +48,4 @@ export function updateTtsVoices(state, payload) {
 
 export function updateSchedules(state, payload) {
   state.schedules = payload
-}
-
-export function updateMdSchedule(state, payload) {
-  state.mdSchedule = payload
 }

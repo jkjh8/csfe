@@ -41,7 +41,7 @@
                     {{ props.row.time }}
                   </div>
                   <div v-if="props.row.repeat === '매주'">
-                    {{ props.row.week.join(',') }}
+                    {{ props.row.week.map(e => e.label).join(',') }}
                   </div>
                 </div>
               </div>

@@ -232,7 +232,8 @@ import SelectedFile from '@components/broadcast/components/selectedFile'
 export default {
   components: { Repeat, SelectedZones, SelectedFile },
   props: {
-    item: Object
+    item: Object,
+    date: String
   },
 
   emits: [
@@ -337,6 +338,10 @@ export default {
         schedule.value.user_id = state.user.user.email
       } else {
         schedule.value = { ...props.item }
+      }
+      if (props.date) {
+        console.log(props.date)
+        schedule.value.date = props.date
       }
     })
 
