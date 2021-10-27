@@ -134,10 +134,10 @@ export default {
         console.log(locations)
         commit('locations/updateLocations', locations)
       })
-      timer.value = setInterval(getLocationInfoFromIO, 5000)
       dispatch('user/getUser')
-      dispatch('locations/updateLocations')
-      dispatch('devices/updateDevices')
+      timer.value = setInterval(getLocationInfoFromIO, 5000)
+      // dispatch('locations/updateLocations')
+      // dispatch('devices/updateDevices')
     })
 
     onBeforeUnmount(() => {

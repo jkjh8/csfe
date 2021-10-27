@@ -46,17 +46,37 @@
 </template>
 
 <script>
-import { computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from  'vuex'
+import { socket } from '@/boot/socketio'
 
 export default {
   setup() {
-    const { getters, dispatch } = useStore()
+    const { getters, commit } = useStore()
     const brStatus = computed(() => getters['locations/locationsCount'])
 
+    const timer = ref(null)
+
+    function getLocationInfoFromIO () {
+      socket.emit('getLocations')
+    }
+
     onBeforeMount(() => {
-      dispatch('locations/updateLocations')
-      dispatch('devices/updateDevices')
+      socket.connect()
+      socket.on('connection', (message) => {
+        socket.emit('getLocations')
+        console.log(message)
+      })
+      socket.on('rtLocations', (locations) => {
+        console.log(locations)
+        commit('locations/updateLocations', locations)
+      })
+      timer.value = setInterval(getLocationInfoFromIO, 5000)
+    })
+
+    onBeforeUnmount(() => {
+      clearInterval(timer.value)
+      socket.disconnect()
     })
 
     return {

@@ -8,7 +8,7 @@
       <span v-if="nodes.length"> 총 {{ nodes.length }}개 지역, {{ selected.length }}개의 방송구간 입니다</span>
     </div>
     <div class="zones">
-      <q-scroll-area style="height: 100px">
+      <q-scroll-area :style="`height: ${height}px;`">
         <q-tree
           :nodes="nodes"
           node-key="_id"
@@ -33,6 +33,7 @@ export default {
   props: {
     nodes: Array,
     selected: Array,
+    height: Number
   }
 }
 </script>

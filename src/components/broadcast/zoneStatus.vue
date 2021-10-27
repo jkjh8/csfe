@@ -4,7 +4,7 @@
     style="width: 11rem; border: solid 1px #eee; border-radius: 1rem"
   >
     <q-card-section
-      :class="getActive(zone.channel) ? 'bg-yellow' : 'bg-blue-grey-1'"
+      :class="location.device.active[zone.channel - 1] ? 'bg-yellow' : 'bg-blue-grey-1'"
     >
       <div class="fit row justify-between">
         <div class="row no-wrap q-gutter-md q-pr-sm items-center">
@@ -78,7 +78,7 @@
       <div class="q-gutter-sm">
         <div class="row no-wrap justify-between">
           <span>동작상태</span>
-          <span>{{ getActive(zone.channel) ? '방송중' : '대기중' }}</span>
+          <span>{{ location.device.active[zone.channel - 1] ? '방송중' : '대기중' }}</span>
         </div>
 
         <div class="row no-wrap justify-between">
@@ -136,7 +136,8 @@ export default {
     function getActive(id) {
       try {
         if (props.location && props.location.length) {
-          return location.value.active[id - 1]
+          console.log(props.location)
+          return location.value.device.active[id - 1]
         } else {
           return false
         }

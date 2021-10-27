@@ -44,6 +44,7 @@
           <SelectedZones
             :nodes="live.nodes"
             :selected="live.selected"
+            :height="100"
           />
         </div>
       
@@ -160,12 +161,14 @@ import SelectedFile from '@components/broadcast/components/selectedFile'
 export default {
   components: { SelectedZones, SelectedFile },
   setup () {
-    const { dispatch, getters } = useStore()
+    const { state, dispatch, getters } = useStore()
+    const user = computed(() => state.user.user)
     const $q = useQuasar()
     const error = ref('')
 
     const brStatus = computed(() => getters['locations/locationsCount'])
     const live = ref({
+      name: `Live - ${user.value.email}`,
       nodes: [],
       selected: [],
       mode: 'Media',
