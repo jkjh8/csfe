@@ -52,7 +52,8 @@ import { socket } from '@/boot/socketio'
 
 export default {
   setup() {
-    const { getters, commit } = useStore()
+    const { state, getters, commit } = useStore()
+    const socketId = computed(() => state.user.socketId)
     const brStatus = computed(() => getters['locations/locationsCount'])
 
     const timer = ref(null)
@@ -62,11 +63,9 @@ export default {
     }
 
     onBeforeMount(() => {
-      socket.connect()
-      socket.on('connection', (message) => {
-        socket.emit('getLocations')
-        console.log(message)
-      })
+      if (!socketId.value) {
+        socket.connect()
+      }
       socket.on('rtLocations', (locations) => {
         console.log(locations)
         commit('locations/updateLocations', locations)
