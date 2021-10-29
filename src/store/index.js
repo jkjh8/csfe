@@ -4,7 +4,6 @@ import { createStore } from "vuex";
 import devices from "./devices";
 import user from "./user";
 import eventlog from "./eventlog";
-import socket from "./socket";
 import locations from "./locations";
 import broadcast from "./broadcast";
 
@@ -15,7 +14,6 @@ export default store(function (/* { ssrContext } */) {
       user,
       eventlog,
       devices,
-      socket,
       locations,
     },
 

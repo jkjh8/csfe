@@ -34,10 +34,11 @@
 </template>
 
 <script>
-import { ref, computed, provide } from 'vue'
+import { ref, computed, provide, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-// import { socket } from '../boot/socketio'
+import { socket } from '../boot/socketio'
+
 import LinkNormal from '../components/layout/linkNormal'
 import UserStatus from '../components/layout/userStatus.vue'
 // import RouterAddress from '../components/layout/routeLink'
@@ -54,7 +55,7 @@ export default {
     Live
     },
   setup () {
-    const { state } = useStore()
+    const { state, commit } = useStore()
     const $router = useRouter()
     const $route = useRoute()
     provide('$router', $router)
@@ -62,6 +63,21 @@ export default {
     
     const brocastMenu = ref(false)
     const user = computed(() => state.user.user)
+
+    onBeforeMount(() => {
+      socket.on('connect', () => {
+        console.log('socket connect', socket.id)
+        commit('user/updateSocketId', socket.id)
+      })
+      socket.on('disconnect', (reason) => {
+        console.log('socket disconnect', reason)
+        commit('user/updateSocketId', null)
+      })
+    })
+
+    onBeforeUnmount(() => {
+      socket.disconnect()
+    })
     // onBeforeMount(() => {
     //   socket.on('connect', () => {
     //     console.log('socket connected')

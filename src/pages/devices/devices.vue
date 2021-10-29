@@ -15,22 +15,37 @@
       <div>
         {{ message }}
       </div>
-      <div class="q-mr-md">
-        <q-btn
-          flat
-          round
-          icon="svguse:icons.svg#pencil-fill"
-          size="sm"
-          color="teal-6"
-          @click="fnCreateUpdateItem"
-        >
-          <q-tooltip
-            class="bg-white text-black"
-            :delay="500"
+      <div class="q-mr-md q-gutter-md row items-center">
+        <div>
+          <q-btn
+            flat
+            round
+            icon="svguse:icons.svg#pencil-fill"
+            size="sm"
+            color="teal-6"
+            @click="fnCreateUpdateItem"
           >
-            디바이스 추가
-          </q-tooltip>
-        </q-btn>
+            <q-tooltip
+              class="bg-white text-black"
+              :delay="500"
+            >
+              디바이스 추가
+            </q-tooltip>
+          </q-btn>
+        </div>
+        <div>
+          <q-input
+            v-model="search"
+            dense
+            outlined
+            rounded
+            label="Search"
+          >
+            <template #append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
       </div>
     </div>
     <Table />
@@ -48,7 +63,7 @@ import addEditCompoenet from '@components/dialog/devices/deviceAdd'
 export default defineComponent({
   components: { Table },
   setup() {
-    const { state, getters, dispatch } = useStore()
+    const { state, commit, getters, dispatch } = useStore()
     const $q = useQuasar()
     const user = computed(() => state.user.user)
 
@@ -56,6 +71,10 @@ export default defineComponent({
     const newConunt = computed(() => getters["devices/newDeviceCount"])
     const errorConunt = computed(() => getters["devices/errorCount"])
     const connected = computed(() => state.socket.connect)
+    const search = computed({
+      get () { return state.devices.search },
+      set(v) { return commit('devices/updateSearch', v) }
+    })
     const message = ref('');
 
     function fnCreateUpdateItem () {
@@ -77,6 +96,7 @@ export default defineComponent({
       count,
       connected,
       message,
+      search,
       newConunt,
       errorConunt,
       fnCreateUpdateItem

@@ -9,3 +9,7 @@ export function updateCount (state, payload) {
 export function changeMode (state, payload) {
   state.mode = payload
 }
+
+export function updateSearch (state, payload) {
+  state.search = payload
+}

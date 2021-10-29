@@ -2,6 +2,26 @@ export function getIndexArr (state) {
   return state.devices.map(e => e.index)
 }
 
+export function getMaster (state) {
+  const list = []
+  state.devices.forEach(item => {
+    if (item.mode === 'Master') {
+      list.push(item)
+    }
+  })
+  return list
+}
+
+export function getSlave (state) {
+  const list = []
+  state.devices.forEach(item => {
+    if (item.mode === 'Slave') {
+      list.push(item)
+    }
+  })
+  return list
+}
+
 export function getDeviceCount (state) {
   return state.devices.length
 }

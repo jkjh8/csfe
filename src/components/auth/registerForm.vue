@@ -6,7 +6,7 @@
           <div class="card-name-align">
             <div class="card-name">
               <q-icon
-                name="svguse:icons.svg#user-add"
+                name="svguse:icons.svg#user-add-fill"
                 color="teal-10"
               />
               <div>회원가입</div>
@@ -52,44 +52,46 @@
       <!-- 가입 정보 시작 -->
       <q-card-section>
         <div class="q-pa-md">
-          <div class="text-bold">
-            이름
-          </div>
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.userName"
-              outlined
+              filled
               dense
-              bg-color="white"
               lazy-rules
+              label="이름"
               :rules="rules.name"
             />
           </div>
 
-          <div class="text-bold">
-            이메일
-          </div>
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.userId"
-              outlined
+              filled
               dense
-              bg-color="white"
               lazy-rules
+              label="이메일"
               :rules="rules.email"
             />
           </div>
 
-          <div class="row justify-between q-mt-lg text-bold">
-            비밀번호
+          <div class="q-mb-md">
+            <q-btn
+              class="full-width"
+              :style="`background: ${userInfo.color}; color: ${color.checkColor(userInfo.color)};`"
+              unelevated
+              rounded
+              label="색상 선택"
+              @click="fnPickColor"
+            />
           </div>
+
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.password"
-              outlined
+              filled
               dense
-              bg-color="white"
               lazy-rules
+              label="비밀번호"
               :rules="rules.password"
               :type="showPassword ? 'text' : 'password'"
               @keyup.enter="onSubmit"
@@ -106,15 +108,12 @@
             </q-input>
           </div>
 
-          <div class="row justify-between q-mt-lg text-bold">
-            비밀번호 재확인
-          </div>
           <div class="q-my-sm">
             <q-input
               v-model="userInfo.chkPassword"
-              outlined
+              filled
               dense
-              bg-color="white"
+              label="비밀번호 확인"
               lazy-rules
               :rules="rules.chkPassword"
               :type="showChkPassword ? 'text' : 'password'"
@@ -168,6 +167,9 @@ import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import color from '@/apis/color'
+
+import ColorPicker from '@components/dialog/colorPicker'
 
 export default {
   setup() {
@@ -183,7 +185,8 @@ export default {
       userId: '',
       password: '',
       chkPassword: '',
-      userName: ''
+      userName: '',
+      color: '#555',
     })
 
     const rules = reactive({
@@ -208,17 +211,31 @@ export default {
       $q.loading.show({
         message: '회원 가입중입니다. 잠시만 기다려주세요.'
       })
-      console.log(userInfo)
-      error.value = await dispatch('user/register', userInfo)
-      $q.loading.hide()
-      if (!error.value) {
-        $q.loading.show({
-          message: '로그인중입니다. 잠시만 기다려주세요.'
-        })
-        await dispatch('user/login', userInfo)
+      try {
+        error.value = await dispatch('user/register', userInfo)
         $q.loading.hide()
-        router.push('/')
+        if (!error.value) {
+          await dispatch('user/login', userInfo)
+          $q.loading.hide()
+          router.push('/')
+        } else {
+          error.value = '회원 가입중 문제가 발생했습니다.'
+        }
+      } catch (err) {
+        console.error(err)
       }
+      $q.loading.hide()
+    }
+
+    function fnPickColor() {
+      $q.dialog({
+        component: ColorPicker,
+        componentProps: {
+          color: userInfo.color
+        }
+      }).onOk((rt) => {
+        userInfo.color = rt
+      })
     }
 
     return {
@@ -228,6 +245,8 @@ export default {
       showChkPassword,
       userInfo,
       rules,
+      color,
+      fnPickColor,
       onSubmit
     }
   }

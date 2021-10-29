@@ -27,7 +27,7 @@
                 장치 추가 및 수정
               </div>
               <div class="caption">
-                새로운 장치를 추가 하거나 수정
+                새로운 장치를 추가 하거나 수정합니다
               </div>
             </div>
           </div>
@@ -84,21 +84,33 @@
             v-model="device.mode"
             dense
             filled
-            label="I/O mode"
-            :options="['Input', 'Output']"
+            label="Device Mode"
+            :options="['Master', 'Slave']"
           />
 
-          <q-separator v-if="device.mode === 'Output'" />
+          <q-separator />
 
-          <div v-if="device.mode === 'Output'">
+          <div v-if="device.mode === 'Master'">
+            <div>
+              <q-input
+                v-model="device.channels"
+                dense
+                filled
+                type="number"
+                label="Device Channels"
+              />
+            </div>
+          </div>
+
+          <div v-else>
             <div>
               <q-select
-                v-model="device.parent_id"
+                v-model="device.parent"
                 dense
                 filled
                 clearable
-                :options="locations"
-                option-value="_id"
+                :options="masters"
+                option-value="ipaddress"
                 emit-value
                 map-options
                 label="Parent"
@@ -205,21 +217,23 @@ export default {
   setup (props) {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
     const $q = useQuasar()
-    const { state, getters } = useStore()
+    const { getters } = useStore()
 
     const indexArr = computed(() => getters['devices/getIndexArr'])
-    const locations = computed(() => state.locations.locations)
-
+    const masters = computed(() => getters['devices/getMaster'])
     const error = ref('')
 
     const device = ref({
       index: 1,
       name: '',
       ipaddress: '',
-      mac: '',
+      mode: 'Master',
       devicetype: 'Q-Sys',
-      mode: 'Output',
-      checked: false,
+      parent: null,
+      children: [],
+      channel: null,
+      channels: 16,
+      status: false,
     })
 
     function getIndex () {
@@ -245,6 +259,51 @@ export default {
     async function onOKClick (item) {
       $q.loading.show()
       try {
+        if (item.mode === 'Master') {
+          // item.children.length = item.channels
+
+          if (item.children.length !== item.channels) {
+            const children = []
+            for (let i=0; i<item.channels; i++) {
+              if (item.children[i]) {
+                children.push(item.children[i])
+              } else {
+                children.push({})
+              }
+            }
+            item.children = children
+          } else {
+            item.children.length = item.channels
+          }
+        } else {
+          let master
+          let arr = []
+          for (let i = 0; i< masters.value.length; i++) {
+            if (item.parent === masters.value[i].ipaddress) {
+              master = { ...masters.value[i] }
+              if (master.channels < item.channel) {
+                $q.loading.hide()
+                return error.value = '방송채널이 존해 하지 않습니다.'
+              } else {
+                for (let j = 0; j < master.children.length; j++) {
+                  if (j === item.channel - 1) {
+                    arr.push({
+                      name: item.name,
+                      ipaddress: item.ipaddress,
+                      parent: item.parent,
+                      channel: item.channel
+                    })
+                  } else {
+                    arr.push(master.children[j])
+                  }
+                }
+                master.children = arr
+                await api.put('devices', master)
+              }
+            }
+          }
+        }
+
         if (item._id) {
           await api.put('/devices', item)
         } else {
@@ -263,7 +322,7 @@ export default {
       onDialogHide,
       error,
       device,
-      locations,
+      masters,
       onOKClick,
       onCancelClick: onDialogCancel
     }

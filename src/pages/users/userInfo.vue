@@ -66,6 +66,7 @@
               <q-btn
                 class="q-my-sm"
                 unelevated
+                rounded
                 :style="user.color ? `background: ${user.color}`:'background: #eee'"
                 @click="fnPickColor(user.color)"
               />

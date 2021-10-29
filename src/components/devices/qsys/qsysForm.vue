@@ -14,10 +14,6 @@
     <span class="text-uppercase q-pa-none">{{ info.detail.State }}</span>
   </div>
   <div class="item">
-    <span>IP Address</span>
-    <span class="text-uppercase q-pa-none">{{ info.detail.ipaddress }}</span>
-  </div>
-  <div class="item">
     <span>Design Code</span>
     <span class="text-uppercase q-pa-none">{{ info.detail.DesignCode }}</span>
   </div>

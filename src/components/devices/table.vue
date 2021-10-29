@@ -1,9 +1,10 @@
 <template>
   <q-table
-    class="shadow-15"
-    style="border-radius: 2rem;"
+    class="shadow-15 q-pa-sm"
+    style="border-radius: 1rem;"
     :columns="tableColumes"
     :rows="tableData"
+    :filter="search"
     :pagination="{ rowsPerPage: 10 }"
   >
     <template #body="props">
@@ -22,12 +23,12 @@
               rounded
               color="orange"
             />
-            <q-badge
+            <!-- <q-badge
               v-if="!props.row.checked"
               floating
               rounded
               color="yellow"
-            />
+            /> -->
             <q-badge
               v-if="!props.row.status"
               floating
@@ -85,14 +86,14 @@
               color="grey-8"
               @click="fnOpenInfoWindow(props.row)"
             />
-            <q-btn
+            <!-- <q-btn
               flat
               round
               icon="svguse:icons.svg#check"
               size="sm"
               color="blue-grey-6"
               @click="checkItem(props.row)"
-            />
+            /> -->
             <q-btn
               flat
               round
@@ -147,6 +148,7 @@ export default {
     // variable
     const error = ref('')
     const selected = ref(null)
+    const search = computed(() => state.devices.search)
 
     function fnOpenInfoWindow (item) {
       $q.dialog({
@@ -172,10 +174,10 @@ export default {
       $q.dialog({
         component: deleteItemComponent,
         componentProps: { item: item }
-      }).onOk(async () => {
+      }).onOk(async (rt) => {
         $q.loading.show()
         try {
-          await api.get(`/devices/delete?ipaddress=${selected.value.ipaddress} `)
+          await api.get(`/devices/delete?ipaddress=${rt.ipaddress} `)
           await dispatch('devices/updateDevices')
         } catch (err) {
           error.value = err.response.data.message
@@ -199,6 +201,7 @@ export default {
     return {
       tableColumes,
       time,
+      search,
       tableData,
       fnCreateUpdateItem,
       fnOpenInfoWindow,
