@@ -106,9 +106,9 @@
                     <q-tree
                       v-model:seleted="selected"
                       v-model:ticked="ticked"
-                      :nodes="locations"
+                      :nodes="devicesDetails"
                       tick-strategy="leaf"
-                      node-key="_id"
+                      node-key="ipaddress"
                       @update:ticked="selectedPreset = null"
                     >
                       <template #default-header="props">
@@ -170,13 +170,15 @@ export default {
 
   setup() {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-    const { state, dispatch } = useStore()
+    const { state, getters, dispatch } = useStore()
     const selected = ref(null)
     const ticked = ref(null)
     const $q = useQuasar()
 
     const user = computed(() => state.user.user)
     const locations = computed(() => state.locations.locations)
+    const devices = computed(() => state.devices.devices)
+    const devicesDetails = computed(() => getters['devices/mastersDetails'])
     const presets = ref(null)
     const selectedPreset = ref(null)
 
@@ -200,11 +202,10 @@ export default {
     function fnGetZoneNames(zones) {
       const sel = []
 
-      locations.value.forEach(locate => {
+      devices.value.forEach(locate => {
         // 지역확인
-        if (zones.includes(locate._id)) {
+        if (zones.includes(locate.ipaddress) && locate.mode === 'Master') {
           sel.push({
-            _id: locate._id,
             name: locate.name,
             ipaddress: locate.ipaddress,
             all: true
@@ -213,9 +214,8 @@ export default {
           // 자식 확인
           const children = []
           locate.children.forEach(child => {
-            if (zones.includes(child._id)) {
+            if (zones.includes(child.ipaddress)) {
               children.push({
-                _id: child._id,
                 name: child.name,
                 channel: child.channel
               })
@@ -229,7 +229,7 @@ export default {
               location: locate._id,
               ipaddress: locate.ipaddress,
               all: children.length === locate.children.length ?? true,
-              children: children
+              children: children.sort((a, b) =>  a.channel - b.channel)
             })
           }
         }
@@ -251,7 +251,9 @@ export default {
       user,
       selected,
       ticked,
+      devices,
       locations,
+      devicesDetails,
       presets,
       selectedPreset,
       fnAddPreset,

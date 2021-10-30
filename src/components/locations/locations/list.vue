@@ -8,10 +8,10 @@
             <div>
               <div>지역설정</div>
               <div
-                v-if="locationErrorCount"
+                v-if="errorCount"
                 class="caption"
               >
-                현재 {{ locationErrorCount }}개의 지역의 점검이 필요합니다
+                현재 {{ errorCount }}개의 지역의 점검이 필요합니다
               </div>
             </div>
           </div>
@@ -21,7 +21,7 @@
               round
               color="cyan-7"
               icon="svguse:icons.svg#plus-circle-fill"
-              @click="fnCreate"
+              @click="fnCreateItem"
             />
           </div>
         </div>
@@ -37,23 +37,23 @@
       >
         <q-list>
           <q-item
-            v-for="local in locations"
-            :key="local.index"
+            v-for="device in masters"
+            :key="device.index"
             v-ripple
             class="q-px-lg"
             clickable
-            :active="local === selected"
+            :active="device === selected"
             active-class="active-link"
-            @click="clickItem(local)"
+            @click="clickItem(device)"
           >
             <q-item-section avatar>
               <q-avatar
                 style="border: 1px solid #454545"
                 size="2rem"
               >
-                {{ local.index }}
+                {{ device.index }}
                 <q-badge
-                  v-if="!local.device.status"
+                  v-if="!device.status"
                   color="red"
                   rounded
                   floating
@@ -63,14 +63,14 @@
 
             <q-item-section>
               <q-item-label>
-                <span class="listname">{{ local.name }}</span>
+                <span class="listname">{{ device.name }}</span>
                 <span
                   class="q-ml-sm"
-                  :class="local.type === 'Q-Sys'? 'qsys':'barix'"
-                >{{ local.type }}</span>
+                  :class="device.type === 'Q-Sys'? 'qsys':'barix'"
+                >{{ device.type }}</span>
               </q-item-label>
               <q-item-label caption>
-                {{ local.ipaddress }}
+                {{ device.ipaddress }}
               </q-item-label>
             </q-item-section>
 
@@ -82,7 +82,7 @@
                   icon="svguse:icons.svg#pencil-fill"
                   size="sm"
                   color="teal-6"
-                  @click.prevent.stop="fnEdit(local)"
+                  @click.prevent.stop="fnEdit(device)"
                 />
                 <q-btn
                   flat
@@ -90,7 +90,7 @@
                   icon="svguse:icons.svg#trash-fill"
                   size="sm"
                   color="red-6"
-                  @click.prevent.stop="fnDelete(local)"
+                  @click.prevent.stop="fnDelete(device)"
                 />
               </div>
             </q-item-section>
@@ -106,10 +106,8 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
-import { api } from '@/boot/axios'
-
 // import CreateUpdate from './cu'
-import createUpdate from '@components/dialog/locations/locationCreate'
+import createUpdate from '@components/dialog/devices/deviceAdd'
 import deleteItemComponent from '@components/dialog/delete'
 
 export default {
@@ -117,26 +115,27 @@ export default {
     const { state, getters, commit, dispatch } = useStore()
     const $q = useQuasar()
 
-    const error = ref('')
-
-    const locations = computed(() => state.locations.locations)
-    const selected = computed(() => state.locations.selectedLocation)
-    const locationErrorCount = computed(() => getters['locations/errorCount'])
+    const selected = computed(() => state.devices.selected)
+    const masters = computed(() => getters['devices/getMaster'])
+    const errorCount = computed(() => {
+      const list = []
+      masters.value.forEach(device => {
+        if (!device.status) {
+          list.push(device)
+        }
+      })
+      return list.length
+    })
     const createUpdateDialog = ref(false)
     const deleteDialog = ref(false)
     const selForEdit = ref({})
 
-    function fnCreate () {
+    function fnCreateItem () {
       $q.dialog({
         component: createUpdate
-      }).onOk(async (rt) => {
+      }).onOk(async () => {
         $q.loading.show()
-        try {
-          await api.post('/locations', rt)
-          await dispatch('locations/updateLocations')
-        } catch (err) {
-          error.value = err.response.data.message
-        }
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
       })
     }
@@ -145,14 +144,9 @@ export default {
       $q.dialog({
         component: createUpdate,
         componentProps: { item: item }
-      }).onOk(async (rt) => {
+      }).onOk(async () => {
         $q.loading.show()
-        try {
-          await api.put('/locations', rt)
-          await dispatch('locations/updateLocations')
-        } catch (err) {
-          error.value = err.response.data.message
-        }
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
       })
       // selForEdit.value = item
@@ -165,43 +159,32 @@ export default {
         componentProps: { item: item }
       }).onOk(async () => {
         $q.loading.show()
-        try {
-          await api.get(`/locations/delete?_id=${item._id} `)
-          await dispatch('locations/updateLocations')
-        } catch (err) {
-          error.value = err.response.data.message
-        }
+        await dispatch('devices/updateDevices')
         $q.loading.hide()
       })
     }
 
     function clickItem (item) {
       if (item === selected.value) {
-        commit('locations/updateSelectedLocation', null)
-        dispatch('devices/updateDevices', '')
+        commit('devices/selected', null)
+        // dispatch('devices/updateDevices', '')
       } else {
-        commit('locations/updateSelectedLocation', item)
-        dispatch('devices/updateDevices', item._id)
+        commit('devices/selected', item)
+        // dispatch('devices/updateDevices')
       }
     }
 
-    function mdCuClose () {
-      selForEdit.value = {}
-      createUpdateDialog.value = false
-    }
-
     return {
-      locations,
-      locationErrorCount,
+      masters,
+      errorCount,
       createUpdateDialog,
       deleteDialog,
       selected,
       selForEdit,
-      fnCreate,
+      fnCreateItem,
       fnEdit,
       fnDelete,
-      clickItem,
-      mdCuClose
+      clickItem
     }
   }
 }

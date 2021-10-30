@@ -52,7 +52,7 @@ import { socket } from '@/boot/socketio'
 
 export default {
   setup() {
-    const { state, getters, commit } = useStore()
+    const { state, getters } = useStore()
     const socketId = computed(() => state.user.socketId)
     const brStatus = computed(() => getters['locations/locationsCount'])
 
@@ -66,10 +66,6 @@ export default {
       if (!socketId.value) {
         socket.connect()
       }
-      socket.on('rtLocations', (locations) => {
-        console.log(locations)
-        commit('locations/updateLocations', locations)
-      })
       timer.value = setInterval(getLocationInfoFromIO, 5000)
     })
 

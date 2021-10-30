@@ -2,7 +2,7 @@ export function getIndexArr (state) {
   return state.devices.map(e => e.index)
 }
 
-export function getMaster (state) {
+function getDeviceMasters (state) {
   const list = []
   state.devices.forEach(item => {
     if (item.mode === 'Master') {
@@ -12,43 +12,54 @@ export function getMaster (state) {
   return list
 }
 
-export function getSlave (state) {
+function getDeviceSlaves (state) {
   const list = []
   state.devices.forEach(item => {
     if (item.mode === 'Slave') {
-      list.push(item)
+      if (state.selected) {
+        if (state.selected.ipaddress === item.parent) {
+          list.push(item)
+        }
+      } else {
+        list.push(item)
+      }
     }
   })
   return list
 }
 
-export function getDeviceCount (state) {
-  return state.devices.length
+export function getMaster (state) {
+  return getDeviceMasters(state)
 }
-export function QsysList (state) {
+
+export function getSlave (state) {
+  return getDeviceSlaves(state)
+}
+
+
+export function mastersDetails (state) {
   const list = []
-  state.devices.forEach(e => {
-    if (e.type === 'QSys') {
-      list.push(e)
+  const masters = getDeviceMasters(state)
+  const slaves = getDeviceSlaves(state)
+
+  masters.forEach(master => {
+    const childData = []
+    const childrens = master.children
+    for (let i = 0; i < childrens.length; i++) {
+      for (let j = 0; j < slaves.length; j++) {
+        if (childrens[i].ipaddress === slaves[j].ipaddress) {
+          childData.push({
+            label: slaves[j].name,
+            ipaddress: slaves[j].ipaddress,
+            status: slaves[j].status,
+            parent: slaves[j].parent,
+            channel: slaves[j].channel
+          })
+          break
+        }
+      }
     }
+    list.push({ ...master, childrens: childData })
   })
   return list
-}
-
-export function BarixList (state) {
-  const list = []
-  state.devices.forEach(e => {
-    if (e.type === 'Barix') {
-      list.push(e)
-    }
-  })
-  return list
-}
-
-export function newDeviceCount (state) {
-  return state.devices.filter(e => e.checked !== true).length
-}
-
-export function errorCount (state) {
-  return state.devices.filter(e => e.status !== true).length
 }

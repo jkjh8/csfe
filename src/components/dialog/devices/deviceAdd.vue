@@ -248,12 +248,10 @@ export default {
     }
 
     onMounted(async() =>{
-      if (!props.item) {
-        device.value.index = getIndex()
-      } else {
+      device.value.index = getIndex()
+      if (props.item) {
         device.value = { ...props.item }
       }
-      console.log(device.value)
     })
 
     async function onOKClick (item) {
@@ -263,17 +261,18 @@ export default {
           // item.children.length = item.channels
 
           if (item.children.length !== item.channels) {
-            const children = []
+            const childrens = []
+            const actives = []
             for (let i=0; i<item.channels; i++) {
+              actives.push(false)
               if (item.children[i]) {
-                children.push(item.children[i])
+                childrens.push(item.children[i])
               } else {
-                children.push({})
+                childrens.push({})
               }
             }
-            item.children = children
-          } else {
-            item.children.length = item.channels
+            item.children = childrens
+            item.active = actives
           }
         } else {
           let master
@@ -288,7 +287,7 @@ export default {
                 for (let j = 0; j < master.children.length; j++) {
                   if (j === item.channel - 1) {
                     arr.push({
-                      name: item.name,
+                      label: item.name,
                       ipaddress: item.ipaddress,
                       parent: item.parent,
                       channel: item.channel

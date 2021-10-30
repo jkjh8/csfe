@@ -20,8 +20,8 @@
     >
       <q-list>
         <div
-          v-for="location in locations"
-          :key="location.index"
+          v-for="device in devices"
+          :key="device.index"
         >
           <q-expansion-item
             class="overflow-hidden exp-style"
@@ -37,7 +37,7 @@
                 >
                   <q-icon name="svguse:icons.svg#map" />
                   <q-badge
-                    v-if="!location.device.status"
+                    v-if="!device.status"
                     rounded
                     floating
                     color="red"
@@ -46,7 +46,7 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label class="name fit row items-center">
-                  {{ location.name }}
+                  {{ device.name }}
                 </q-item-label>
               </q-item-section>
 
@@ -55,7 +55,7 @@
                 <q-btn
                   round
                   flat
-                  @click.stop.prevent="fnSetupLocation(location)"
+                  @click.stop.prevent="fnSetupLocation(device)"
                 >
                   <q-icon name="svguse:icons.svg#cog" />
                 </q-btn>
@@ -68,12 +68,12 @@
               style="padding: 1rem 2rem"
             >
               <div
-                v-for="zone in location.children"
-                :key="zone.channel"
+                v-for="item in device.childrens"
+                :key="item.channel"
               >
                 <ZoneStatus
-                  :location="location"
-                  :zone="zone"
+                  :device="device"
+                  :item="item"
                 />
               </div>
             </div>
@@ -92,23 +92,19 @@ import { useQuasar } from 'quasar'
 import { socket } from '@/boot/socketio'
 
 import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
-
 import SetupLocate from '@components/dialog/setLocation'
 
 export default {
   components: { ZoneStatus },
   setup() {
-    const { state, commit, getters, dispatch } = useStore()
+    const { state, getters, dispatch } = useStore()
     const $q = useQuasar()
-    const locations = computed(() => state.locations.locations)
+    const socketId = computed(() => state.user.socketId)
     const locationErrorCount = computed(() => getters['locations/errorCount'])
     const zoneErrorCount = computed(() => getters['devices/errorCount'])
+    const devices = computed(() => getters['devices/mastersDetails'])
 
     const timer = ref(null)
-
-    function getIp(obj) {
-      return obj.ipaddress
-    }
 
     function fnSetupLocation(locate) {
       console.log(locate)
@@ -121,23 +117,17 @@ export default {
     }
 
     function getLocationInfoFromIO () {
-      console.log('time!!!')
       socket.emit('getLocations')
     }
 
     onBeforeMount(async () => {
-      socket.connect()
-      socket.on('connection', (message) => {
-        console.log(message)
-      })
-      socket.on('rtLocations', (locations) => {
-        console.log(locations)
-        commit('locations/updateLocations', locations)
-      })
       dispatch('user/getUser')
+      if (!socketId.value) {
+        socket.connect()
+      }
       timer.value = setInterval(getLocationInfoFromIO, 5000)
       // dispatch('locations/updateLocations')
-      // dispatch('devices/updateDevices')
+      await dispatch('devices/updateDevices')
     })
 
     onBeforeUnmount(() => {
@@ -146,10 +136,9 @@ export default {
     })
 
     return {
-      locations,
+      devices,
       locationErrorCount,
       zoneErrorCount,
-      getIp,
       fnSetupLocation,
     }
   }

@@ -181,6 +181,7 @@ export default {
       $q.dialog({
         component: zoneSelect,
       }).onOk((rt) => {
+        console.log(rt)
         live.value.nodes = rt.zones
         live.value.selected = rt.selected
       })

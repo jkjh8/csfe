@@ -50,7 +50,7 @@ export default {
 
     onMounted(() => {
       dispatch('user/getUser')
-      dispatch('locations/updateLocations')
+      // dispatch('locations/updateLocations')
       dispatch('devices/updateDevices')
     })
 

@@ -73,6 +73,9 @@ export default {
         console.log('socket disconnect', reason)
         commit('user/updateSocketId', null)
       })
+      socket.on('rtLocations', (locations) => {
+        commit('locations/updateLocations', locations)
+      })
     })
 
     onBeforeUnmount(() => {

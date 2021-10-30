@@ -11,16 +11,22 @@
                 방송구간설정
               </div>
               <div
-                v-if="devicesErrorCount"
+                v-if="errorCount"
                 class="caption"
               >
-                현재 {{ devicesErrorCount }}개의 방송구간의 점검이 필요합니다
+                현재 {{ errorCount }}개의 방송구간의 점검이 필요합니다
               </div>
             </div>
           </div>
-          <!-- <div>
-            <q-btn flat round icon="svguse:icons.svg#plus-circle-fill" color="cyan-7" @click="createUpdateDialog=!createUpdateDialog"></q-btn>
-          </div> -->
+          <div>
+            <q-btn
+              flat
+              round
+              icon="svguse:icons.svg#plus-circle-fill"
+              color="cyan-7"
+              @click="fnCreateItem"
+            />
+          </div>
         </div>
       </div>
     </q-card-section>
@@ -34,19 +40,16 @@
       >
         <q-list>
           <q-item
-            v-for="local in devices"
-            :key="local.index"
+            v-for="device in slaves"
+            :key="device._id"
             v-ripple
             class="q-px-lg"
           >
             <q-item-section avatar>
-              <q-avatar
-                style="border: 1px solid #454545"
-                size="2rem"
-              >
-                {{ local.index }}
+              <q-avatar>
+                <q-icon name="svguse:iconsColor.svg#pc" />
                 <q-badge
-                  v-if="!local.status"
+                  v-if="!device.status"
                   color="red"
                   rounded
                   floating
@@ -55,18 +58,17 @@
             </q-item-section>
             <q-item-section>
               <q-item-label>
-                <span class="listname">{{ local.name }}</span>
+                <span class="listname">{{ device.name }}</span>
                 <span
                   class="q-ml-sm"
                   style="font-familt: 나눔고딕; font-size: .5rem;"
-                >channel: {{ local.channel }}</span>
+                >channel: {{ device.channel }}</span>
               </q-item-label>
               <q-item-label
                 caption
                 class="captionFont"
               >
-                <span v-if="local.location_name">Location: {{ local.location_name }}</span>
-                <span class="q-ml-md">Device IP: {{ local.ipaddress }}</span>
+                <span>Device IP: {{ device.ipaddress }}</span>
               </q-item-label>
             </q-item-section>
 
@@ -78,7 +80,7 @@
                   icon="svguse:icons.svg#pencil-fill"
                   size="sm"
                   color="teal-6"
-                  @click.prevent.stop="fnUpdateItem(local)"
+                  @click.prevent.stop="fnUpdateItem(device)"
                 />
                 <q-btn
                   flat
@@ -86,7 +88,7 @@
                   icon="svguse:icons.svg#trash-fill"
                   size="sm"
                   color="red-6"
-                  @click.prevent.stop="fnDeleteItem(local)"
+                  @click.prevent.stop="fnDeleteItem(device)"
                 />
               </div>
             </q-item-section>
@@ -95,16 +97,6 @@
       </q-scroll-area>
     </q-card-section>
   </q-card>
-
-  <q-dialog
-    v-model="updateDialog"
-    persistent
-  >
-    <Update
-      :selected="selected"
-      @close="close"
-    />
-  </q-dialog>
 </template>
 
 <script>
@@ -113,23 +105,41 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
 
-import Update from './update'
-
-import updater from '@components/dialog/locations/zoneCreate'
+import updater from '@components/dialog/devices/deviceAdd'
 import deleteItemComponent from '@components/dialog/delete'
 
 export default {
-  components: { Update },
   setup () {
-    const { state, getters, dispatch } = useStore()
+    const { getters, dispatch } = useStore()
     const $q = useQuasar()
 
     const error = ref('')
-    const devices = computed(() => state.devices.devices)
-    const devicesErrorCount = computed(() => getters['devices/errorCount'])
+    const slaves = computed(()=> getters['devices/getSlave'])
+    const errorCount = computed(() => {
+      const list = []
+      slaves.value.forEach(device => {
+        if (!device.status) {
+          list.push(device)
+        }
+      })
+      return list.length
+    })
 
-    const updateDialog = ref(false)
-    const selected = ref({})
+    function fnCreateItem () {
+      $q.dialog({
+        component: updater,
+        componentProps: {
+          item: {
+            devicetype: 'Barix',
+            mode: 'Slave'
+          }
+        }
+      }).onOk(async () => {
+        $q.loading.show()
+        await dispatch('devices/updateDevices')
+        $q.loading.hide()
+      })
+    }
 
     function fnUpdateItem (item) {
       $q.dialog({
@@ -146,10 +156,10 @@ export default {
       $q.dialog({
         component: deleteItemComponent,
         componentProps: { item: item }
-      }).onOk(async () => {
+      }).onOk(async (rt) => {
         $q.loading.show()
         try {
-          await api.get(`/devices/delete?ipaddress=${item.ipaddress}`)
+          await api.get(`/devices/delete?ipaddress=${rt.ipaddress}`)
           await dispatch('devices/updateDevices')
         } catch (err) {
           error.value = err.response.data.message
@@ -158,15 +168,10 @@ export default {
       })      
     }
 
-    function close () {
-      selected.value = {}
-      updateDialog.value = false
-    }
     return {
-      devices,
-      devicesErrorCount,
-      selected,
-      updateDialog,
+      slaves,
+      errorCount,
+      fnCreateItem,
       fnUpdateItem,
       fnDeleteItem,
       close,

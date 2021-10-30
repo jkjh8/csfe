@@ -3,6 +3,7 @@ export default function () {
     devices: [],
     count: null,
     mode: false,
-    search: ''
+    search: '',
+    selected: null
   }
 }
