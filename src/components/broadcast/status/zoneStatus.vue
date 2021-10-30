@@ -4,10 +4,11 @@
     style="width: 11rem; border: solid 1px #eee; border-radius: 1rem"
   >
     <q-card-section
+      class="q-pa-xs"
       :class="device.active[item.channel - 1] ? 'bg-yellow' : 'bg-blue-grey-1'"
     >
-      <div class="fit row justify-between">
-        <div class="row no-wrap q-gutter-md q-pr-sm items-center">
+      <div class="q-py-sm fit row justify-between">
+        <div class="q-pl-sm row no-wrap q-gutter-md q-pr-sm items-center">
           <q-avatar
             class="avatar"
             size="1.5rem"
@@ -32,42 +33,12 @@
             round
             size="sm"
             flat
-            icon="svguse:icons.svg#cog"
+            @click="fnOpenInfoWindow"
           >
-            <q-popup-proxy>
-              <q-card>
-                <q-card-section class="bg-grey-1">
-                  <span>{{ item.label }}</span>
-                </q-card-section>
-
-                <q-card-section>
-                  <div>
-                    <div>
-                      <a
-                        :href="`http://${item.ipaddress}`"
-                        target="_blank"
-                      >
-                        {{ item.ipaddress }}
-                      </a>
-                    </div>
-                    <!-- <div class="fit row justify-between">
-                      <span>Device</span>
-                      <span>{{ zone.devicetype }}</span>
-                    </div>
-
-                    <div class="fit row justify-between">
-                      <span>Mode</span>
-                      <span>{{ zone.mode }}</span>
-                    </div> -->
-
-                    <div class="fit row justify-between">
-                      <span>방송채널</span>
-                      <span>{{ item.channel }}</span>
-                    </div>
-                  </div>
-                </q-card-section>
-              </q-card>
-            </q-popup-proxy>
+            <q-icon
+              name="svguse:icons.svg#info"
+              size="sm"
+            />
           </q-btn>
         </div>
       </div>
@@ -111,18 +82,38 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
-// import { useStore } from 'vuex'
+import { computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
+
+import infoWindow from '@components/dialog/devices/info'
 
 export default {
   props: {
     device: Object,
     item: Object
   },
-  setup() {
-    // const vol = computed(() => {
-    //   return props.devices.gain[one.channel - 1]
-    // })
+  setup(props) {
+    const { state } = useStore()
+    const $q = useQuasar()
+    const devices = computed(() => state.devices.devices)
+    
+    function fnOpenInfoWindow () {
+      let item
+      for (let i = 0; i < devices.value.length; i++) {
+        if (devices.value[i].ipaddress === props.item.ipaddress) {
+          item = devices.value[i]
+          break
+        }
+      }
+
+      $q.dialog({
+        component: infoWindow,
+        componentProps: { item: item }
+      }).onOk(() => {
+        console.log('close info window')
+      })
+    }
     onMounted(() => {
       // if (props.location && props.location.length) {
       //   active.value = location.value.active
@@ -144,7 +135,7 @@ export default {
     //   }
     // }
     return {
-      // vol
+      fnOpenInfoWindow
     }
   }
 }

@@ -91,7 +91,7 @@ import { useQuasar } from 'quasar'
 
 import { socket } from '@/boot/socketio'
 
-import ZoneStatus from '../../components/broadcast/zoneStatus.vue'
+import ZoneStatus from '../../components/broadcast/status/zoneStatus.vue'
 import SetupLocate from '@components/dialog/setLocation'
 
 export default {
