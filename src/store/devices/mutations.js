@@ -2,6 +2,14 @@ export function updateList (state, payload) {
   state.devices = payload
 }
 
+export function updateMasters (state, payload) {
+  state.masters = payload
+}
+
+export function updateSlaves (state, payload) {
+  state.slaves = payload
+}
+
 export function updateCount (state, payload) {
   state.count = payload
 }

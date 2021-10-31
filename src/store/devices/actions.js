@@ -4,6 +4,18 @@ export function updateListAsWebsoket ({ commit }, payload) {
 }
 
 export async function updateDevices ({ commit }, payload) {
+  const masters = []
+  const slaves = []
   const r = await api.get(`/devices?id=${payload}`)
-  commit('updateList', r.data.data)
+  const devices = r.data.data
+  commit('updateList', devices)
+  devices.forEach(device => {
+    if (device.mode === 'Master') {
+      masters.push(device)
+    } else {
+      slaves.push(device)
+    }
+  })
+  commit('updateMasters', masters)
+  commit('updateSlaves', slaves)
 }

@@ -205,6 +205,15 @@ q-img .q-img__content > div {
     linear-gradient(336deg, rgba(200, 0, 0, 0.8), rgba(255, 0, 0, 0) 90.71%);
 }
 
+.backg-gr-te {
+  height: 5rem;
+  color: #333;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(0, 255, 0, 1), rgba(0, 255, 0, 0) 90.71%),
+    linear-gradient(204deg, rgb(0, 250, 250), rgba(0, 0, 255, 0) 80%),
+    linear-gradient(300deg, rgb(67, 126, 126), rgba(0, 80, 69, 0) 99.71%);
+}
+
 strong {
   color: #111;
   font-family: 나눔고딕;

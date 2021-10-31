@@ -11,7 +11,7 @@
       <span class="name">Status</span>
       <span
         class="caption"
-      >{{ locationErrorCount }} 지역 {{ zoneErrorCount }}방송구간이 점검이
+      >{{ count.error.masters }} 지역 {{ count.error.zones }}방송구간이 점검이
         필요합니다</span>
     </div>
     <div
@@ -20,7 +20,7 @@
     >
       <q-list>
         <div
-          v-for="device in devices.list"
+          v-for="device in devices"
           :key="device.index"
         >
           <q-expansion-item
@@ -100,8 +100,7 @@ export default {
     const { state, getters, dispatch } = useStore()
     const $q = useQuasar()
     const socketId = computed(() => state.user.socketId)
-    const locationErrorCount = computed(() => getters['locations/errorCount'])
-    const zoneErrorCount = computed(() => getters['devices/errorCount'])
+    const count = computed(() => getters['devices/count'])
     const devices = computed(() => getters['devices/mastersDetails'])
 
     const timer = ref(null)
@@ -137,8 +136,7 @@ export default {
 
     return {
       devices,
-      locationErrorCount,
-      zoneErrorCount,
+      count,
       fnSetupLocation,
     }
   }

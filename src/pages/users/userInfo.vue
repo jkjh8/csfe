@@ -7,12 +7,12 @@
       class="card-large"
     >
       <q-card-section class="q-pa-none">
-        <div class="backg-gr-bl">
+        <div class="backg-gr-te">
           <div class="card-name-align">
             <div class="card-name">
               <q-icon
                 name="svguse:icons.svg#user-circle-fill"
-                color="grey-4"
+                color="grey-8"
               />
               <div>사용자 정보</div>
             </div>

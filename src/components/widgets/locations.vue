@@ -21,11 +21,11 @@
     <q-card-section>
       <div class="text-grey-8 q-px-md q-mb-md">
         <div>
-          현재 방송 구간은 <strong>{{ brStatus.locations }}</strong> 개의 지역, <strong>{{ brStatus.zones }}</strong>개의 구역, 총 <strong>{{ brStatus.broadcastZones }}</strong> 개의 방송구간이 있습니다.
+          현재 방송 구간은 <strong>{{ count.masters }}</strong> 개의 지역, <strong>{{ count.zones }}</strong> 개의 방송구간이 있습니다.
         </div>
         <br>
         <div>
-          현재 <strong>{{ brStatus.actives }}</strong>개의 방송구간이 방송중입니다.
+          현재 <strong>{{ count.active }}</strong>개의 방송구간이 방송중입니다.
         </div>
       </div>
     </q-card-section>
@@ -52,9 +52,9 @@ import { socket } from '@/boot/socketio'
 
 export default {
   setup() {
-    const { state, getters } = useStore()
+    const { state, getters, dispatch } = useStore()
     const socketId = computed(() => state.user.socketId)
-    const brStatus = computed(() => getters['locations/locationsCount'])
+    const count = computed(() => getters['devices/count'])
 
     const timer = ref(null)
 
@@ -63,6 +63,7 @@ export default {
     }
 
     onBeforeMount(() => {
+      dispatch('devices/updateDevices')
       if (!socketId.value) {
         socket.connect()
       }
@@ -75,7 +76,7 @@ export default {
     })
 
     return {
-      brStatus,
+      count,
     }
   }
 }

@@ -11,7 +11,8 @@
           color="green-10"
           size="3rem"
         />
-        <span> 오늘은</span>
+        <span> 오늘은 </span>
+        <span>{{ year }}</span>
       </div>
       <div class="q-pl-sm">
         {{ today }}입니다
@@ -29,10 +30,12 @@ moment.locale('ko')
 export default {
   setup () {
     const today = ref('')
+    const year = ref('')
     onMounted(() => {
       today.value = moment().format('MM월 DD일 dddd')
+      year.value = moment().format('YYYY년')
     })
-    return { today }
+    return { year, today }
   }
 }
 </script>
