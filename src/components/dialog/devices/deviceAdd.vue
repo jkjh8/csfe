@@ -267,8 +267,6 @@ export default {
               actives.push(false)
               if (item.children[i]) {
                 childrens.push(item.children[i])
-              } else {
-                childrens.push({})
               }
             }
             item.children = childrens
@@ -284,16 +282,19 @@ export default {
                 $q.loading.hide()
                 return error.value = '방송채널이 존해 하지 않습니다.'
               } else {
-                for (let j = 0; j < master.children.length; j++) {
+                for (let j = 0; j < master.channels; j++) {
                   if (j === item.channel - 1) {
                     arr.push({
-                      label: item.name,
+                      name: item.name,
                       ipaddress: item.ipaddress,
                       parent: item.parent,
                       channel: item.channel
                     })
                   } else {
-                    arr.push(master.children[j])
+                    if(master.children[j]) {
+                      console.log(master.children[j])
+                      arr.push(master.children[j])
+                    }
                   }
                 }
                 master.children = arr

@@ -166,12 +166,12 @@
             <q-checkbox
               v-model="live.start"
               class="q-mr-md"
-              label="시작챠임"
+              label="시작챠임:"
               left-label
             />
             <q-checkbox
               v-model="live.end"
-              label="종료챠임"
+              label="종료챠임:"
               left-label
             />
           </div>

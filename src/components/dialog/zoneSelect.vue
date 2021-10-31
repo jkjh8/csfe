@@ -106,7 +106,7 @@
                     <q-tree
                       v-model:seleted="selected"
                       v-model:ticked="ticked"
-                      :nodes="devicesDetails"
+                      :nodes="devicesDetails.list"
                       tick-strategy="leaf"
                       node-key="ipaddress"
                       @update:ticked="selectedPreset = null"

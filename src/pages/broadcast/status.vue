@@ -20,7 +20,7 @@
     >
       <q-list>
         <div
-          v-for="device in devices"
+          v-for="device in devices.list"
           :key="device.index"
         >
           <q-expansion-item
