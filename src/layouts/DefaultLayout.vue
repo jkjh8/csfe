@@ -55,7 +55,7 @@ export default {
     Live
     },
   setup () {
-    const { state, commit } = useStore()
+    const { state, commit, dispatch } = useStore()
     const $router = useRouter()
     const $route = useRoute()
     provide('$router', $router)
@@ -73,8 +73,12 @@ export default {
         console.log('socket disconnect', reason)
         commit('user/updateSocketId', null)
       })
-      socket.on('rtLocations', (locations) => {
-        commit('locations/updateLocations', locations)
+      socket.on('devices', (devices) => {
+        console.log(devices)
+        dispatch('devices/updateFromSocket', devices)
+      })
+      socket.on('onair', (data) => {
+        console.log('onair', data)
       })
     })
 

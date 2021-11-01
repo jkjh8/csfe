@@ -90,7 +90,7 @@ export function mastersDetails (state) {
               ipaddress: slaves[j].ipaddress,
               status: slaves[j].status,
               parent: slaves[j].parent,
-              channel: slaves[j].channel
+              channel: Number(slaves[j].channel)
             })
             break
           }

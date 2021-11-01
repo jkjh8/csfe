@@ -125,7 +125,6 @@ export default {
         socket.connect()
       }
       timer.value = setInterval(getLocationInfoFromIO, 5000)
-      // dispatch('locations/updateLocations')
       await dispatch('devices/updateDevices')
     })
 

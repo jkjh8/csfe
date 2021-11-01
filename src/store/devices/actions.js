@@ -19,3 +19,18 @@ export async function updateDevices ({ commit }, payload) {
   commit('updateMasters', masters)
   commit('updateSlaves', slaves)
 }
+
+export async function updateFromSocket ({ commit }, devices) {
+  const masters = []
+  const slaves = []
+  commit('updateList', devices)
+  devices.forEach(device => {
+    if (device.mode === 'Master') {
+      masters.push(device)
+    } else {
+      slaves.push(device)
+    }
+  })
+  commit('updateMasters', masters)
+  commit('updateSlaves', slaves)
+}

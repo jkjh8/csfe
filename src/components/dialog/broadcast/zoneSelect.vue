@@ -65,6 +65,16 @@
                         </q-avatar>
                       </q-item-section>
                       <q-item-section>{{ preset.name }}</q-item-section>
+                      <q-item-section side>
+                        <q-btn
+                          icon="delete"
+                          round
+                          flat
+                          size="sm"
+                          color="red"
+                          @click.stop.prevent="fnDelete(preset)"
+                        />
+                      </q-item-section>
                     </q-item>
                   </q-list>
                 </div>
@@ -157,7 +167,8 @@ import { useStore } from 'vuex'
 
 import { api } from '@/boot/axios'
 
-import ZonePreset from '@components/dialog/zonePreset'
+import ZonePreset from '@components/dialog/broadcast/zonePreset'
+import Delete from '@components/dialog/delete'
 
 export default {
   props: {
@@ -170,13 +181,12 @@ export default {
 
   setup() {
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-    const { state, getters, dispatch } = useStore()
+    const { state, getters } = useStore()
     const selected = ref(null)
     const ticked = ref(null)
     const $q = useQuasar()
 
     const user = computed(() => state.user.user)
-    const locations = computed(() => state.locations.locations)
     const devices = computed(() => state.devices.devices)
     const devicesDetails = computed(() => getters['devices/mastersDetails'])
     const presets = ref(null)
@@ -190,6 +200,16 @@ export default {
         const r = await api.post('/broadcast/preset', item)
         console.log(r)
         getPresets()
+      })
+    }
+
+    function fnDelete (item) {
+      $q.dialog({
+        component: Delete,
+        componentProps: { item: item }
+      }).onOk(async (rt) => {
+        // const r = await api.post('/broadcast/preset', item)
+        console.log(rt)
       })
     }
 
@@ -243,7 +263,6 @@ export default {
     } 
 
     onMounted(async () => {
-      dispatch('locations/updateLocations')
       await getPresets()      
     })
 
@@ -252,12 +271,12 @@ export default {
       selected,
       ticked,
       devices,
-      locations,
       devicesDetails,
       presets,
       selectedPreset,
       fnAddPreset,
       fnUpdatePreset,
+      fnDelete,
       dialogRef,
       onDialogHide,
       onOKClick(items) {

@@ -1,6 +1,7 @@
 <template>
   <q-dialog
     ref="dialogRef"
+    persistent
     @hide="onDialogHide"
   >
     <q-card
@@ -75,8 +76,9 @@
                   </div>
                   <div
                     class="q-ml-md"
-                    style="width: 2rem; height: 1.5rem; border-radius: 4px;"
+                    style="width: 4rem; height: 1.5rem; border-radius: 4px;"
                     :style="`background: ${schedule.color}`"
+                    @click="fncolorPicker(schedule.color)"
                   />
                 </div>
                 <div class="row items-center q-mr-sm">
@@ -110,6 +112,7 @@
                   <SelectedZones
                     :nodes="schedule.zones"
                     :selected="schedule.selected"
+                    :height="100"
                   />
                 </div>
                 <div>
@@ -132,11 +135,19 @@
             </div>
           </div>
 
-          <div class="col-6 q-px-md">
+          <!-- 우측 -->
+          <div class="col-6 q-px-md q-gutter-sm">
+            <div>
+              <q-select
+                v-model="schedule.mode"
+                filled
+                dense
+                :options="['Media', 'TTS']"
+              />
+            </div>
             <SelectedFile :file="schedule.file" />
             <div
               v-if="schedule.mode === 'Media'"
-              class="q-mt-sm"
             >
               <div>
                 <q-btn
@@ -174,7 +185,10 @@
                 </q-btn>
               </div>
             </div>
-            <q-separator class="q-my-lg" />
+
+            <q-separator />
+            
+            <!-- 상세 설명 -->
             <div>
               <q-input
                 v-model="schedule.description"
@@ -221,9 +235,9 @@ import moment from 'moment'
 
 import Repeat from '@components/repeatSel'
 
-import fileSelect from '@components/dialog/fileSelect'
-import ttsCreate from '@components/dialog/ttsCreate'
-import zoneSelect from '@components/dialog/zoneSelect'
+import fileSelect from '@components/dialog/broadcast/fileSelect'
+import ttsCreate from '@components/dialog/broadcast/ttsCreate'
+import zoneSelect from '@components/dialog/broadcast/zoneSelect'
 import colorPicker from '@components/dialog/colorPicker'
 
 import SelectedZones from '@components/broadcast/components/selectedZones'

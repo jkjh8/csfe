@@ -14,7 +14,7 @@
             Live
           </div>
           <div class="caption">
-            {{ brStatus.locations }}개의 지역, {{ brStatus.zones }}개의 구역, 총 {{ brStatus.broadcastZones }}개의 방송 구간이 있습니다
+            {{ count.masters }}개의 지역, {{ count.zones }}개의 방송 구간이 있습니다
           </div>
         </div>
       </div>
@@ -42,17 +42,16 @@ export default {
 
     const selected = ref([])
     const user = computed(() => state.user.user)
-    const brStatus = computed(() => getters['locations/locationsCount'])
+    const count = computed(() => getters['devices/count'])
 
     onMounted(() => {
       dispatch('user/getUser')
-      // dispatch('locations/updateLocations')
       dispatch('devices/updateDevices')
     })
 
     return {
       selected,
-      brStatus,
+      count,
       user
     }
   }

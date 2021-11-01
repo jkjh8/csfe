@@ -43,7 +43,6 @@ export default {
 
     onBeforeMount(() => {
       dispatch('user/getUser')
-      dispatch('locations/updateLocations')
       dispatch('devices/updateDevices')
     })
 

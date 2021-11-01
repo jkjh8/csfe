@@ -9,8 +9,7 @@
         />
         <span class="name">디바이스</span>
         <span class="caption">
-          총 {{ count }}개의 디바이스 중 신규 디바이스 {{ newConunt }}개
-          점검필요 {{ errorConunt }}개가 존재 합니다</span>
+          총 {{ count.zones }}개의 디바이스 중 점검필요 {{ count.error.zones }}개가 존재 합니다</span>
       </div>
       <div>
         {{ message }}
@@ -67,9 +66,7 @@ export default defineComponent({
     const $q = useQuasar()
     const user = computed(() => state.user.user)
 
-    const count = computed(() => getters["devices/getDeviceCount"])
-    const newConunt = computed(() => getters["devices/newDeviceCount"])
-    const errorConunt = computed(() => getters["devices/errorCount"])
+    const count = computed(() => getters["devices/count"])
     const connected = computed(() => state.socket.connect)
     const search = computed({
       get () { return state.devices.search },
@@ -97,8 +94,6 @@ export default defineComponent({
       connected,
       message,
       search,
-      newConunt,
-      errorConunt,
       fnCreateUpdateItem
     };
   },

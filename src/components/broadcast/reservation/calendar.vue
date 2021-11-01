@@ -116,7 +116,7 @@ import { api } from '@/boot/axios'
 import moment from 'moment'
 moment.locale('ko')
 
-import Schedule from '@components/dialog/schedule'
+import Schedule from '@components/dialog/broadcast/schedule'
 import Delete from '@components/dialog/delete'
 import fnColor from '@/apis/color'
 

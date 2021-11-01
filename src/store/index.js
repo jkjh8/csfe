@@ -4,7 +4,6 @@ import { createStore } from "vuex";
 import devices from "./devices";
 import user from "./user";
 import eventlog from "./eventlog";
-import locations from "./locations";
 import broadcast from "./broadcast";
 
 export default store(function (/* { ssrContext } */) {
@@ -13,8 +12,7 @@ export default store(function (/* { ssrContext } */) {
       broadcast,
       user,
       eventlog,
-      devices,
-      locations,
+      devices
     },
 
     // enable strict mode (adds overhead!)

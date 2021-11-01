@@ -61,7 +61,7 @@ import { api } from '@/boot/axios'
 
 import Table from '@components/broadcast/reservation/table'
 import Calendar from '@components/broadcast/reservation/calendar'
-import Create from '@components/dialog/schedule'
+import Create from '@components/dialog/broadcast/schedule'
 
 export default {
   components: { Table, Calendar },

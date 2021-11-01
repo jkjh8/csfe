@@ -13,7 +13,7 @@
                 실시간 방송
               </div>
               <div class="caption">
-                총 {{ brStatus.broadcastZones }}개의 방송 구간중 {{ brStatus.actives }}개의 구간 방송중입니다
+                총 {{ count.zones }}개의 방송 구간중 {{ count.active }}개의 구간 방송중입니다
               </div>
             </div>
           </div>
@@ -164,13 +164,13 @@
 
           <div class="row justify-end">
             <q-checkbox
-              v-model="live.start"
+              v-model="live.startChime"
               class="q-mr-md"
               label="시작챠임:"
               left-label
             />
             <q-checkbox
-              v-model="live.end"
+              v-model="live.endChime"
               label="종료챠임:"
               left-label
             />
@@ -203,9 +203,9 @@ import { useQuasar } from 'quasar'
 
 import { socket } from '@/boot/socketio'
 
-import zoneSelect from '@components/dialog/zoneSelect'
-import fileSelect from '@components/dialog/fileSelect'
-import ttsCreate from '@components/dialog/ttsCreate'
+import zoneSelect from '@components/dialog/broadcast/zoneSelect'
+import fileSelect from '@components/dialog/broadcast/fileSelect'
+import ttsCreate from '@components/dialog/broadcast/ttsCreate'
 
 import SelectedZones from '@components/broadcast/components/selectedZones'
 import SelectedFile from '@components/broadcast/components/selectedFile'
@@ -218,7 +218,7 @@ export default {
     const $q = useQuasar()
     const error = ref('')
 
-    const brStatus = computed(() => getters['locations/locationsCount'])
+    const count = computed(() => getters['devices/count'])
     const live = ref({
       name: `Live - ${user.value.email}`,
       nodes: [],
@@ -226,8 +226,8 @@ export default {
       mode: 'Media',
       file: null,
       vol: 70,
-      start: false,
-      end: false
+      startChime: false,
+      endChime: false,
     })
     const nodes = ref([])
     const selected = ref([])
@@ -274,7 +274,7 @@ export default {
       live,
       nodes,
       selected,
-      brStatus,
+      count,
       fnStartLive,
       fnZoneSelect,
       fnGetFile,

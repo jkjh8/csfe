@@ -19,10 +19,8 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
-import moment from 'moment'
 
 import Today from '../components/widgets/today.vue'
 import NeedLogin from '../components/widgets/needLogin.vue'
@@ -41,20 +39,13 @@ export default {
   },
   setup() {
     const { state, dispatch } = useStore()
-    const $q = useQuasar()
     const user = computed(() => state.user.user)
-    const today = ref('')
-    moment.locale('ko')
 
     onMounted(async () => {
-      $q.loading.show()
       await dispatch('user/getUser')
-      today.value = moment().format('MM월 DD일 dddd')
-      $q.loading.hide()
     })
     return {
-      user,
-      today
+      user
     }
   }
 }

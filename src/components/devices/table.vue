@@ -196,7 +196,6 @@ export default {
         dispatch('devices/updateListAsWebsoket', r)
       })
       dispatch('devices/updateDevices')
-      dispatch('locations/updateLocations')
     })
     return {
       tableColumes,
