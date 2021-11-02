@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { useStore } from  'vuex'
 import { socket } from '@/boot/socketio'
 
@@ -56,23 +56,11 @@ export default {
     const socketId = computed(() => state.user.socketId)
     const count = computed(() => getters['devices/count'])
 
-    const timer = ref(null)
-
-    function getLocationInfoFromIO () {
-      socket.emit('getLocations')
-    }
-
     onBeforeMount(() => {
       dispatch('devices/updateDevices')
       if (!socketId.value) {
         socket.connect()
       }
-      timer.value = setInterval(getLocationInfoFromIO, 5000)
-    })
-
-    onBeforeUnmount(() => {
-      clearInterval(timer.value)
-      socket.disconnect()
     })
 
     return {

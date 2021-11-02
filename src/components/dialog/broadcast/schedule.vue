@@ -186,6 +186,39 @@
               </div>
             </div>
 
+            <div>
+              <div
+                class="bg-grey-2"
+                style="border-radius: .5rem; padding: .1rem .5rem;"
+              >
+                <div class="fit row justify-between items-center">
+                  <div class="listname">
+                    볼륨
+                  </div>
+                  <div style="width: 80%;min-width: 200px;">
+                    <q-slider
+                      v-model="schedule.vol"
+                      label
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row justify-end">
+              <q-checkbox
+                v-model="schedule.startChime"
+                class="q-mr-md"
+                label="시작챠임:"
+                left-label
+              />
+              <q-checkbox
+                v-model="schedule.endChime"
+                label="종료챠임:"
+                left-label
+              />
+            </div>
+
             <q-separator />
             
             <!-- 상세 설명 -->
@@ -279,7 +312,10 @@ export default {
       days: 1,
       color: user.value.color,
       description: '',
-      dateData: ''
+      dateData: '',
+      startChime: false,
+      endChime: false,
+      vol: 70
     })
 
     function fnGetFile () {

@@ -1,19 +1,35 @@
 <template>
   <div style="margin: 5% 10% 0 10%">
-    <div class="q-gutter-sm q-mb-md">
-      <span>
-        <q-icon
-          name="svguse:icons.svg#view-grid-fill"
-          size="sm"
-          color="green"
-        />
-      </span>
-      <span class="name">Status</span>
-      <span
-        class="caption"
-      >{{ count.error.masters }} 지역 {{ count.error.zones }}방송구간이 점검이
-        필요합니다</span>
+    <!-- 제목 -->
+    <div class="row justify-between items-center">
+      <div class="q-gutter-sm q-mb-md">
+        <span>
+          <q-icon
+            name="svguse:icons.svg#view-grid-fill"
+            size="sm"
+            color="green"
+          />
+        </span>
+        <span class="name">Status</span>
+        <span
+          class="caption"
+        >{{ count.error.masters }} 지역 {{ count.error.zones }}방송구간이 점검이
+          필요합니다</span>
+      </div>
+      <div>
+        <q-btn
+          round
+          flat
+          color="primary"
+          icon="svguse:icons.svg#reload"
+          @click="fnUpdate"
+        >
+          <q-tooltip>Reload</q-tooltip>
+        </q-btn>
+      </div>
     </div>
+
+    <!-- 내용 -->
     <div
       class="shadow-15 q-pa-md status"
       style="border-radius: 2rem"
@@ -85,7 +101,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
@@ -103,8 +119,6 @@ export default {
     const count = computed(() => getters['devices/count'])
     const devices = computed(() => getters['devices/mastersDetails'])
 
-    const timer = ref(null)
-
     function fnSetupLocation(locate) {
       console.log(locate)
       $q.dialog({
@@ -114,28 +128,23 @@ export default {
         console.log(rt)
       })
     }
-
-    function getLocationInfoFromIO () {
-      socket.emit('getLocations')
+    
+    function fnUpdate() {
+      socket.emit('getDevices')
     }
 
     onBeforeMount(async () => {
       dispatch('user/getUser')
+      dispatch('devices/updateDevices')
       if (!socketId.value) {
         socket.connect()
       }
-      timer.value = setInterval(getLocationInfoFromIO, 5000)
-      await dispatch('devices/updateDevices')
-    })
-
-    onBeforeUnmount(() => {
-      clearInterval(timer.value)
-      socket.disconnect()
     })
 
     return {
       devices,
       count,
+      fnUpdate,
       fnSetupLocation,
     }
   }

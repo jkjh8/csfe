@@ -13,7 +13,7 @@
             size="2.5rem"
           >
             <q-icon
-              name="svguse:icons.svg#map1"
+              name="svguse:iconsColor.svg#map1"
               color="orange"
               size="1.5rem"
             />
@@ -36,18 +36,19 @@
 
       <q-card-section>
         <div class="q-ma-md q-gutter-sm">
+          <q-select
+            v-if="user.admin"
+            v-model="preset.type"
+            filled
+            dense
+            label="모드선택"
+            :options="['Global', 'Private']"
+          />
           <q-input
             v-model="preset.name"
             filled
             dense
             label="프리셋 이름"
-          />
-          <q-select
-            v-model="preset.mode"
-            filled
-            dense
-            label="모드선택"
-            :options="['Global', 'Private']"
           />
         </div>
       </q-card-section>
@@ -73,7 +74,8 @@
 
 <script>
 import { useDialogPluginComponent } from 'quasar'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
@@ -82,25 +84,19 @@ export default {
   },
 
   emits: [
-    // REQUIRED; need to specify some events that your
-    // component will emit through useDialogPluginComponent()
     ...useDialogPluginComponent.emits
   ],
 
   setup (props) {
-    // REQUIRED; must be called inside of setup()
     const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-    // dialogRef      - Vue ref to be applied to QDialog
-    // onDialogHide   - Function to be used as handler for @hide on QDialog
-    // onDialogOK     - Function to call to settle dialog with "ok" outcome
-    //                    example: onDialogOK() - no payload
-    //                    example: onDialogOK({ /*.../* }) - with payload
-    // onDialogCancel - Function to call to settle dialog with "cancel" outcome
+    const { state } = useStore()
+    const user = computed(() => state.user.user)
 
     const error = ref('')
     const preset = ref({
       name: '',
-      mode: 'Global'
+      type: 'Private',
+      zones: []
     })
 
     function onOKClick() {
@@ -110,27 +106,24 @@ export default {
       if (!preset.value.name) {
         return error.value = '프리셋 이름을 입력하세요.'
       }
+      console.log(preset.value)
       onDialogOK(preset.value)
     }
 
     onMounted(() => {
-      preset.value = { ...props.item, mode: 'Global' }
+      preset.value = { ...props.item, type: 'Private' }
       if (!preset.value.zones) {
         return error.value = '방송구간을 먼저 선택하세요!'
       }
     })
 
     return {
-      // This is REQUIRED;
-      // Need to inject these (from useDialogPluginComponent() call)
-      // into the vue scope for the vue html template
+      user,
       error,
       preset,
       dialogRef,
       onOKClick,
       onDialogHide,
-
-      // we can passthrough onDialogCancel directly
       onCancelClick: onDialogCancel
     }
   }

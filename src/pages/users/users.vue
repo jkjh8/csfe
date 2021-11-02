@@ -98,9 +98,6 @@
       </template>
     </q-table>
   </div>
-  <q-dialog v-model="editDialog">
-    <EditUser :user="currentUser" />
-  </q-dialog>
 </template>
 
 <script>

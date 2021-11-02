@@ -37,78 +37,87 @@
         <div class="q-mx-md q-mt-lg">
           <div class="row">
             <div class="col-6">
-              <div>
+              <div class="q-mr-md row justify-between items-center">
                 <div class="q-gutter-sm row listname">
                   <q-icon
-                    name="svguse:icons.svg#setup"
+                    name="svguse:iconsColor.svg#setup"
                     size="sm"
                   />
                   <span>방송구간 프리셋</span>
                 </div>
                 <div>
-                  <q-list>
-                    <q-item
-                      v-for="preset in presets"
-                      :key="preset._id"
-                      v-ripple
-                      dense
-                      clickable
-                      active-class="active-class"
-                      :active="preset === selectedPreset"
-                      @click="fnUpdatePreset(preset)"
+                  <q-btn
+                    round
+                    flat
+                    icon="svguse:icons.svg#plus-circle"
+                    size="sm"
+                    color="green"
+                    @click="fnAddPreset"
+                  >
+                    <q-tooltip
+                      anchor="top middle"
+                      self="bottom middle"
+                      :offset="[0,10]"
                     >
-                      <q-item-section avatar>
-                        <q-avatar>
-                          <q-icon
-                            :name="preset.mode !== 'Global' ? 'svguse:icons.svg#global-color':'svguse:icons.svg#private-color'"
-                          />
-                        </q-avatar>
-                      </q-item-section>
-                      <q-item-section>{{ preset.name }}</q-item-section>
-                      <q-item-section side>
+                      프리셋 추가
+                    </q-tooltip>
+                  </q-btn>
+                </div>
+              </div>
+              <div class="q-mt-sm">
+                <q-list>
+                  <q-item
+                    v-for="preset in presets"
+                    :key="preset._id"
+                    v-ripple
+                    style="height: 1rem;"
+                    dense
+                    clickable
+                    active-class="active-class"
+                    :active="preset === selectedPreset"
+                    @click="fnUpdatePreset(preset)"
+                  >
+                    <q-item-section avatar>
+                      <q-avatar>
+                        <q-icon
+                          :name="preset.type === 'Global' ? 'svguse:iconsColor.svg#global-color':'svguse:iconsColor.svg#private-color'"
+                        />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>{{ preset.name }}</q-item-section>
+                    <q-item-section side>
+                      <div class="row">
                         <q-btn
-                          icon="delete"
+                          icon="svguse:icons.svg#pencil-fill"
+                          round
+                          flat
+                          size="sm"
+                          color="cyan"
+                          @click.stop.prevent="fnEdit(preset)"
+                        />
+                        <q-btn
+                          icon="svguse:icons.svg#trash-fill"
                           round
                           flat
                           size="sm"
                           color="red"
                           @click.stop.prevent="fnDelete(preset)"
                         />
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
               </div>
             </div>
 
             <div class="col-6">
               <div class="q-gutter-md column">
-                <div class="row justify-between items-center">
-                  <div class="q-gutter-sm listname row">
-                    <q-icon
-                      name="svguse:icons.svg#mic-color"
-                      size="sm"
-                    />
-                    <span>방송구간선택</span>
-                  </div>
-                  <div>
-                    <q-btn
-                      round
-                      flat
-                      icon="svguse:icons.svg#plus-circle"
-                      size="sm"
-                      color="green"
-                      @click="fnAddPreset"
-                    >
-                      <q-tooltip
-                        anchor="top middle"
-                        self="bottom middle"
-                        :offset="[0,10]"
-                      >
-                        프리셋 추가
-                      </q-tooltip>
-                    </q-btn>
-                  </div>
+                <div class="q-gutter-sm listname row">
+                  <q-icon
+                    name="svguse:iconsColor.svg#mic-color"
+                    size="sm"
+                  />
+                  <span>방송구간선택</span>
                 </div>
 
                 <div>
@@ -167,8 +176,10 @@ import { useStore } from 'vuex'
 
 import { api } from '@/boot/axios'
 
-import ZonePreset from '@components/dialog/broadcast/zonePreset'
+// import ZonePreset from '@components/dialog/broadcast/zonePreset'
+import Edit from '@components/dialog/broadcast/presetEdit'
 import Delete from '@components/dialog/delete'
+import Default from '@components/dialog/default'
 
 export default {
   props: {
@@ -194,8 +205,8 @@ export default {
 
     function fnAddPreset () {
       $q.dialog({
-        component: ZonePreset,
-        componentProps: { item: { user: user.value.email, zones: ticked.value } }
+        component: Edit,
+        componentProps: { item: { user_id: user.value.email, zones: ticked.value } }
       }).onOk(async (item) => {
         const r = await api.post('/broadcast/preset', item)
         console.log(r)
@@ -203,13 +214,38 @@ export default {
       })
     }
 
+    function fnEdit(item) {
+      if (item.type === 'Global' && !user.value.admin) {
+        return $q.dialog({
+          component: Default,
+          componentProps: { message: '권한이 없습니다.'}
+        })
+      }
+      $q.dialog({
+        component: Edit,
+        componentProps: { item: item }
+      }).onOk(async (rt) => {
+        await api.put('/broadcast/preset', rt)
+        getPresets()
+      })
+    }
+
     function fnDelete (item) {
+      console.log(item)
+      if (item.type === 'Global' && !user.value.admin) {
+        return $q.dialog({
+          component: Default,
+          componentProps: { message: '권한이 없습니다.'}
+        })
+      }
+
       $q.dialog({
         component: Delete,
         componentProps: { item: item }
       }).onOk(async (rt) => {
-        // const r = await api.post('/broadcast/preset', item)
-        console.log(rt)
+        const r = await api.get(`/broadcast/preset/delete?id=${rt._id}`)
+        console.log(r)
+        getPresets()
       })
     }
 
@@ -259,6 +295,7 @@ export default {
 
     async function getPresets () {
       const r = await api.get(`/broadcast/preset?user_id=${user.value.email}`)
+      console.log(r.data)
       presets.value = r.data
     } 
 
@@ -276,6 +313,7 @@ export default {
       selectedPreset,
       fnAddPreset,
       fnUpdatePreset,
+      fnEdit,
       fnDelete,
       dialogRef,
       onDialogHide,

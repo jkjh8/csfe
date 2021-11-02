@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 // import SelectBroadcastZones from '@components/broadcast/zoneSelect'
 // import Live from '@components/broadcast/live'
@@ -44,7 +44,7 @@ export default {
     const user = computed(() => state.user.user)
     const count = computed(() => getters['devices/count'])
 
-    onMounted(() => {
+    onBeforeMount(() => {
       dispatch('user/getUser')
       dispatch('devices/updateDevices')
     })

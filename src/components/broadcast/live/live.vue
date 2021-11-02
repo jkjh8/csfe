@@ -41,143 +41,141 @@
       </div>
     </q-card-section>
 
-    <q-card-sectrion>
-      <div class="row">
-        <div
-          class="q-pa-md q-gutter-md"
-          style="width: 50%; min-width: 400px"
-        >
-          <div>
-            <q-input
-              v-model="live.name"
-              dense
-              filled
-              label="이름"
-            />
-          </div>
-          <!-- 방송지역선택 -->
-          <div>
+    <q-card-section>
+      <div class="fit row">
+        <div class="col-6">
+          <div class="q-pa-md q-gutter-md">
             <div>
-              <SelectedZones
-                :nodes="live.nodes"
-                :selected="live.selected"
-                :height="165"
+              <q-input
+                v-model="live.name"
+                dense
+                filled
+                label="이름"
               />
             </div>
-        
-            <div class="q-mt-md">
-              <q-btn
-                class="full-width"
-                rounded
-                unelevated
-                color="blue-1"
-                text-color="grey-10"
-                @click="fnZoneSelect"
-              >
-                <q-icon
-                  name="svguse:icons.svg#map"
-                  size="xs"
-                />
-                <span class="q-ml-sm">지역선택</span>
-              </q-btn>
-            </div>
-          </div>
-        </div>
-        
-        <div
-          class="q-pa-md q-gutter-md"
-          style="width: 50%; min-width: 400px"
-        >
-          <!-- 방송 모드 -->
-          <div>
-            <q-select
-              v-model="live.mode"
-              filled
-              dense
-              label="방송 모드"
-              :options="['Media', 'TTS']"
-            />
-          </div>
-
-          <div>
-            <SelectedFile :file="live.file" />
-          </div>
-
-          <div
-            v-if="live.mode === 'Media'"
-          >
+            <!-- 방송지역선택 -->
             <div>
-              <q-btn
-                class="full-width"
-                rounded
-                color="blue-1"
-                text-color="grey-10"
-                unelevated
-                @click="fnGetFile"
-              >
-                <q-icon
-                  name="svguse:icons.svg#archive"
-                  size="xs"
+              <div>
+                <SelectedZones
+                  :nodes="live.nodes"
+                  :selected="live.selected"
+                  :height="165"
                 />
-                <span class="q-ml-sm">파일선택</span>
-              </q-btn>
-            </div>
-          </div>
-
-          <div v-if="live.mode === 'TTS'">
-            <div>
-              <q-btn
-                class="full-width"
-                rounded
-                color="teal-1"
-                text-color="grey-10"
-                unelevated
-                @click="fnGetTtsAudio"
-              >
-                <q-icon
-                  name="svguse:icons.svg#mic"
-                  size="xs"
-                />
-                <span class="q-ml-sm">TTS 생성</span>
-              </q-btn>
-            </div>
-          </div>
-
-          <div>
-            <div
-              class="bg-grey-2"
-              style="border-radius: .5rem; padding: .1rem .5rem;"
-            >
-              <div class="fit row justify-between items-center">
-                <div class="listname">
-                  볼륨
-                </div>
-                <div style="width: 80%;min-width: 200px;">
-                  <q-slider
-                    v-model="live.vol"
-                    label
+              </div>
+        
+              <div class="q-mt-md">
+                <q-btn
+                  class="full-width"
+                  rounded
+                  unelevated
+                  color="blue-1"
+                  text-color="grey-10"
+                  @click="fnZoneSelect"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#map"
+                    size="xs"
                   />
-                </div>
+                  <span class="q-ml-sm">지역선택</span>
+                </q-btn>
               </div>
             </div>
           </div>
+        </div>
+        
+        <!-- 방송 모드 -->
+        <div class="col-6">
+          <div class="q-pa-md q-gutter-md">
+            <div>
+              <q-select
+                v-model="live.mode"
+                filled
+                dense
+                label="방송 모드"
+                :options="['Media', 'TTS']"
+              />
+            </div>
 
-          <div class="row justify-end">
-            <q-checkbox
-              v-model="live.startChime"
-              class="q-mr-md"
-              label="시작챠임:"
-              left-label
-            />
-            <q-checkbox
-              v-model="live.endChime"
-              label="종료챠임:"
-              left-label
-            />
+            <div>
+              <SelectedFile :file="live.file" />
+            </div>
+
+            <div
+              v-if="live.mode === 'Media'"
+            >
+              <div>
+                <q-btn
+                  class="full-width"
+                  rounded
+                  color="blue-1"
+                  text-color="grey-10"
+                  unelevated
+                  @click="fnGetFile"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#archive"
+                    size="xs"
+                  />
+                  <span class="q-ml-sm">파일선택</span>
+                </q-btn>
+              </div>
+            </div>
+
+            <div v-if="live.mode === 'TTS'">
+              <div>
+                <q-btn
+                  class="full-width"
+                  rounded
+                  color="teal-1"
+                  text-color="grey-10"
+                  unelevated
+                  @click="fnGetTtsAudio"
+                >
+                  <q-icon
+                    name="svguse:icons.svg#mic"
+                    size="xs"
+                  />
+                  <span class="q-ml-sm">TTS 생성</span>
+                </q-btn>
+              </div>
+            </div>
+
+            <div>
+              <div
+                class="bg-grey-2"
+                style="border-radius: .5rem; padding: .1rem .5rem;"
+              >
+                <div class="fit row justify-between items-center">
+                  <div class="listname">
+                    볼륨
+                  </div>
+                  <div style="width: 80%;min-width: 200px;">
+                    <q-slider
+                      v-model="live.vol"
+                      label
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row justify-end">
+              <q-checkbox
+                v-model="live.startChime"
+                class="q-mr-md"
+                label="시작챠임:"
+                left-label
+              />
+              <q-checkbox
+                v-model="live.endChime"
+                label="종료챠임:"
+                left-label
+              />
+            </div>
           </div>
         </div>
       </div>
-    </q-card-sectrion>
+    </q-card-section>
 
     <q-card-section>
       <div>
@@ -197,7 +195,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 
@@ -220,7 +218,7 @@ export default {
 
     const count = computed(() => getters['devices/count'])
     const live = ref({
-      name: `Live - ${user.value.email}`,
+      name: '',
       nodes: [],
       selected: [],
       mode: 'Media',
@@ -268,6 +266,12 @@ export default {
       })
       dispatch('broadcast/startLive', live.value)
     }
+
+    onMounted(() => {
+      if (user.value) {
+        live.value.name = `Live - ${user.value.email}`
+      }
+    })
 
     return {
       error,
