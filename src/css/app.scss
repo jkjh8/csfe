@@ -206,7 +206,7 @@ q-img .q-img__content > div {
 }
 
 .backg-gr-te {
-  height: 5rem;
+  min-height: 5rem;
   color: #333;
   z-index: 1;
   background: linear-gradient(90deg, rgba(0, 255, 0, 1), rgba(0, 255, 0, 0) 90.71%),

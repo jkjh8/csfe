@@ -59,7 +59,37 @@
         <div class="fit row no-wrap justify-between items-center">
           <span class="statustext">Volume</span>
           <span v-if="device && device.gain">
-            {{ device.gain[item.channel - 1] }}dB
+            {{ vol }}dB
+            <q-popup-proxy>
+              <div
+                class="row justify-between items-center q-px-md"
+                style="width: 15rem; height: 4rem;"
+              >
+                <div
+                  class="q-mt-lg"
+                  style="width: 10rem;"
+                >
+                  <q-slider
+                    v-model="vol"
+                    :min="-100"
+                    :max="20"
+                    :step="1"
+                    label
+                    :label-value="vol + 'dB'"
+                    label-always
+                    dense
+                  />
+                </div>
+                <q-btn
+                  round
+                  flat
+                  size="sm"
+                  color="green"
+                  icon="svguse:icons.svg#check"
+                  @click="fnChangeVol"
+                />
+              </div>
+            </q-popup-proxy>
           </span>
         </div>
 
@@ -82,9 +112,10 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onUpdated } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
+import { api } from '@/boot/axios'
 
 import infoWindow from '@components/dialog/devices/info'
 
@@ -97,6 +128,7 @@ export default {
     const { state } = useStore()
     const $q = useQuasar()
     const devices = computed(() => state.devices.devices)
+    const vol = ref(0)
     
     function fnOpenInfoWindow () {
       let item
@@ -106,7 +138,6 @@ export default {
           break
         }
       }
-
       $q.dialog({
         component: infoWindow,
         componentProps: { item: item }
@@ -114,28 +145,25 @@ export default {
         console.log('close info window')
       })
     }
-    onMounted(() => {
-      // if (props.location && props.location.length) {
-      //   active.value = location.value.active
-      // } else {
-      //   active.value = null
-      // }
+
+    async function fnChangeVol () {
+      const r = await api.post('/devices/changeVol', {
+        ipaddress: props.device.ipaddress,
+        channel: props.item.channel,
+        vol: vol.value
+      })
+      console.log(r)
+    }
+
+    onUpdated(() => {
+      vol.value = props.device.gain[props.item.channel - 1]
+      console.log('updated')
     })
 
-    // function getActive(id) {
-    //   try {
-    //     if (props.location && props.location.length) {
-    //       console.log(props.location)
-    //       return location.value.active[id - 1]
-    //     } else {
-    //       return false
-    //     }
-    //   } catch {
-    //     return false
-    //   }
-    // }
     return {
-      fnOpenInfoWindow
+      fnOpenInfoWindow,
+      fnChangeVol,
+      vol
     }
   }
 }

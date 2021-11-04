@@ -39,13 +39,25 @@
         <div class="row">
           <div class="col-6">
             <!-- 이름 -->
-            <div class="row items-center q-pa-sm">
-              <q-icon
-                name="svguse:icons.svg#setup"
-                size="sm"
-              />
-              <div class="listname q-ml-sm">
-                저장된 메시지
+            <div class="row justify-between items-center q-pa-sm">
+              <div class="row">
+                <q-icon
+                  name="svguse:iconsColor.svg#setup"
+                  size="sm"
+                />
+                <div class="listname q-ml-sm">
+                  저장된 메시지
+                </div>
+              </div>
+              <div>
+                <q-btn
+                  flat
+                  round
+                  size="sm"
+                  color="primary"
+                  icon="svguse:icons.svg#plus-circle"
+                  @click.stop.prevent="fnAddTtsPreset"
+                />
               </div>
             </div>
             <!-- 내용 -->
@@ -60,7 +72,6 @@
                     dense
                     clickable
                     active-class="active-class"
-                    :active="preset === selected"
                     @click="fnClick(preset)"
                   >
                     <q-item-section avatar>
@@ -69,9 +80,7 @@
                         size="1.8rem"
                       >
                         <q-icon
-                          name="list_alt"
-                          size="1rem"
-                          color="orange"
+                          :name="preset.type === 'Global' ? 'svguse:iconsColor.svg#global-color':'svguse:iconsColor.svg#private-color'"
                         />
                       </q-avatar>
                     </q-item-section>
@@ -79,9 +88,6 @@
                     <q-item-section>
                       <q-item-label>
                         {{ preset.name }}
-                      </q-item-label>
-                      <q-item-label caption>
-                        {{ preset.type }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -94,7 +100,7 @@
             <!-- 이름 -->
             <div class="row items-center q-pa-sm">
               <q-icon
-                name="svguse:icons.svg#mic-color"
+                name="svguse:iconsColor.svg#mic-color"
                 size="sm"
               />
               <div class="listname q-ml-sm">
@@ -135,7 +141,7 @@
                     <q-item v-bind="scope.itemProps">
                       <q-item-section avatar>
                         <q-icon
-                          name="svguse:icons.svg#mic-color"
+                          name="svguse:iconsColor.svg#mic-color"
                         />
                       </q-item-section>
                       <q-item-section>
@@ -183,7 +189,7 @@
                 @click="fnPreview"
               >
                 <q-icon
-                  name="svguse:icons.svg#mic-color"
+                  name="svguse:iconsColor.svg#mic-color"
                   size="sm"
                 />
                 <span class="q-ml-sm">미리듣기</span>
@@ -197,7 +203,7 @@
                 @click="fnTtsCreate"
               >
                 <q-icon
-                  name="svguse:icons.svg#save-color"
+                  name="svguse:iconsColor.svg#save-color"
                   size="sm"
                 />
                 <span class="q-ml-sm">저장하기</span>
@@ -236,6 +242,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { api } from '@/boot/axios'
 
+import TtsPreset from '@components/dialog/broadcast/ttsPreset'
+
 export default {
   props: {
     item: Object
@@ -273,6 +281,17 @@ export default {
       console.log(tts.value)
     }
 
+    function fnAddTtsPreset() {
+      $q.dialog({
+        component: TtsPreset,
+        componentProps: { item: tts.value }
+      }).onOk(async(rt) => {
+        console.log(rt)
+        await api.post('/broadcast/tts/list', rt)
+        await getTtsPreset()
+      })
+    }
+
     async function fnPreview () {
       error.value = ''
       $q.loading.show()
@@ -296,10 +315,10 @@ export default {
 
     async function fnTtsCreate () {
       error.value = ''
-      $q.loading.show()
       try {
         if (!tts.value.voice) return error.value = '음성을 선택해주세요.'
         if (!tts.value.text) return error.value = '메시지를 입력해주세요.'
+        $q.loading.show()
         const r = await api.post('/broadcast/tts/preview', tts.value)
         file.value = {
           nameTag: 'TTS',
@@ -313,16 +332,23 @@ export default {
       }
       $q.loading.hide()
     }
+    async function getTtsPreset () {
+      try {
+        const r = await api.get(`/broadcast/tts/list?user_id=${user.value.email}`)
+        presets.value = r.data
+      } catch (err) {
+        console.error('get tts preset error', err)
+      }
+    }
 
     onMounted(async () => {
       $q.loading.show();
       // tts.value.name = props.item.id
       dispatch('broadcast/getTtsInfo')
       try {
-        const r = await api.get(`/broadcast/tts/list?user_id=${user.value.email}`)
-        presets.value = r.data
+        await getTtsPreset()
       } catch (err) {
-        console.error(err)
+        console.error('on mounted error', err)
       }
       $q.loading.hide();
     })
@@ -342,6 +368,7 @@ export default {
       fnClick,
       fnPreview,
       fnTtsCreate,
+      fnAddTtsPreset,
 
       // other methods that we used in our vue html template;
       // these are part of our example (so not required)
