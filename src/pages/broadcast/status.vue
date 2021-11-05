@@ -13,7 +13,7 @@
         <span class="name">Status</span>
         <span
           class="caption"
-        >{{ count.error.masters }} 지역 {{ count.error.zones }}방송구간이 점검이
+        >{{ count.masters }} 지역 {{ count.zones }}방송구간, {{ count.error.zones }}개의 방송구간 점검이
           필요합니다</span>
       </div>
       <div>

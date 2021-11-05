@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar, format } from 'quasar'
 import { api } from '@/boot/axios'
@@ -198,9 +198,10 @@ export default {
     const { commit } = useStore()
     const $q = useQuasar()
     const { humanStorageSize } = format
+    const $route = inject('$route')
 
     const files = ref([])
-    const filePath = ref(['home'])
+    const filePath = ref([])
 
     async function clickFile (file) {
       $q.loading.show()
@@ -309,6 +310,8 @@ export default {
       }
     }
     onMounted(() => {
+      console.log($route.path)
+      filePath.value.push('home')
       fnGetPath(0)
     })
     return {

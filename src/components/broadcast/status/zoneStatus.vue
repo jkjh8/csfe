@@ -97,12 +97,12 @@
           <span class="statustext">Mute</span>
           <span>
             <q-btn
-              v-if="device && device.mute"
               label="mute"
               size="xs"
               rounded
               unelevated
-              :color="device.mute[item.channel - 1]? 'red':'cyan'"
+              :color="mute ? 'red':'cyan'"
+              @click="fnChangeMute(!mute)"
             />
           </span>
         </div>
@@ -128,6 +128,7 @@ export default {
     const { state } = useStore()
     const $q = useQuasar()
     const devices = computed(() => state.devices.devices)
+    const mute = ref(false)
     const vol = ref(0)
     
     function fnOpenInfoWindow () {
@@ -147,7 +148,7 @@ export default {
     }
 
     async function fnChangeVol () {
-      const r = await api.post('/devices/changeVol', {
+      const r = await api.post('/devices/qsys/changeVol', {
         ipaddress: props.device.ipaddress,
         channel: props.item.channel,
         vol: vol.value
@@ -155,15 +156,28 @@ export default {
       console.log(r)
     }
 
+    async function fnChangeMute (value) {
+      mute.value = value
+      const r = await api.post('/devices/qsys/changeMute/', {
+        ipaddress: props.device.ipaddress,
+        channel: props.item.channel,
+        mute: mute.value
+      })
+      console.log(r)
+    }
+
     onUpdated(() => {
       vol.value = props.device.gain[props.item.channel - 1]
+      mute.value = props.device.mute[props.item.channel - 1]
       console.log('updated')
     })
 
     return {
       fnOpenInfoWindow,
       fnChangeVol,
-      vol
+      fnChangeMute,
+      vol,
+      mute
     }
   }
 }
