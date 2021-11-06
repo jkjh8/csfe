@@ -202,6 +202,8 @@ export default {
 
     const files = ref([])
     const filePath = ref([])
+    const folder = 'media'
+    const admin = false
 
     async function clickFile (file) {
       $q.loading.show()
@@ -235,7 +237,7 @@ export default {
     }
 
     async function fnUpdatePath () {
-      const r = await api.post('/files', { path: filePath.value })
+      const r = await api.post('/files', { folder: folder, path: filePath.value })
 
       filePath.value = r.data.path
       files.value = r.data.files
@@ -252,7 +254,7 @@ export default {
         console.log(rt)
         $q.loading.show()
         try {
-          const r = await api.post('/files/makeFolder', rt.path)
+          const r = await api.post('/files/makeFolder', { ...rt.path, folder: folder })
           console.log(r)
         } catch (err) {
           console.log('make folder error ', err)
@@ -291,6 +293,7 @@ export default {
           const formData = new FormData()
           formData.append('files', rt.file)
           formData.set('path', rt.path.join('/'))
+          formData.set('folder', folder)
           const r = await api.post('/files/upload', formData)
           console.log(r)
           await fnUpdatePath()
@@ -315,6 +318,7 @@ export default {
       fnGetPath(0)
     })
     return {
+      admin,
       files,
       filePath,
       fnUpload,
