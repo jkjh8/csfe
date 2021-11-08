@@ -32,14 +32,21 @@ const routes = [
     path: '/admin/users',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/users/users.vue') }
+      { path: '', component: () => import('src/pages/admin/users.vue') }
     ]
   },
   {
     path: '/admin/functions',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/functions/functions.vue') }
+      { path: '', component: () => import('src/pages/admin/functions/functions.vue') }
+    ]
+  },
+  {
+    path: '/admin/files',
+    component: () => import('layouts/DefaultLayout.vue'),
+    children: [
+      { path: '', component: () => import('src/pages/admin/files.vue') }
     ]
   },
   {

@@ -19,13 +19,19 @@
               </div>
             </div>
           </div>
-          <!-- <q-btn
-            round
-            flat
-            @click="mdAddFolder=!mdAddFolder"
-          >
-            <q-icon name="svguse:icons.svg#plus-circle" />
-          </q-btn> -->
+          <div v-if="user && user.admin">
+            <q-btn-toggle
+              v-model="folder"
+              unelevated
+              toggle-color="grey-5"
+              :options="[
+                { label: 'Media', value: 'media' },
+                { label: 'Temp', value: 'temp' },
+                { label: 'Schedule', value: 'schedule'}
+              ]"
+              @update:model-value="fnChangeFolder"
+            />
+          </div>
         </div>
       </div>
     </q-card-section>
@@ -60,6 +66,15 @@
             </div>
           </div>
           <div class="q-mt-sm">
+            <span>
+              <button
+                v-if="user && user.admin"
+                class="dir"
+                @click="fnChangeFolder"
+              >
+                /
+              </button>
+            </span>
             <span
               v-for="(path, index) in filePath"
               :key="index"
@@ -153,7 +168,7 @@
                     :props="props"
                   >
                     <q-btn
-                      v-if="props.row.type !== 'directory'"
+                      v-if="props.row.type === 'audio' || props.row.type === 'video'"
                       icon="play_arrow"
                       flat
                       round
@@ -181,7 +196,7 @@
 </template>
 
 <script>
-import { ref, onMounted, inject } from 'vue'
+import { ref, computed, onBeforeMount, onMounted, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar, format } from 'quasar'
 import { api } from '@/boot/axios'
@@ -195,14 +210,15 @@ export default {
   // eslint-disable-next-line no-unused-vars
   components: { FileIcon },
   setup () {
-    const { commit } = useStore()
+    const { state, commit, dispatch } = useStore()
     const $q = useQuasar()
     const { humanStorageSize } = format
     const $route = inject('$route')
 
+    const user = computed(() => state.user.user)
     const files = ref([])
     const filePath = ref([])
-    const folder = 'media'
+    const folder = ref('media')
     const admin = false
 
     async function clickFile (file) {
@@ -237,8 +253,13 @@ export default {
     }
 
     async function fnUpdatePath () {
-      const r = await api.post('/files', { folder: folder, path: filePath.value })
+      const r = await api.post('/files', { folder: folder.value, path: filePath.value })
+      filePath.value = r.data.path
+      files.value = r.data.files
+    }
 
+    async function fnChangeFolder () {
+      const r = await api.post('/files', { folder:folder.value, path: [] })
       filePath.value = r.data.path
       files.value = r.data.files
     }
@@ -254,7 +275,7 @@ export default {
         console.log(rt)
         $q.loading.show()
         try {
-          const r = await api.post('/files/makeFolder', { ...rt.path, folder: folder })
+          const r = await api.post('/files/makeFolder', { ...rt.path, folder: folder.value })
           console.log(r)
         } catch (err) {
           console.log('make folder error ', err)
@@ -293,7 +314,7 @@ export default {
           const formData = new FormData()
           formData.append('files', rt.file)
           formData.set('path', rt.path.join('/'))
-          formData.set('folder', folder)
+          formData.set('folder', folder.value)
           const r = await api.post('/files/upload', formData)
           console.log(r)
           await fnUpdatePath()
@@ -312,13 +333,21 @@ export default {
         return ''
       }
     }
+
+    onBeforeMount(() => {
+      dispatch('user/getUser')
+    })
     onMounted(() => {
       console.log($route.path)
-      filePath.value.push('home')
+      if (!user.value.admin) {
+        filePath.value.push('home')
+      } 
       fnGetPath(0)
     })
     return {
       admin,
+      user,
+      folder,
       files,
       filePath,
       fnUpload,
@@ -327,6 +356,7 @@ export default {
       fnUpdatePath,
       fnAddFolder,
       fnDel,
+      fnChangeFolder,
       humanSize
     }
   }

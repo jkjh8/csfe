@@ -79,6 +79,9 @@
         <router-link to="/admin/functions">
           서버관리
         </router-link>
+        <router-link to="/admin/files">
+          파일관리
+        </router-link>
       </div>
     </q-menu>
   </button>

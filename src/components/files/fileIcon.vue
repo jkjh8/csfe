@@ -20,6 +20,13 @@
       size="1rem"
     />
   </div>
+  <div v-if="file.type === 'etc'">
+    <q-icon
+      name="svguse:icons.svg#file"
+      color="blue-grey-8"
+      size="1rem"
+    />
+  </div>
 </template>
 
 <script>

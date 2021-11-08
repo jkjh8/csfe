@@ -22,11 +22,19 @@
 </template>
 
 <script>
+import { onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
+
 import Files from '@components/files/files'
 
 export default {
   components: { Files },
   setup () {
+    const { dispatch } = useStore()
+    
+    onBeforeMount(() => {
+      dispatch('user/getUser')
+    })
     return {
 
      }
