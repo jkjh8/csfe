@@ -68,13 +68,21 @@
 
               <!-- 셋업 버튼 -->
               <q-item-section side>
-                <q-btn
-                  round
-                  flat
-                  @click.stop.prevent="fnSetupLocation(device)"
-                >
-                  <q-icon name="svguse:icons.svg#cog" />
-                </q-btn>
+                <div v-if="user.admin">
+                  <q-btn
+                    round
+                    flat
+                    icon="svguse:icons.svg#ban"
+                    color="red"
+                    @click.stop.prevent="fnCancel(device)"
+                  />
+                  <q-btn
+                    round
+                    flat
+                    icon="svguse:icons.svg#cog"
+                    @click.stop.prevent="fnSetupLocation(device)"
+                  />
+                </div>
               </q-item-section>
             </template>
 
@@ -115,6 +123,7 @@ export default {
   setup() {
     const { state, getters, dispatch } = useStore()
     const $q = useQuasar()
+    const user = computed(() => state.user.user)
     const socketId = computed(() => state.user.socketId)
     const count = computed(() => getters['devices/count'])
     const devices = computed(() => getters['devices/mastersDetails'])
@@ -133,6 +142,10 @@ export default {
       socket.emit('getDevices')
     }
 
+    function fnCancel(item) {
+      socket.emit('broadcastcancel', item)
+    }
+
     onBeforeMount(async () => {
       dispatch('user/getUser')
       dispatch('devices/updateDevices')
@@ -142,10 +155,12 @@ export default {
     })
 
     return {
+      user,
       devices,
       count,
       fnUpdate,
       fnSetupLocation,
+      fnCancel
     }
   }
 }

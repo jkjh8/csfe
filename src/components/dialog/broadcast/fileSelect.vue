@@ -143,6 +143,7 @@ export default {
     const files = ref([])
     const filePath = ref(['home'])
     const selected = ref(null)
+    const folder = ref('media')
 
     async function fnClickItem (file) {
       $q.loading.show()
@@ -177,7 +178,7 @@ export default {
     }
 
     async function fnUpdatePath () {
-      const r = await api.post('/files', { path: filePath.value })
+      const r = await api.post('/files', { folder: folder.value, path: filePath.value })
       filePath.value = r.data.path
       files.value = r.data.files
     }

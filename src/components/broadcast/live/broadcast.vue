@@ -71,7 +71,7 @@
               rounded
             >
               <span class="text-grey-5 text-h6">
-                취소
+                닫기
               </span>
             </q-btn>
             <q-btn
@@ -151,9 +151,6 @@ export default {
 
     function updatClock () {
       const time = moment()
-      if (onair.value) {
-        counter.value += 1
-      }
       clock.value = { date: time.format('YYYY-MM-DD'), time: time.format('hh:mm:ss'), weekday: time.format('a') }
     }
 
@@ -185,6 +182,20 @@ export default {
       updatClock()
       clockTimer.value = setInterval(() => updatClock(), 1000)
       console.log('live', live.value)
+      socket.on('multicast', (data) => {
+        if (data.command && data.command === 'end') {
+          console.log('end')
+          counter.value = 0
+          onair.value = false
+          fnCancel()
+        }
+        if (data.currentTime) {
+          counter.value = data.currentTime
+        }
+      })
+      socket.on('broadcast', (data) => {
+        console.log(data)
+      })
     })
     
     onBeforeUnmount(() => {

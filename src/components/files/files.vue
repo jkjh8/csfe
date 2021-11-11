@@ -27,7 +27,8 @@
               :options="[
                 { label: 'Media', value: 'media' },
                 { label: 'Temp', value: 'temp' },
-                { label: 'Schedule', value: 'schedule'}
+                { label: 'Schedule', value: 'schedule'},
+                { label: 'Sound', value: 'sound' }
               ]"
               @update:model-value="fnChangeFolder"
             />

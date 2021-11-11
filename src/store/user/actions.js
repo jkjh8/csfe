@@ -1,15 +1,19 @@
 import { api } from '../../boot/axios'
+import { useRouter } from 'vue-router' 
 
 export async function getUser({ commit }) {
+  const router = useRouter()
   try {
     let user = await api.get('/auth/getUser')
     if (!user.data.user) {
       user = await api.get('/auth/refUser')
+      if (!user.data.user) return router.push('/')
     }
     return commit('updateUser', user.data.user)
   } catch (err) {
     const user = await api.get('/auth/refUser')
     commit('updateUser', user.data.user)
+    router.push('/')
     console.log('checkUserError', err)
   }
 }
