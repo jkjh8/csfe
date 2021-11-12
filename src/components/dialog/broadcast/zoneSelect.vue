@@ -264,17 +264,20 @@ export default {
           sel.push({
             name: locate.name,
             ipaddress: locate.ipaddress,
-            all: true
+            all: true,
+            channels: [1]
           })
         } else {
           // 자식 확인
           const children = []
+          const channels = []
           locate.children.forEach(child => {
             if (zones.includes(child.ipaddress)) {
               children.push({
                 name: child.name,
                 channel: child.channel
               })
+              channels.push(child.channel)
             }
           })
           // 자식수 지역수 확인
@@ -285,7 +288,8 @@ export default {
               location: locate._id,
               ipaddress: locate.ipaddress,
               all: children.length === locate.children.length ?? true,
-              children: children.sort((a, b) =>  a.channel - b.channel)
+              children: children.sort((a, b) =>  a.channel - b.channel),
+              channels: channels.sort()
             })
           }
         }

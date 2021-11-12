@@ -59,8 +59,8 @@ import { useQuasar } from 'quasar'
 
 import { api } from '@/boot/axios'
 
-import Table from '@components/broadcast/reservation/table'
-import Calendar from '@components/broadcast/reservation/calendar'
+import Table from '@components/broadcast/schedules/table'
+import Calendar from '@components/broadcast/schedules/calendar'
 import Create from '@components/dialog/broadcast/schedule'
 
 export default {

@@ -95,7 +95,7 @@ const routes = [
     path: '/broadcast/reservation',
     component: () => import('layouts/DefaultLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/broadcast/reservation.vue') }
+      { path: '', component: () => import('src/pages/broadcast/schedules.vue') }
     ]
   },
   {

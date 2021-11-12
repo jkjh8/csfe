@@ -34,7 +34,7 @@
               </div>
               <div v-else>
                 <div v-if="props.row.repeat === '한번'">
-                  {{ props.row.date }}
+                  {{ props.row.date }} {{ props.row.time }}
                 </div>
                 <div v-else>
                   <div>

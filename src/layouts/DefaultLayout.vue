@@ -45,7 +45,7 @@ import UserStatus from '../components/layout/userStatus.vue'
 // import Notice from '../components/layout/notice.vue'
 // import UserMenu from '../components/layout/user.vue'
 import Preview from '@components/preview'
-import Live from '@components/broadcast/live/broadcast'
+import Live from '@components/broadcast/live/start'
 
 export default {
   components: {

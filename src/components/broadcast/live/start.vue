@@ -147,7 +147,6 @@ export default {
     const clock = ref('')
     const clockTimer = ref(null)
     const counter = ref(0)
-    const channels = ref([])
 
     function updatClock () {
       const time = moment()
@@ -156,26 +155,12 @@ export default {
 
     function fnStart () {
       onair.value = true
-      channels.value = []
       console.log(live.value)
-      live.value.nodes.forEach(locate => {
-        channels.value.push({
-          name: live.value.name,
-          ipaddress: locate.ipaddress,
-          channels: locate.children.map(e => e.channel)
-        })
-      })
-      socket.emit('broadcastStart', {
-        ...live.value,
-        channels: channels.value
-      })
+      socket.emit('broadcastStart', live.value)
     }
     function fnCancel () {
       counter.value = 0
-      socket.emit('broadcastEnd', {
-        ...live.value,
-        channels: channels.value
-      })
+      socket.emit('broadcastEnd', live.value)
     }
 
     onMounted(() => {

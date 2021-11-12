@@ -110,7 +110,7 @@
               <div>
                 <div class="q-my-sm">
                   <SelectedZones
-                    :nodes="schedule.zones"
+                    :nodes="schedule.nodes"
                     :selected="schedule.selected"
                     :height="100"
                   />
@@ -306,7 +306,7 @@ export default {
       file: null,
       tts: null,
       user_id: '',
-      zones: [],
+      nodes: [],
       selected: null,
       active: true,
       days: 1,
@@ -340,7 +340,7 @@ export default {
         component: zoneSelect
       }).onOk((rt) => {
         console.log(rt)
-        schedule.value.zones = rt.zones
+        schedule.value.nodes = rt.zones
         schedule.value.selected = rt.selected
       })
     }
