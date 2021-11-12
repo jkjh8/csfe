@@ -44,13 +44,14 @@
         </div>
       </q-card-section>
 
-      <q-card-section
-        v-if="error"
-        class="bg-red"
-        style="border-radius: .5rem"
-      >
-        <div>
-          {{ error }}
+      <q-card-section v-if="error">
+        <div
+          class="bg-red text-white row justify-center items-center"
+          style="border-radius: .5rem; min-height: 2rem;"
+        >
+          <div>
+            {{ error }}
+          </div>
         </div>
       </q-card-section>
 
@@ -377,7 +378,7 @@ export default {
     function onOKClick(item) {
       if (!item.name) return error.value = '이름을 입력해주세요'
       if (!item.file) return error.value = '재생할 파일을 선택해주세요'
-      if (!item.zones.length) return error.value = '방송구간을 선택해주세요'
+      if (!item.nodes.length) return error.value = '방송구간을 선택해주세요'
       onDialogOK(item)
     }
 
